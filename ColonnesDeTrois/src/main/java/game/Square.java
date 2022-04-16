@@ -25,11 +25,10 @@ public class Square {
                 size++;
             } else {
                 for (Piece piece : pieces) {
-                    piece.lock();
+                    piece.swichState();
                 }
                 pieces.add(new Piece(c));
                 size++;
-
             }
         }
     }

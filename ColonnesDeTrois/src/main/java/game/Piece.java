@@ -16,8 +16,11 @@ public class Piece {
         return isLocked;
     }
 
-    public boolean lock() {
-        isLocked = true;
+    public boolean swichState() {
+        if (isLocked)
+            isLocked = false;
+        else
+            isLocked = true;
         return isLocked;
     }
 

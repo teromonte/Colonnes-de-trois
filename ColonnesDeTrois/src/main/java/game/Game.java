@@ -1,8 +1,5 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import strategies.DisplacePiece;
 import strategies.PlacePiece;
 import utils.Move;
@@ -14,8 +11,11 @@ public class Game {
 
     private Square[][] table;
 
-
     public Game() {
+        this.table = new Square[Utils.N_ROWS][Utils.N_COLS];
+    }
+
+    public void reset() {
         this.table = new Square[Utils.N_ROWS][Utils.N_COLS];
     }
 
