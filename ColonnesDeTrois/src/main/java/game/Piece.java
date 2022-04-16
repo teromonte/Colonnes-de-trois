@@ -9,9 +9,15 @@ public class Piece {
 
     public Piece(Color couleur) {
         this.couleur = couleur;
+        this.isLocked = false;
     }
 
     public boolean isLocked() {
+        return isLocked;
+    }
+
+    public boolean lock() {
+        isLocked = true;
         return isLocked;
     }
 

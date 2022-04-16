@@ -6,7 +6,6 @@
  */
 typedef struct
 {
-  int color; /* Identificateur de la requete */
-  char column; /* Nom du joueur */
-  int row; /* Nom du joueur */
-} TPartieReq;
+  int color;
+  int type;
+} Req;
