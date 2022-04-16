@@ -1,18 +1,16 @@
-public class square {
-
-    private final board board;
+public class Square {
     private final int row;
     private final int col;
-    private onePion pion ;
+    private Piece pion ;
     private  int nbPions ;
 
-    public square(board board, int row, int col) {
+    public Square(Game board, int row, int col) {
         this.board = board;
         this.row = row;
         this.col = col;
     }
 
-    public void setPion(onePion pion){
+    public void setPion(Piece pion){
         this.pion = pion ;
     }
 }
