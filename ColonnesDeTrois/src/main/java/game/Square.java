@@ -1,16 +1,29 @@
-public class Square {
-    private final int row;
-    private final int col;
-    private Piece pion ;
-    private  int nbPions ;
+package game;
 
-    public Square(Game board, int row, int col) {
-        this.board = board;
-        this.row = row;
-        this.col = col;
+import java.util.ArrayList;
+import java.util.List;
+import utils.*;
+
+public class Square {
+    private List<Piece> pieces;
+
+    public Square() {
+        pieces = new ArrayList<Piece>(Utils.MAX_PILE_SIZE);
     }
 
-    public void setPion(Piece pion){
-        this.pion = pion ;
+    public int getSize() {
+        return pieces.size();
+    }
+
+    public void addPiece(Piece p) {
+        pieces.add(p);
+    }
+
+    public Piece removeTop() {
+        return pieces.remove(pieces.size() - 1);
+    }
+
+    public Piece getTop() {
+        return pieces.get(pieces.size() - 1);
     }
 }

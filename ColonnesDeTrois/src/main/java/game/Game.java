@@ -1,48 +1,28 @@
+package game;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import strategies.DisplacePiece;
+import strategies.PlacePiece;
+import utils.Utils;
+import utils.Utils.Color;
+
 public class Game {
 
-    public static final int length = 3;
+    private Square[][] table;
 
-    private final Square[][] squares; // i added final
-    private final pions whiteArmy;//
-    private final pions blackArmy;//
-
-    public Game(pions whiteArmy, pions blackArmy)
-    {
-        this.whiteArmy = whiteArmy;
-        this.blackArmy = blackArmy;
-        squares = new Square[length][length];
-
-        for (int r = 0; r < length; r++)
-        {
-            for (int c = 0; c < length; c++)
-            {
-                squares[r][c] = new Square(this, r, c);
-            }
-        }
+    public Game() {
+        this.table = new Square[Utils.N_ROWS][Utils.N_COLS];
     }
 
-    public pions getArmy(couleur couleur)
-    {
-        return (couleur.equals(couleur.White) ) ? whiteArmy : blackArmy ;
+    public int place(Color color, Square[][] table) {
+        PlacePiece d = new PlacePiece(color, table);
+        return -1;
     }
 
-    public Square getSquare(int row, int col)
-    {
-        return (row < 0 || row >= length || col < 0 || col >= length) ? null : squares[row][col];
+    public int move(Color color, Square[][] table) {
+        DisplacePiece d = new DisplacePiece(color, table);
+        return -1;
     }
-
-    static int[][] getGameBoard() {
-        return gameBoard;
-    }
-
-    /*private void printBoard(int[][] gameBoard){
-        for(int y = 2; y >= 0; y--){
-            System.out.println();
-            for(int x = 0; x < length; x++){
-                System.out.print(gameBoard[x][y] + " ");
-            }
-        }
-        System.out.println();
-    }*/
-
 }

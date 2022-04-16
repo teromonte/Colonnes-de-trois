@@ -1,15 +1,22 @@
-import Utils;
+package game;
+
+import utils.Utils.Color;
 
 public class Piece {
 
-    private Square square ; //position actuelle
-    couleur couleur ;
+    private Color couleur;
+    private boolean isLocked;
 
-    public Piece(Square square , couleur couleur) {
-        this.square = square;
-        this.square.setPion(this);
+    public Piece(Color couleur) {
         this.couleur = couleur;
+    }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public Color getColor() {
+        return couleur;
     }
 
 }
