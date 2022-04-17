@@ -1,42 +1,82 @@
 package server;
 
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import game.Game;
-import utils.Move;
-import utils.Pair;
-import utils.Utils;
-
-import java.io.InputStream;
-import java.io.IOException;
-
 public class IAServer {
+
 	public static void main(String[] args) {
+
+		float resultat = 0;
+		int portRecv;
+		Op op = new Op();
+
+		/* verification des arguments */
 		if (args.length != 1) {
-			System.out.println("argument - port");
-			System.exit(1);
+			System.out.println("usage : portRecv");
+			return;
 		}
+		System.out.println(args[0]);
+		portRecv = Integer.parseInt(args[0]);
+
 		ServerSocket srv;
-		int port = Integer.parseInt(args[0]);
-
 		try {
-			srv = new ServerSocket(port);
+			srv = new ServerSocket(portRecv);
+			Socket sockComm = srv.accept();
 
-			Socket s = srv.accept();
-			InputStream is = s.getInputStream();
+			InputStream is = sockComm.getInputStream();
+			DataInputStream dis = new DataInputStream(is);
+			OutputStream os = sockComm.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
 
-			byte[] tablo = new byte[4];
-			int recu = is.read(tablo);
+			int err = 0;
+			while (err >= 0) {
 
-			Game g = new Game();
-			Pair p = g.place(Utils.Color.Black);
-			Move m = g.move(Utils.Color.White);
+				op.opt = (char) Integer.reverseBytes(dis.readInt());
+				op.opd1 = reverseFloat(dis.readFloat());
+				op.opd2 = reverseFloat(dis.readFloat());
+				System.out.println("Received : " + op.opt + " " + op.opd1 + " " + op.opd2);
 
-			is.close();
-			s.close();
-			srv.close();
+				resultat = op.operation();
+
+				System.out.println("Result :" + resultat);
+				dos.writeFloat(reverseFloat(resultat));
+				System.out.println("Result reverse :" + reverseFloat(resultat));
+
+			}
+			is.close(); // fermer le flux
+			os.close();
+			sockComm.close();
+			srv.close(); // fermer la socket de comm et de connex
 		} catch (IOException e) {
+			// TODO
 		}
+	}
+
+	public static byte[] floatToByteArray(float value) {
+		int intBits = Float.floatToIntBits(value);
+		return new byte[] {
+				(byte) (intBits >> 24), (byte) (intBits >> 16), (byte) (intBits >> 8), (byte) (intBits) };
+	}
+
+	public static float byteArrayToFloat(byte[] bytes) {
+		int intBits = bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | (bytes[3] & 0xFF);
+		return Float.intBitsToFloat(intBits);
+	}
+
+	public static byte[] reverse(byte[] bytes) {
+
+		byte[] retVal = new byte[4];
+		// swap the bytes into a temporary buffer
+		retVal[0] = bytes[3];
+		retVal[1] = bytes[2];
+		retVal[2] = bytes[1];
+		retVal[3] = bytes[0];
+		return retVal;
+	}
+
+	public static float reverseFloat(float f) {
+		return byteArrayToFloat(reverse(floatToByteArray(f)));
 	}
 }
