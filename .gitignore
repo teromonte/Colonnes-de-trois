@@ -1,5 +1,3 @@
-ColonnesDeTrois/target/classes/board.class
-ColonnesDeTrois/target/classes/couleur.class
-ColonnesDeTrois/target/classes/onePion.class
-ColonnesDeTrois/target/classes/pions.class
-ColonnesDeTrois/target/classes/square.class
+ColonnesDeTrois/target/
+*.o
+/Player

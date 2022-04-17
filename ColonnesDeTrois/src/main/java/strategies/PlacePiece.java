@@ -20,11 +20,7 @@ public class PlacePiece {
     }
 
     public List<Pair> calcValisPos() {
-        for() {
-            for() {
-                table
-            }
-        }
+        return null;
     }
 
     public Pair placePiece() {
