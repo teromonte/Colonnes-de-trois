@@ -19,7 +19,7 @@ public class PlacePiece {
 
     }
 
-    public List<Pair> calcValisPos() {
+    private List<Pair> calcValisPos() {
         return null;
     }
 

@@ -17,6 +17,10 @@ public class DisplacePiece {
         this.color = color;
     }
 
+    private List<Move> calcValisMoves() {
+        return null;
+    }
+
     public Move displacePiece() {
         // algo
         Pair origin = new Pair(-1, -1);
