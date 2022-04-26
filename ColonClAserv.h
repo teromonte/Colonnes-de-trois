@@ -7,3 +7,4 @@
 ignore si operateur invalide
 */
 void  lireDemane(char* demande , char* nom) ; 
+void lireDemaneCoup(char* demande);

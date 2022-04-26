@@ -4,7 +4,12 @@
 
 
 void  lireDemane(char* demande , char* nom) {
-  printf("Donner une demande :  (notation infixee : dem nomJoueur[TNOM]) : ");
-  scanf(" %c %c", demande , nom);
+  printf("Donner une demande et votre nom : ");
+  scanf(" %c %s", demande , nom);
+  printf("votre nom est %s: " ,nom);
 }
-    
+
+void lireDemaneCoup(char* demande){
+printf("Donner une demande :  ");
+  scanf(" %c ", demande );
+}
