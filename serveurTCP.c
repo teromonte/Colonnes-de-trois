@@ -1,9 +1,11 @@
 #include "fonctionsTCP.h"
 #include "protocolColonne.h"
+#include "validation.h"
+#include <stdbool.h>
 #define MAX_CLIENT 2
 #define MAXB 30
 
-#include <stdbool.h>
+
 
 
 
@@ -19,7 +21,8 @@ int main(int argc, char** argv) {
   int acc = 0 ;
 
 
-
+int nbcJ1 = 0;
+int nbcJ2 = 0 ;
 
    /*
   char operateur;
@@ -87,6 +90,7 @@ printf("acc = %d \n" , acc);
  case PARTIE :
         err = recv(sockTrans[i],&Preq,sizeof(TPartieReq), 0);
 
+
         if( err > 0){
        printf("(serveur) recu complet de demande de parti de client %d \n" , i);
            }
@@ -95,27 +99,19 @@ printf("acc = %d \n" , acc);
        }
 
        if(i ==0){
-       for(int k = 0 ; k < MAXB ; k++){
-                nom1[k] = Preq.nomJoueur[k] ;
-       }
 
-       //err = recv(sockTrans[i],nom1,sizeof(Preq.nomJoueur), 0);
+
+       memcpy( nom1, Preq.nomJoueur , sizeof nom1);
        printf("(serveurTCP) voila le nom recu : %s\n", nom1);
-       //memcpy( Preq.nomJoueur, nom1 , sizeof nom1);
-       // int size1 = strlen(nom2);
-       //   printf("(serveur) erreur recu complet de parti de client %d  et de taille %c \n" , i , nom1);
        }
 
        if(i == 1){
-       for(int k = 0 ; k < MAXB ; k++){
-                nom2[k] = Preq.nomJoueur[k] ;
-       }
 
-        //err = recv(sockTrans[i],nom2,MAXB, 0);
-       printf("(serveurTCP) voila le nom recu : %s\n", nom2);
-       //memcpy( Preq.nomJoueur, nom2 , sizeof nom2);
-       // int size1 = strlen(nom2);
-         // printf("(serveur) erreur recu complet de parti de client %d  et de taille %c \n" , i , nom2);
+
+       memcpy( nom2, Preq.nomJoueur , sizeof nom2);
+              printf("(serveurTCP) voila le nom recu : %s\n", nom2);
+
+
             }
 
 
@@ -124,12 +120,12 @@ printf("acc = %d \n" , acc);
             break;
         }
         i++;
-        }
+    }
+
+
 
    int j = 0 ;
  while( j < MAX_CLIENT){
-
-
 
    if(j == 0){
 
@@ -137,12 +133,9 @@ printf("acc = %d \n" , acc);
          Prep.err = ERR_OK ;
          Prep.coul = BLANC ;
 
-         for(int k = 0 ; k < MAXB ; k++){
-                Prep.nomAdvers[k] = nom2[k];
-       }
+        memcpy(Prep.nomAdvers, nom2 , sizeof Prep.nomAdvers);
 
       printf("(serveur) le nom adverse est %s\n" , Prep.nomAdvers);
-         //Prep.nomAdvers[TNOM] = Preq.nomJoueur[TNOM] ;
        err = send(sockTrans[j], &Prep, sizeof(TPartieRep), 0);
         if( err > 0)
        printf("(serveur) send complet de demande de parti de client %d \n" , j);
@@ -154,11 +147,8 @@ printf("acc = %d \n" , acc);
           if(j == 1) {
          Prep.err = ERR_OK ;
          Prep.coul = NOIR ;
-         for(int k = 0 ; k < MAXB ; k++){
-                Prep.nomAdvers[k] = nom1[k];
-       }
+         memcpy(Prep.nomAdvers, nom1 , sizeof Prep.nomAdvers);
       printf("(serveur) le nom adverse est %s\n" , Prep.nomAdvers);
-         //Prep.nomAdvers[TNOM] = Preq.nomJoueur[TNOM] ;
        err = send(sockTrans[j], &Prep, sizeof(TPartieRep), 0);
         if( err > 0){
        printf("(serveur) send complet de demande de parti de client %d \n" , j);
@@ -166,7 +156,6 @@ printf("acc = %d \n" , acc);
        else{
           printf("(serveur) send recu complet de parti de client %d \n" , j);
        }
-              //err = send(sockTrans[i], &Prep, sizeof(TPartieRep), 0);
 
 
     }
@@ -174,14 +163,169 @@ printf("acc = %d \n" , acc);
      j++;
 
 
+  }
+
+initialiserPartie();
+
+     while (nbcJ1 < 20 && nbcJ2 < 20) {
+
+      TCoupReq Creq;
+      TCoupRep Crep;
+
+        printf("(serveur) Attente de la reception de la requete COUP du J1\n");
+        err = recv(sockTrans[0], &Creq, sizeof(TCoupReq), 0);
+        if (err < 0) {
+            perror("(serveur) erreur sur la reception de la requete COUP du J1 ");
+            return -10;
+        }
+        nbcJ1++;
+        bool verif;
+
+        TPropCoup propCoupJ1;
+        verif = validationCoup(1, Creq, &propCoupJ1);
+
+        /*
+        * Creation réponse COUP du J1
+        */
+        Crep.err = ERR_OK;
+        Crep.propCoup = propCoupJ1;
+        if (verif) {
+            Crep.validCoup = VALID;
+        } else {
+            Crep.validCoup = TRICHE;
+        }
+
+        /*
+        * Envoie réponse COUP du J1 a J1
+        */
+        printf("(serveur) Envoie de la reponse COUP a J1\n");
+        err = send(sockTrans[0], &Crep, sizeof(TCoupRep), 0);
+        if (err < 0) {
+            perror("(serveur) erreur sur l'envoi de la reponse COUP a J1 ");
+            return -11;
+        }
+
+        /*
+        * Envoie réponse COUP du J1 a J2
+        */
+        printf("(serveur) Envoie de la reponse COUP a J2\n");
+        err = send(sockTrans[1], &Crep, sizeof(TCoupRep), 0);
+        if (err < 0) {
+            perror("(serveur) erreur sur l'envoi de la reponse COUP a J2 ");
+            return -12;
+        }
+
+       switch (Crep.propCoup){
+        case NULLE :
+            printf("(serveur) resultats est egeau\n");
+        break;
+
+        case GAGNE :
+            printf("(serveur) the first player gagne\n");
+        break;
+
+        case PERDU :
+            printf("(serveur) the seconde player gagne\n");
+        break;
 
 
+        case CONT :
+            printf("(serveur) no one won the game!!\n");
+        break;
 
         }
 
 
 
+        //--------------------------------- J2 ------------------------------------------------------------------------------------------------
 
+        /*
+        * Attente de la requete COUP du J2
+        */
+
+        printf("(serveur) Attente de la reception de la requete COUP du J2\n");
+        err = recv(sockTrans[1], &Creq, sizeof(TCoupReq), 0);
+        if (err < 0) {
+            perror("(serveur) erreur sur la reception de la requete COUP du J2 ");
+            return -14;
+        }
+        nbcJ2++;
+
+
+        TPropCoup propCoupJ2;
+        verif = validationCoup(2, Creq, &propCoupJ2);
+
+
+        if( verif){         printf("true\n");}
+        else{        printf("false\n");}
+
+        /*
+        * Creation réponse COUP du J2
+        */
+
+        Crep.err = ERR_OK;
+        Crep.propCoup = propCoupJ2;
+        if (verif) {
+            Crep.validCoup = VALID;
+        } else {
+            Crep.validCoup = TRICHE;
+        }
+
+
+        /*
+        * Envoie réponse COUP du J2 a J2
+        */
+        printf("(serveur) Envoie de la reponse COUP a J2\n");
+        err = send(sockTrans[1], &Crep, sizeof(TCoupRep), 0);
+        if (err < 0) {
+            perror("(serveurNewton) erreur sur l'envoi de la reponse COUP a J2 ");
+            return -15;
+        }
+
+        /*
+        * Envoie réponse COUP du J2 a J1
+        */
+        printf("(serveur) Envoie de la reponse COUP a J1\n");
+        err = send(sockTrans[0], &Crep, sizeof(TCoupRep), 0);
+        if (err < 0) {
+            perror("(serveur) erreur sur l'envoi de la reponse COUP a J1");
+            return -16;
+        }
+
+      switch (Crep.propCoup){
+        case NULLE :
+            printf("(serveur) resultats est egeau\n");
+        break;
+
+        case GAGNE :
+            printf("(serveur) the first player gagne\n");
+        break;
+
+        case PERDU :
+            printf("(serveur) the seconde player gagne\n");
+        break;
+
+
+
+        case CONT :
+            printf("(serveur) no one won the game!!\n");
+        break;
+
+        }
+
+
+
+        /*
+         * Envoie requete COUP du J2 a J1
+         */
+        printf("(serveur) Envoie de la requete COUP a J1\n");
+        err = send(sockTrans[0], &Crep, sizeof(TCoupReq), 0);
+        if (err < 0) {
+            perror("(serveurNewton) erreur sur l'envoi de la requete COUP a J1");
+            return -17;
+        }
+
+}
 
 
 
@@ -190,9 +334,6 @@ printf("acc = %d \n" , acc);
 printf("\n");
 
   }
-
-
-
 
 
   /*
@@ -204,11 +345,5 @@ printf("\n");
     close(sockConx);
   }
 
-
-
-
-
-
   return 0;
 }
-
