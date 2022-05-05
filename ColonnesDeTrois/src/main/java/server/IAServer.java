@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import Entities.Request;
+import entities.Request;
 
 public class IAServer {
 

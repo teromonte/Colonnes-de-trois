@@ -10,7 +10,7 @@
 # For Linux
 LD_FLAGS =
 
-all: Player1
+all: Player
 
 Player: Player.c fonctionsTCP.o javaServerAPI.o
 	gcc -Wall Player.c -o Player fonctionsTCP.o javaServerAPI.o $(LD_FLAGS)

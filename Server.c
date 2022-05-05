@@ -13,11 +13,11 @@
 
 int main(int argc, char **argv)
 {
-    int sockConx,  /* descripteur socket connexion */
-        sockTrans, /* descripteur socket transmission */
-        port,      /* numero de port */
-        sizeAddr,  /* taille de l'adresse d'une socket */
-        err;       /* code d'erreur */
+    int sockConx,          /* descripteur socket connexion */
+        sockTrans,         /* descripteur socket transmission */
+        port,              /* numero de port */
+        sizeAddr,          /* taille de l'adresse d'une socket */
+        err;               /* code d'erreur */
     float resultat;        /* message */
     char buffer[TAIL_BUF]; /* buffer de reception */
 

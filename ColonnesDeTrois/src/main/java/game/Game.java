@@ -1,7 +1,6 @@
 package game;
 
-import strategies.DisplacePiece;
-import strategies.PlacePiece;
+import strategies.Algo;
 import utils.Move;
 import utils.Pair;
 import utils.Utils;
@@ -19,16 +18,10 @@ public class Game {
         this.table = new Square[Utils.N_ROWS][Utils.N_COLS];
     }
 
-    public Pair place(Color color) {
-        PlacePiece d = new PlacePiece(color, table);
-        Pair p = d.placePiece();
-        table[p.getX()][p.getY()].addPiece(color);
-        return p;
-    }
-
     public Move move(Color color) {
-        DisplacePiece d = new DisplacePiece(color, table);
-        Move m = d.displacePiece();
+        Algo d = new Algo(color, table);
+        Move m = d.getMove();
+        // take cara if its a move or a place  - TODO
         table[m.getPiece().getX()][m.getPiece().getY()].removeTop();
         table[m.getMove().getX()][m.getMove().getY()].addPiece(color);
         return m;
