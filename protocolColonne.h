@@ -112,9 +112,9 @@ typedef struct
 /* Validite du coup */
 typedef enum
 {
-  VALID,
-  TIMEOUT,
-  TRICHE
+  VALID,   // cont gagne
+  TIMEOUT, // nulle
+  TRICHE   // perdu
 } TValCoup;
 
 /* Propriete des coups */

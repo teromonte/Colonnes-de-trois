@@ -225,7 +225,6 @@ int main(int argc, char **argv)
       turn = 1;
     }
     int n = 0;
-
     printf("\n");
   }
 
