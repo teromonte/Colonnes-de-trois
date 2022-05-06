@@ -1,4 +1,4 @@
 ColonnesDeTrois/target/
-fonctionsTCP.o
-clientTCP
-serveurTCP
+c/bin/fonctionsTCP.o
+c/bin/clientTCP
+c/bin/serveurTCP
