@@ -151,7 +151,7 @@ int main(int argc, char **argv)
     int turn = 0;
     printf("(serveur) initialiserPartie\n");
     initialiserPartie();
-    while (match < 2) // server 
+    while (match < 2) // server
     {
       while (nPlays0 < 20 && nPlays1 < 20)
       {

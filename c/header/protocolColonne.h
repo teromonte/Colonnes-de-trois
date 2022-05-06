@@ -1,4 +1,4 @@
-/*******************************************************
+/*
  *
  * Programme : protocolColonne.h
  *
@@ -8,7 +8,7 @@
  * Ecrit par : VF, FB
  * Date :  07 / 03 / 22
  *
-/*******************************************************/
+*/
 
 #ifndef _protocolColonne_h
 #define _protocolColonne_h

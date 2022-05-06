@@ -15,7 +15,7 @@ extern int sockConx;
 extern struct sockaddr_in addServ;
 extern int sizeAddr;
 // Pour socketClient
-extern int sock;
+extern int sockServerC;
 extern struct sockaddr_in addSockServ;
 extern int sizeAdd;
 extern struct addrinfo hints;

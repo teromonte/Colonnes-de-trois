@@ -5,10 +5,11 @@
 int main(int argc, char **argv)
 {
 
-  int sock, /* descripteur de la socket locale */
-      portCServer, /* variables de lecture */
-      err,
-      portServerAI;
+  int sockC,
+      portC,  /* variables de lecture */
+      sockAI, /* descripteur de la socket locale */
+      portAI,
+      err;
 
   char chaine[30], dem, *nomMachServ;
 
@@ -22,25 +23,25 @@ int main(int argc, char **argv)
   // verification des arguments
   if (argc != 4)
   {
-    printf("usage : %s nom/IPServ port\n", argv[0]);
+    printf("usage : %s nom/IPServ portC portAI\n", argv[0]);
     return -1;
   }
 
   nomMachServ = argv[1];
-  portCServer = atoi(argv[2]);
-  portServerAI = atoi(argv[3]);
+  portC = atoi(argv[2]);
+  portAI = atoi(argv[3]);
 
   /////////////////////////////////////// CONNECT TO C SERVER ///////////////////////////////////////////////////////////////////////
 
-  sock = socketClient(nomMachServ, portCServer);
+  sockC = socketClient(nomMachServ, portC);
 
   /////////////////////////////////////// CONNECT TO IA SERVER ///////////////////////////////////////////////////////////////////////
 
-  sock = socketClient(nomMachServ, portServerAI);
-  if (sock < 0)
+  sockAI = socketClient(nomMachServ, portAI);
+  if (sockAI < 0)
   {
-    perror("(clientTCP) sur socketClient\n");
-    close(sock);
+    perror("(clientTCP) sur sockServerAI\n");
+    close(sockAI);
     return -2;
   }
 
@@ -62,20 +63,20 @@ int main(int argc, char **argv)
   // Requesting to play
   strncpy(req.nomJoueur, chaine, sizeof(chaine));
   printf("(client) send nom est %s \n", req.nomJoueur);
-  err = send(sock, &req, sizeof(TPartieReq), 0);
+  err = send(sockC, &req, sizeof(TPartieReq), 0);
   if (err <= 0)
   {
     perror("(client) erreur sur le send");
-    shutdown(sock, SHUT_RDWR);
-    close(sock);
+    shutdown(sockC, SHUT_RDWR);
+    close(sockC);
   }
 
   // Receive anwser from server
-  err = recv(sock, &rep, sizeof(TPartieRep), 0);
+  err = recv(sockC, &rep, sizeof(TPartieRep), 0);
   if (err <= 0)
   {
     perror("(Client) erreur dans la reception");
-    close(sock);
+    close(sockC);
     return -6;
   }
 
@@ -108,8 +109,8 @@ int main(int argc, char **argv)
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
 
-    //bool responseIA;
-    //responseIA = playRequest();
+    // bool responseIA;
+    // responseIA = playRequest();
 
     playRequest.idRequest = COUP;
     playRequest.typeCoup = POS_PION;
@@ -118,19 +119,19 @@ int main(int argc, char **argv)
     square.col = C;
     playRequest.action.posPion = square;
     // Send play
-    err = send(sock, &playRequest, sizeof(TCoupReq), 0);
+    err = send(sockC, &playRequest, sizeof(TCoupReq), 0);
     if (err <= 0)
     {
       perror("(client) erreur sur le send de coup ");
-      shutdown(sock, SHUT_RDWR);
-      close(sock);
+      shutdown(sockC, SHUT_RDWR);
+      close(sockC);
     }
     // Receive validation of own play
-    err = recv(sock, &ownResponse, sizeof(TCoupRep), 0);
+    err = recv(sockC, &ownResponse, sizeof(TCoupRep), 0);
     if (err <= 0)
     {
       perror("(Client) erreur dans la reception de resultats coup ");
-      close(sock);
+      close(sockC);
       return -20;
     }
     printf("(cclient) BLANC send play - first play!!!\n");
@@ -169,11 +170,11 @@ int main(int argc, char **argv)
   {
 
     // Receive validation of adversaire play
-    err = recv(sock, &opponentResponse, sizeof(TCoupRep), 0);
+    err = recv(sockC, &opponentResponse, sizeof(TCoupRep), 0);
     if (err <= 0)
     {
       perror("(Client) erreur dans la reception de resultats coup ");
-      close(sock);
+      close(sockC);
       return -20;
     }
     printf("(client) Received validation of adversaire play \n");
@@ -224,12 +225,12 @@ int main(int argc, char **argv)
     square.col = B;
     playRequest.action.posPion = square;
     // Send play
-    err = send(sock, &playRequest, sizeof(TCoupReq), 0);
+    err = send(sockC, &playRequest, sizeof(TCoupReq), 0);
     if (err <= 0)
     {
       perror("(client) erreur sur le send de coup ");
-      shutdown(sock, SHUT_RDWR);
-      close(sock);
+      shutdown(sockC, SHUT_RDWR);
+      close(sockC);
     }
     if (playRequest.coul == BLANC)
       printf("(client) BLANC send play\n");
@@ -237,11 +238,11 @@ int main(int argc, char **argv)
       printf("(client) NOIR send play \n");
 
     // Receive validation of own play
-    err = recv(sock, &ownResponse, sizeof(TCoupRep), 0);
+    err = recv(sockC, &ownResponse, sizeof(TCoupRep), 0);
     if (err <= 0)
     {
       perror("(Client) erreur dans la reception de resultats coup ");
-      close(sock);
+      close(sockC);
       return -20;
     }
 
@@ -286,7 +287,7 @@ int main(int argc, char **argv)
     printf("\n");
   }
 
-  close(sock);
+  close(sockC);
 
   return 0;
 }
