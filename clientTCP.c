@@ -113,9 +113,8 @@ int main(int argc, char **argv)
       close(sock);
       return -20;
     }
-    printf("(client) send demande coup de jouer 1 OK \n");
-
-
+    printf("(cclient) BLANC send play - first play!!!\n");
+    printf("\n");
     // Treat Play Response
     switch (ownResponse.err)
     {
@@ -127,9 +126,9 @@ int main(int argc, char **argv)
         {
           printf("(Client) votre coup est valid et aucun gagne pour le moment! \n");
         }
-        if (ownResponse.propCoup == GAGNE)
+        else if (ownResponse.propCoup == GAGNE)
         {
-          printf("(Client) you are wenning! \n");
+          printf("(Client) you are winning! \n");
         }
       }
       else
@@ -157,6 +156,7 @@ int main(int argc, char **argv)
       close(sock);
       return -20;
     }
+    printf("(client) Received validation of adversaire play \n");
 
     // Treat adversaire play
     switch (opponentResponse.err)
@@ -180,14 +180,17 @@ int main(int argc, char **argv)
       }
       else
       {
-        // TODO treat other cases
+        printf("(Client) Your opponent made a mistake!! \n");
+        return -1;
       }
       break;
     case ERR_COUP:
       printf("tu ne peut pas jouer un coup avant de participer !\n");
+      return -1;
       break;
     case ERR_TYP:
       printf("Erreur dans le type de requete\n");
+      return -1;
       break;
     default:
       break;
@@ -208,7 +211,11 @@ int main(int argc, char **argv)
       shutdown(sock, SHUT_RDWR);
       close(sock);
     }
-    printf("(client) send demande coup de jouer 1 OK \n");
+    if (playRequest.coul == BLANC)
+      printf("(client) BLANC send play\n");
+    else
+      printf("(client) NOIR send play \n");
+
     // Receive validation of own play
     err = recv(sock, &ownResponse, sizeof(TCoupRep), 0);
     if (err <= 0)
@@ -218,41 +225,44 @@ int main(int argc, char **argv)
       return -20;
     }
 
-    // Treat Play Response
+    // Treat validation of own Play Response
     switch (ownResponse.err)
     {
     case ERR_OK:
-      if (opponentResponse.validCoup == VALID)
+      if (ownResponse.validCoup == VALID)
       {
         printf("(Client) coup bien jouee!! \n");
         if (playRequest.typeCoup == POS_PION)
         {
-          printf("(Client) il a fait un pos \n");
+          printf("(Client) Ive just made a position movement \n");
         }
-        else if (opponentResponse.propCoup == CONT)
+        if (ownResponse.propCoup == CONT)
         {
-          printf("(Client) aucun gagne pour le moment! \n");
+          printf("(Client) Game continues! \n");
         }
-        else if (opponentResponse.propCoup == GAGNE)
+        else if (ownResponse.propCoup == GAGNE)
         {
-          printf("(Client) the is wenning! \n");
+          printf("(Client)I am winning!\n");
         }
       }
       else
       {
-        // TODO treat other cases
+        printf("(Client) Ive made a mistake!! \n");
+        return -1;
       }
       break;
     case ERR_COUP:
       printf("tu ne peut pas jouer un coup avant de participer !\n");
+      return -1;
       break;
     case ERR_TYP:
       printf("Erreur dans le type de requete\n");
+      return -1;
       break;
     default:
       break;
     }
-
+    printf("(client) GOING BACK TO TOP OF LOOP\n");
     printf("\n");
   }
 

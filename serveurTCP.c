@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
       printf("acc = %d \n", acc);
     }
-
+    printf("(serveur) exit attente de connexion\n");
     // Receive of participate
     int i = 0;
     while (i < MAX_CLIENT)
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
       }
       i++;
     }
-
+    printf("(serveur) exit  receive of participate\n");
     // Response to the participants
     int j = 0;
     while (j < MAX_CLIENT)
@@ -143,12 +143,14 @@ int main(int argc, char **argv)
 
       j++;
     }
+    printf("(serveur) exit Response to the participants\n");
 
     // Start Game
     int match = 0;
     int turn = 0;
     while (match < 2)
     {
+      printf("(serveur) initialiserPartie\n");
       initialiserPartie();
       while (nPlays0 < 20 && nPlays1 < 20)
       {
@@ -169,7 +171,7 @@ int main(int argc, char **argv)
 
         // validate coup
         verif = validationCoup(1, request1, &propCoup);
-
+        printf("(serveur) Just verified pos\n");
         // Create response Crep COUP du J1
         response1.err = ERR_OK;
         response1.propCoup = propCoup;
