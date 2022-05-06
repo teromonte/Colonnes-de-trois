@@ -15,7 +15,7 @@
 #ifndef _VALIDATION_H
 #define _VALIDATION_H
 
-#include "protocolColonne.h"
+#include <stdbool.h>
 
 /* Validation d'un coup :
  * parametres :

@@ -6,8 +6,7 @@ int main(int argc, char **argv)
 
   int sock, /* descripteur de la socket locale */
       port, /* variables de lecture */
-      err,
-      choix = 1;
+      err;
 
   char chaine[100], dem, *nomMachServ;
 
@@ -94,9 +93,9 @@ int main(int argc, char **argv)
     // TODO ask the IA for a coup and get the result
     playRequest.idRequest = COUP;
     playRequest.typeCoup = POS_PION;
-    playRequest.coul = BLANC;
-    square.lg = TROIS;
-    square.col = B;
+    playRequest.coul = rep.coul;
+    square.lg = DEUX;
+    square.col = C;
     playRequest.action.posPion = square;
     // Send play
     err = send(sock, &playRequest, sizeof(TCoupReq), 0);
@@ -106,8 +105,7 @@ int main(int argc, char **argv)
       shutdown(sock, SHUT_RDWR);
       close(sock);
     }
-    printf("(client) send demande coup de jouer 1 OK \n");
-    // Receive validation of own play or adversarie
+    // Receive validation of own play
     err = recv(sock, &ownResponse, sizeof(TCoupRep), 0);
     if (err <= 0)
     {
@@ -115,6 +113,8 @@ int main(int argc, char **argv)
       close(sock);
       return -20;
     }
+    printf("(client) send demande coup de jouer 1 OK \n");
+
 
     // Treat Play Response
     switch (ownResponse.err)
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
   }
 
   // Start to send plays, runs till match is gange, perdu, triche, timeout
-  while (true)
+  while (1)
   {
 
     // Receive validation of adversaire play
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
       if (opponentResponse.validCoup == VALID)
       {
         printf("(Client) coup adverse bien jouee!! \n");
-        if (opponentResponse.typeCoup == POS_PION)
+        if (playRequest.typeCoup == POS_PION)
         {
           printf("(Client) il a fait un pos  \n");
         }
@@ -192,8 +192,6 @@ int main(int argc, char **argv)
     default:
       break;
     }
-
-    printf("(Client) you are the first player! lancer un coup\n");
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
     playRequest.idRequest = COUP;
@@ -227,7 +225,7 @@ int main(int argc, char **argv)
       if (opponentResponse.validCoup == VALID)
       {
         printf("(Client) coup bien jouee!! \n");
-        if (opponentResponse.typeCoup == POS_PION)
+        if (playRequest.typeCoup == POS_PION)
         {
           printf("(Client) il a fait un pos \n");
         }

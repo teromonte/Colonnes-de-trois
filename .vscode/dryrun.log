@@ -1,6 +1,7 @@
 make --dry-run --keep-going --print-directory
 make: Entering directory '/home/thiago/Desktop/Tournoi/Colonnes-de-trois'
+gcc -Wall -c fonctionsTCP.c -o fonctionsTCP.o 
+gcc -Wall clientTCP.c -o clientTCP fonctionsTCP.o
+gcc -Wall serveurTCP.c -o serveurTCP fonctionsTCP.o colonne-fPIC.o 
 make: Leaving directory '/home/thiago/Desktop/Tournoi/Colonnes-de-trois'
  
-Makefile:25: *** missing separator.  Stop.
-
