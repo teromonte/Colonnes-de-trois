@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May  6 23:11:36 2022
+# Make data base, printed on Fri May  6 23:16:00 2022
 
 # Variables
 
@@ -139,7 +139,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 334605
+GIO_LAUNCHED_DESKTOP_FILE_PID = 345900
 # automatic
 %F = $(notdir $%)
 # environment
@@ -155,7 +155,6 @@ SNAP_INSTANCE_KEY =
 # environment
 PWD = /home/thiago/Desktop/Tournoi/Colonnes-de-trois
 # environment
- 
 QT_QPA_PLATFORMTHEME = qt5ct
 # default
 .LOADED := 
@@ -228,7 +227,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/95
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-079cba20-e5cd-4606-84e5-82219e465f82.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-98ab225a-2063-4c07-9d4d-e6e4b5ac433b.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -290,6 +289,7 @@ CINNAMON_VERSION = 5.0.7
 # environment
 LC_IDENTIFICATION = pt_PT.UTF-8
 # environment
+ 
 HOMEBREW_REPOSITORY = /home/linuxbrew/.linuxbrew/Homebrew
 # environment
 QT_ACCESSIBILITY = 1
@@ -306,7 +306,6 @@ LC_NUMERIC = pt_PT.UTF-8
 # environment
 LC_MEASUREMENT = pt_PT.UTF-8
 # environment
- 
 SNAP_NAME = code
 # environment
 LC_ALL = C
@@ -337,7 +336,7 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 334651
+VSCODE_PID = 345945
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
@@ -407,6 +406,6 @@ GNUmakefile:
 # strcache performance: lookups = 19 / hit rate = 15%
 # hash-table stats:
 # Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
-# Finished Make data base on Fri May  6 23:11:36 2022
+# Finished Make data base on Fri May  6 23:16:00 2022
 
  
