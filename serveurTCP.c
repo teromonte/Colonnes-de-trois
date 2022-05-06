@@ -167,6 +167,7 @@ printf("acc = %d \n" , acc);
 
 initialiserPartie();
 
+int n = 0;
      while (nbcJ1 < 20 && nbcJ2 < 20) {
 
       TCoupReq Creq;

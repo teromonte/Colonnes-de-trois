@@ -87,23 +87,19 @@ printf("Pour participer tapez p et envoyez votre login \n");
     {
       case ERR_OK:
           if(rep.coul == BLANC){
-          printf("(Client) vous etes le jouer blanc et le nom de votre adverse c'est : %s\n", rep.nomAdvers);
- break;
+             printf("(Client) vous etes le jouer blanc et le nom de votre adverse c'est : %s\n", rep.nomAdvers);
+               break;
          }
 
          if(rep.coul == NOIR){
-          printf("(Client) vous etes le jouer noir et le nom de votre adverse c'est : %s\n", rep.nomAdvers);
- break;
+               printf("(Client) vous etes le jouer noir et le nom de votre adverse c'est : %s\n", rep.nomAdvers);
+                 break;
          }
 
       case ERR_PARTIE:
           printf("pas possible de participer !\n");
           break;
-      case ERR_COUP:
-      printf("tu ne peut pas jouer un coup avant de participer !\n");
-          break;
-      case ERR_TYP:
-          printf("Erreur dans le type de requete\n");
+      default:
           break;
     }
 
@@ -125,12 +121,14 @@ printf("\n");
 
      if(rep.coul == BLANC){
           printf("(Client) you are the first player! lancer un coup\n");
-          Creq.idRequest = COUP;
+          // TODO ask the IA for a coup and get the result
+
+         /* Creq.idRequest = COUP;
           Creq.typeCoup = POS_PION;
           Creq.coul = BLANC ;
           tcase.lg = TROIS ;
           tcase.col = B ;
-          Creq.action.posPion = tcase ;
+          Creq.action.posPion = tcase ;*/
 
           err = send(sock, &Creq, sizeof(TCoupReq), 0);
   if (err <= 0) {
@@ -171,15 +169,12 @@ printf("\n");
 
 break;
 
-      case ERR_PARTIE:
-          printf("pas possible de participer !\n");
-          break;
+
       case ERR_COUP:
       printf("tu ne peut pas jouer un coup avant de participer !\n");
           break;
-      case ERR_TYP:
-          printf("Erreur dans le type de requete\n");
-          break;
+       default:
+           break ;
     }
 
 
@@ -214,14 +209,11 @@ err = recv(sock, &Crep2, sizeof(TCoupRep), 0);
 
 break;
 
-      case ERR_PARTIE:
-          printf("pas possible de participer !\n");
-          break;
+
       case ERR_COUP:
       printf("tu ne peut pas jouer un coup avant de participer !\n");
           break;
-      case ERR_TYP:
-          printf("Erreur dans le type de requete\n");
+      default:
           break;
     }
 
@@ -262,12 +254,13 @@ break;
                   }
 
 
-          Creq2.idRequest = COUP;
+        // TODO send the adverse coup //
+        /*  Creq2.idRequest = COUP;
           Creq2.typeCoup = POS_PION;
           Creq2.coul = NOIR ;
           tcase2.lg = DEUX ;
           tcase2.col = C;
-          Creq2.action.posPion = tcase2;
+          Creq2.action.posPion = tcase2;*/
 
           err = send(sock, &Creq2, sizeof(TCoupReq), 0);
   if (err <= 0) {
