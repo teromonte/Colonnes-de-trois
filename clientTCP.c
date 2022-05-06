@@ -45,7 +45,6 @@ int main(int argc, char **argv)
 
   // Requesting to play
   strncpy(req.nomJoueur, chaine, sizeof(chaine));
-  //memcpy(req.nomJoueur, chaine, chaine);
   printf("(client) send nom est %s \n", req.nomJoueur);
   err = send(sock, &req, sizeof(TPartieReq), 0);
   if (err <= 0)

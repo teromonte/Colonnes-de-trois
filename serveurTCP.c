@@ -148,10 +148,10 @@ int main(int argc, char **argv)
     // Start Game
     int match = 0;
     int turn = 0;
-    while (match < 2)
+    printf("(serveur) initialiserPartie\n");
+    initialiserPartie();
+    while (match < 2) // server 
     {
-      printf("(serveur) initialiserPartie\n");
-      initialiserPartie();
       while (nPlays0 < 20 && nPlays1 < 20)
       {
         // receive and response
