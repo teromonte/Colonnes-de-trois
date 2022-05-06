@@ -1,13 +1,14 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
- 
 
-# Make data base, printed on Fri May  6 17:40:30 2022
+# Make data base, printed on Fri May  6 23:11:36 2022
 
 # Variables
 
@@ -63,8 +64,8 @@ SNAP_INSTANCE_NAME = code
 SNAP_ARCH = amd64
 # environment
 GTK_OVERLAY_SCROLLING = 1
-# makefile (from 'Makefile', line 1)
-MAKEFILE_LIST :=  Makefile
+# makefile
+MAKEFILE_LIST := 
 # automatic
 @F = $(notdir $@)
 # environment
@@ -102,6 +103,8 @@ PATH = /home/thiago/.opam/default/bin:/usr/local/texlive/2022/bin/x86_64-linux:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
+GOLANG_EXECUTABLE = go
+# environment
 SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/3293,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/3293
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
@@ -109,6 +112,8 @@ XDG_RUNTIME_DIR = /run/user/1000
 GDK_PIXBUF_MODULE_FILE = /home/thiago/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
 SNAP = /snap/code/95
+# environment
+THREE_SCALE_USER_TOKEN = 207c527cfc2a6b8dcf4fa43ad7a976da
 # environment
 SNAP_VERSION = 57fd6d01
 # environment
@@ -124,6 +129,8 @@ GDK_PIXBUF_MODULEDIR = /snap/code/95/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.1
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
+UUID = 99d368ce-62e8-4bbf-b490-fa8974a82a28
+# environment
 XDG_GREETER_DATA_DIR = /var/lib/lightdm-data/thiago
 # environment
 LS_COLORS = 
@@ -132,7 +139,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 21827
+GIO_LAUNCHED_DESKTOP_FILE_PID = 334605
 # automatic
 %F = $(notdir $%)
 # environment
@@ -148,6 +155,7 @@ SNAP_INSTANCE_KEY =
 # environment
 PWD = /home/thiago/Desktop/Tournoi/Colonnes-de-trois
 # environment
+ 
 QT_QPA_PLATFORMTHEME = qt5ct
 # default
 .LOADED := 
@@ -176,7 +184,7 @@ VSCODE_CODE_CACHE_PATH = /home/thiago/.config/Code/CachedData/57fd6d0195bb9b9d1b
 # environment
 LOGNAME = thiago
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # environment
@@ -185,6 +193,8 @@ SNAP_CONTEXT = w0VnHPUR_c35EOem4jl5g4yIDuQSrJ7eQYsYRkVQDg99bzu0y-fq
 CONDA_PROMPT_MODIFIER = (base) 
 # automatic
 +F = $(notdir $+)
+# environment
+TELEMETRY_ID = 43a4999a-e1ed-405f-a6f1-8e9c46d51fcf
 # environment
 ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
@@ -218,7 +228,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/95
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-cc7fd9c2-94ab-4b8f-b957-7e240ddaa069.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-079cba20-e5cd-4606-84e5-82219e465f82.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -230,19 +240,19 @@ CAML_LD_LIBRARY_PATH = /home/thiago/.opam/default/lib/stublibs:/usr/local/lib/oc
 # environment
 LC_MONETARY = pt_PT.UTF-8
 # makefile
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := 
 # environment
 XDG_CURRENT_DESKTOP = X-Cinnamon
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
 LC_TELEPHONE = pt_PT.UTF-8
-# makefile (from 'Makefile', line 11)
-LD_FLAGS = 
 # environment
 CONDA_SHLVL = 1
 # default
 MAKE_COMMAND := make
+# environment
+UTM_SOURCE = vscode
 # default
 .VARIABLES := 
 # automatic
@@ -262,11 +272,15 @@ MFLAGS = -pqrR
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
+PROVIDE_FULLSTACK_ACTION = true
+# environment
 HOMEBREW_SHELLENV_PREFIX = /home/linuxbrew/.linuxbrew
 # environment
 HOMEBREW_PREFIX = /home/linuxbrew/.linuxbrew
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
+# environment
+RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
 # environment
 GDK_BACKEND = x11
 # environment
@@ -275,7 +289,6 @@ LC_PAPER = pt_PT.UTF-8
 CINNAMON_VERSION = 5.0.7
 # environment
 LC_IDENTIFICATION = pt_PT.UTF-8
- 
 # environment
 HOMEBREW_REPOSITORY = /home/linuxbrew/.linuxbrew/Homebrew
 # environment
@@ -293,6 +306,7 @@ LC_NUMERIC = pt_PT.UTF-8
 # environment
 LC_MEASUREMENT = pt_PT.UTF-8
 # environment
+ 
 SNAP_NAME = code
 # environment
 LC_ALL = C
@@ -323,11 +337,11 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 21875
+VSCODE_PID = 334651
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
-# Load=157/1024=15%, Rehash=0, Collisions=23/186=12%
+# Load=163/1024=16%, Rehash=0, Collisions=23/185=12%
 
 # Pattern-specific Variable Values
 
@@ -335,9 +349,9 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 66306, inode 1850581): 22 files, no impossibilities.
+# . (device 66306, inode 1850581): 8 files, no impossibilities.
 
-# 22 files, no impossibilities in 1 directories.
+# 8 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -345,47 +359,26 @@ _CE_CONDA =
 
 # Files
 
-all: fonctionsTCP clientTCP serveurTCP
+# Not a target:
+all:
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
-#  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/4=0%
-
-# Not a target:
-fonctionsTCP.c:
-#  Implicit rule search has been done.
-#  Last modified 2022-05-06 13:52:52.359808651
-#  File has been updated.
-#  Successfully updated.
-
-# Not a target:
-.SUFFIXES:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-06 17:39:09.781387112
+#  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Failed to be updated.
 
 # Not a target:
-serveurTCP.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-fonctionsTCP.h:
+makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-06 13:52:52.359808651
+#  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Failed to be updated.
 
 # Not a target:
 .DEFAULT:
@@ -393,74 +386,27 @@ fonctionsTCP.h:
 #  Modification time never checked.
 #  File has not been updated.
 
-clientTCP: clientTCP.c fonctionsTCP
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 19):
-	gcc -Wall clientTCP.c -o clientTCP fonctionsTCP.o
-
-clean:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 25):
-	rm fonctionsTCP.o; rm clientTCP ; rm serveurTCP;
-
-fonctionsTCP: fonctionsTCP.c fonctionsTCP.h
-#  Implicit rule search has not been done.
-#  Implicit/static pattern stem: ''
+# Not a target:
+GNUmakefile:
+#  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := fonctionsTCP
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := fonctionsTCP.c fonctionsTCP.h
-# automatic
-# | := 
-# automatic
-# < := fonctionsTCP.c
-# automatic
-# ^ := fonctionsTCP.c fonctionsTCP.h
-# automatic
-# ? := fonctionsTCP.c fonctionsTCP.h
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/12=8%
-#  recipe to execute (from 'Makefile', line 16):
-	gcc -Wall -c fonctionsTCP.c -o fonctionsTCP.o $(LD_FLAGS)
-
-# Not a target:
-clientTCP.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-serveurTCP: serveurTCP.c fonctionsTCP
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'Makefile', line 22):
-	gcc -Wall serveurTCP.c -o serveurTCP fonctionsTCP.o colonne-fPIC.o $(LD_FLAGS)
+#  Failed to be updated.
 
 # files hash-table stats:
-# Load=12/1024=1%, Rehash=0, Collisions=0/36=0%
+# Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 29 / storage = 324 B / avg = 11 B
-# current buf: size = 8162 B / used = 324 B / count = 29 / avg = 11 B
+# strcache buffers: 1 (0) / strings = 16 / storage = 138 B / avg = 8 B
+# current buf: size = 8162 B / used = 138 B / count = 16 / avg = 8 B
 
-# strcache performance: lookups = 51 / hit rate = 43%
+# strcache performance: lookups = 19 / hit rate = 15%
 # hash-table stats:
-# Load=29/8192=0%, Rehash=0, Collisions=1/51=2%
-# Finished Make data base on Fri May  6 17:40:30 2022
+# Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
+# Finished Make data base on Fri May  6 23:11:36 2022
 
  

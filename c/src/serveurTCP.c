@@ -1,6 +1,7 @@
-#include "fonctionsTCP.h"
-#include "protocolColonne.h"
-#include "validation.h"
+#include "../header/protocolColonne.h"
+#include "../lib/headers/fonctionsTCP.h"
+#include "../lib/headers/validation.h"
+
 #include <stdbool.h>
 #define MAX_CLIENT 2
 #define MAXB 30

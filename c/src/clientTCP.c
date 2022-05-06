@@ -1,12 +1,14 @@
-#include "fonctionsTCP.h"
-#include "protocolColonne.h"
+#include "../lib/headers/protocolJava.h"
+#include "../header/protocolColonne.h"
+#include "../lib/headers/fonctionsTCP.h"
 
 int main(int argc, char **argv)
 {
 
   int sock, /* descripteur de la socket locale */
-      port, /* variables de lecture */
-      err;
+      portCServer, /* variables de lecture */
+      err,
+      portServerAI;
 
   char chaine[30], dem, *nomMachServ;
 
@@ -18,15 +20,29 @@ int main(int argc, char **argv)
   TCoupRep opponentResponse; // delete
 
   // verification des arguments
-  if (argc != 3)
+  if (argc != 4)
   {
     printf("usage : %s nom/IPServ port\n", argv[0]);
     return -1;
   }
 
   nomMachServ = argv[1];
-  port = atoi(argv[2]);
-  sock = socketClient(nomMachServ, port);
+  portCServer = atoi(argv[2]);
+  portServerAI = atoi(argv[3]);
+
+  /////////////////////////////////////// CONNECT TO C SERVER ///////////////////////////////////////////////////////////////////////
+
+  sock = socketClient(nomMachServ, portCServer);
+
+  /////////////////////////////////////// CONNECT TO IA SERVER ///////////////////////////////////////////////////////////////////////
+
+  sock = socketClient(nomMachServ, portServerAI);
+  if (sock < 0)
+  {
+    perror("(clientTCP) sur socketClient\n");
+    close(sock);
+    return -2;
+  }
 
   /////////////////////////////////////// ASK FOR PARTICIPATION ///////////////////////////////////////////////////////////////////////
 
@@ -92,7 +108,8 @@ int main(int argc, char **argv)
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
 
-    // thiago
+    //bool responseIA;
+    //responseIA = playRequest();
 
     playRequest.idRequest = COUP;
     playRequest.typeCoup = POS_PION;

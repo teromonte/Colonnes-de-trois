@@ -25,7 +25,7 @@ public class Algo {
         } else {
 
         }
-        return res;
+        return null;
     }
 
     public Move getMove() {
