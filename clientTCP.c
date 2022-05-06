@@ -8,7 +8,7 @@ int main(int argc, char **argv)
       port, /* variables de lecture */
       err;
 
-  char chaine[100] = "", dem, *nomMachServ;
+  char chaine[30], dem, *nomMachServ;
 
   TPartieReq req;            // Participation request
   TPartieRep rep;            // Answer to the participation request
@@ -44,7 +44,8 @@ int main(int argc, char **argv)
   }
 
   // Requesting to play
-  memcpy(req.nomJoueur, chaine, strlen(chaine));
+  strncpy(req.nomJoueur, chaine, sizeof(chaine));
+  //memcpy(req.nomJoueur, chaine, chaine);
   printf("(client) send nom est %s \n", req.nomJoueur);
   err = send(sock, &req, sizeof(TPartieReq), 0);
   if (err <= 0)
