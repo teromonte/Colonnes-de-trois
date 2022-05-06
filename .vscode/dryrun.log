@@ -1,7 +1,6 @@
-make --dry-run --always-make --keep-going --print-directory
+make --dry-run --keep-going --print-directory
 make: Entering directory '/home/thiago/Desktop/Tournoi/Colonnes-de-trois'
-gcc -Wall -c fonctionsTCP.c -o fonctionsTCP.o 
-gcc -Wall -c javaServerAPI.c -o javaServerAPI.o 
-gcc -Wall Player.c -o Player fonctionsTCP.o javaServerAPI.o 
 make: Leaving directory '/home/thiago/Desktop/Tournoi/Colonnes-de-trois'
  
+Makefile:25: *** missing separator.  Stop.
+

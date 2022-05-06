@@ -21,15 +21,13 @@ fonctionsTCP.o: fonctionsTCP.c fonctionsTCP.h
 javaServerAPI.o: javaServerAPI.c javaServerAPI.h
 	gcc -Wall -c javaServerAPI.c -o javaServerAPI.o $(LD_FLAGS)
 
-
 clientTCP: clientTCP.c fonctionsTCP
 gcc -Wall clientTCP.c -o clientTCP fonctionsTCP.o
 
 serveurTCP: serveurTCP.c fonctionsTCP
 gcc -Wall serveurTCP.c -o serveurTCP fonctionsTCP.o colonne-fPIC.o $(LD_FLAGS)
 
-
 clean:
 	rm *~ ; rm -i \#* ; rm *.o; \
-        rm Player; rm Player1; rm fonctionsTCP.o; rm javaServerAPI; rm clientTCP ; rm serveurTCP;
+        rm Player; rm javaServerAPI; rm clientTCP ; rm serveurTCP;
 

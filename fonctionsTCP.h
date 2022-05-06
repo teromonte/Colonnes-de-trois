@@ -9,20 +9,20 @@
 #include <netdb.h>
 #include <errno.h>
 
-//Pour socketServeur
+// Pour socketServeur
 extern int err;
 extern int sockConx;
 extern struct sockaddr_in addServ;
 extern int sizeAddr;
-//Pour socketClient
+// Pour socketClient
 extern int sock;
 extern struct sockaddr_in addSockServ;
 extern int sizeAdd;
 extern struct addrinfo hints;
 extern struct addrinfo *result;
 
-//Condensé des fonctions socket, bind et listen pour lancer un socket
+// Condensé des fonctions socket, bind et listen pour lancer un socket
 int socketServeur(ushort nPort);
 
-//Condensé des fonctions socket et connect
-int socketClient(char* nomMachine, ushort nPort);
+// Condensé des fonctions socket et connect
+int socketClient(char *nomMachine, ushort nPort);
