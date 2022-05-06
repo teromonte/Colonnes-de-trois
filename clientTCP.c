@@ -91,6 +91,9 @@ int main(int argc, char **argv)
     printf("(Client) you are the first player! lancer un coup\n");
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
+
+    // thiago
+
     playRequest.idRequest = COUP;
     playRequest.typeCoup = POS_PION;
     playRequest.coul = rep.coul;
