@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May  6 23:16:00 2022
+# Make data base, printed on Sat May  7 01:04:48 2022
 
 # Variables
 
@@ -227,7 +227,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/95
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-98ab225a-2063-4c07-9d4d-e6e4b5ac433b.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-803fb1d5-98a3-4eb7-83fc-59e6133b2a53.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -247,6 +247,7 @@ XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
 LC_TELEPHONE = pt_PT.UTF-8
 # environment
+ 
 CONDA_SHLVL = 1
 # default
 MAKE_COMMAND := make
@@ -289,7 +290,6 @@ CINNAMON_VERSION = 5.0.7
 # environment
 LC_IDENTIFICATION = pt_PT.UTF-8
 # environment
- 
 HOMEBREW_REPOSITORY = /home/linuxbrew/.linuxbrew/Homebrew
 # environment
 QT_ACCESSIBILITY = 1
@@ -406,6 +406,6 @@ GNUmakefile:
 # strcache performance: lookups = 19 / hit rate = 15%
 # hash-table stats:
 # Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
-# Finished Make data base on Fri May  6 23:16:00 2022
+# Finished Make data base on Sat May  7 01:04:48 2022
 
  

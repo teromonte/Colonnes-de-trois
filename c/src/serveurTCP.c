@@ -174,31 +174,40 @@ int main(int argc, char **argv)
         verif = validationCoup(turn + 1, request1, &propCoup);
         printf("(serveur) Just verified pos\n");
         // Create response Crep COUP du J1
-        response1.err = ERR_OK;
-        response1.propCoup = propCoup;
 
-        switch (response1.propCoup)
+        switch (verif)
         {
-        case NULLE:
-          printf("(serveur) resultats est egeau\n");
-          response1.validCoup = TIMEOUT;
-          break;
+        case true:
+          response1.err = ERR_OK;
+          response1.propCoup = propCoup;
+          switch (propCoup)
+          {
+          case NULLE:
+            printf("(serveur) resultats est egeau\n");
+            response1.validCoup = TIMEOUT;
+            break;
 
-        case GAGNE:
-          printf("(serveur) the first player gagne\n");
-          response1.validCoup = VALID;
-          match++;
-          break;
+          case GAGNE:
+            printf("(serveur) the first player gagne\n");
+            response1.validCoup = VALID;
+            match++;
+            break;
 
-        case PERDU:
-          printf("(serveur) the seconde player gagne\n");
-          response1.validCoup = TRICHE;
-          match++;
-          break;
+          case PERDU:
+            printf("(serveur) the seconde player gagne\n");
+            response1.validCoup = TRICHE;
+            match++;
+            break;
 
-        case CONT:
-          printf("(serveur) no one won the game!!\n");
-          response1.validCoup = VALID;
+          case CONT:
+            printf("(serveur) no one won the game!!\n");
+            response1.validCoup = VALID;
+            break;
+          }
+          break;
+        case false:
+          printf("(serveur) Couldn't validate\n");
+          return -1;
           break;
         }
 
@@ -227,7 +236,6 @@ int main(int argc, char **argv)
       }
       turn = 1;
     }
-    int n = 0;
     printf("\n");
   }
 

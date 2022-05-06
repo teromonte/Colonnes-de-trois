@@ -5,18 +5,21 @@
 #########
 
 # For Linux
-LD_FLAGS =
+LD_FLAGS = -Wall
 
-all: fonctionsTCP clientTCP serveurTCP
+all: fonctionsTCP protocolJava clientTCP serveurTCP
 
 fonctionsTCP: lib/src/fonctionsTCP.c lib/headers/fonctionsTCP.h
-	gcc -Wall -c lib/src/fonctionsTCP.c -o bin/fonctionsTCP.o $(LD_FLAGS)
+	gcc -c lib/src/fonctionsTCP.c -o bin/fonctionsTCP.o $(LD_FLAGS)
+
+protocolJava: lib/src/protocolJava.c lib/headers/protocolJava.h
+	gcc -c lib/src/protocolJava.c -o bin/protocolJava.o $(LD_FLAGS)
 
 clientTCP: src/clientTCP.c fonctionsTCP
-	gcc -Wall src/clientTCP.c -o bin/clientTCP bin/fonctionsTCP.o $(LD_FLAGS)
+	gcc src/clientTCP.c -o bin/clientTCP bin/fonctionsTCP.o bin/protocolJava.o $(LD_FLAGS)
 
 serveurTCP: src/serveurTCP.c fonctionsTCP
-	gcc -Wall src/serveurTCP.c -o bin/serveurTCP bin/fonctionsTCP.o bin/colonne-fPIC.o $(LD_FLAGS)
+	gcc src/serveurTCP.c -o bin/serveurTCP bin/fonctionsTCP.o bin/colonne-fPIC.o $(LD_FLAGS)
 
 clean:
-	rm bin/fonctionsTCP.o; rm bin/clientTCP ; rm bin/serveurTCP;
+	rm bin/fonctionsTCP.o; rm bin/protocolJava.o; rm bin/clientTCP ; rm bin/serveurTCP;

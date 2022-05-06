@@ -1,8 +1,6 @@
-#ifndef _protocolJava_h
-#define _protocolJava_h
-
-#include <stdbool.h>
-
+#include <stdio.h>
+#include <sys/socket.h>
+#include <unistd.h>
 /*
  * Structures demande de partie
  */
@@ -12,15 +10,17 @@ typedef struct
   int type;
 } Req;
 
-// Condensé des fonctions socket et connect
-int playRequest();
+// request play
+int requestAI(int color, int sockAI);
 
 /*
-  TCoup ->   POS_PION, DEPL_PION, PASSE
-  TCase = TCol + TLigne -> (  UN, DEUX, TROIS) + (  A, B, C)
-  TPion -> BLANC, NOIR
-  TIdRequest -> PARTIE, COUP
-  TDeplPion = TCase + TCase -> [(UN,DEUX,TROIS)+(A,B,C)]+[(UN,DEUX,TROIS)+(A,B,C)]
-*/
+  output:
+    TIdRequest -> PARTIE, COUP
+    TCoup ->   POS_PION, DEPL_PION, PASSE
+    option:
+      TCase = TCol + TLigne -> (  UN, DEUX, TROIS) + (  A, B, C)
+      TDeplPion = TCase + TCase -> [(UN,DEUX,TROIS)+(A,B,C)]+[(UN,DEUX,TROIS)+(A,B,C)]
 
-#endif
+  input:
+    TPion -> BLANC, NOIR
+*/

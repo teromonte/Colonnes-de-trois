@@ -38,12 +38,6 @@ int main(int argc, char **argv)
   /////////////////////////////////////// CONNECT TO IA SERVER ///////////////////////////////////////////////////////////////////////
 
   sockAI = socketClient(nomMachServ, portAI);
-  if (sockAI < 0)
-  {
-    perror("(clientTCP) sur sockServerAI\n");
-    close(sockAI);
-    return -2;
-  }
 
   /////////////////////////////////////// ASK FOR PARTICIPATION ///////////////////////////////////////////////////////////////////////
 
@@ -108,13 +102,14 @@ int main(int argc, char **argv)
     printf("(Client) you are the first player! lancer un coup\n");
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
-
-    // bool responseIA;
-    // responseIA = playRequest();
-
+    int color = 0;
+    int responseAI;
+    responseAI = requestAI(color, sockAI);
+    printf("WOW::::: %c\n", responseAI);
+    
+    playRequest.coul = rep.coul;
     playRequest.idRequest = COUP;
     playRequest.typeCoup = POS_PION;
-    playRequest.coul = rep.coul;
     square.lg = DEUX;
     square.col = C;
     playRequest.action.posPion = square;
