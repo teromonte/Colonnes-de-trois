@@ -1,6 +1,7 @@
 #include "../lib/headers/protocolJava.h"
 #include "../header/protocolColonne.h"
 #include "../lib/headers/fonctionsTCP.h"
+#include <stdbool.h>
 
 int main(int argc, char **argv)
 {
@@ -87,25 +88,25 @@ int main(int argc, char **argv)
   }
 
   printf("\n");
-  printf("FINISHED BUROCRACY");
-  printf("\n");
-
+  printf("FINISHED BUROCRACY\n");
   /////////// PLAYS START ////////////////
 
   matchNumber = 0;
   matchIsOn = true;
   while (matchNumber < NUM_OF_MATCHES)
   {
-    // Do first play of the match
-    if (participationRep.coul == BLANC && matchNumber == 0 || participationRep.coul == NOIR && matchNumber == 1)
-    {
-      printf("(Client) you are the first player! lancer un coup\n");
+    printf("\n");
+    printf("(Client) Match number %d is about to START!\n", matchNumber);
+    printf("\n");
 
-      printf("Client) Trying to reach java API: %s\n", nomMachServ);
+    // Do first play of the match
+    if (playerColor == BLANC)
+    {
+      printf("(Client) You are the first player! Lancer un coup!\n");
+
       sockAI = socketClient(nomMachServ, portAI);
       err = requestAI(playerColor, sockAI, &javaAPIRes);
-
-      printf("Received from API: type %d placeMove col %d placeMove lg %d displaceMove col %d displaceMove lg %d\n",
+      printf("Received from API: type: %d, placeMove col: %d, placeMove lg: %d, displaceMove col: %d, displaceMove lg: %d.\n",
              javaAPIRes.typeMove,
              javaAPIRes.placeMove.col,
              javaAPIRes.placeMove.lg,
@@ -115,16 +116,13 @@ int main(int argc, char **argv)
       // Arrange Play protocol package
       playReq.coul = playerColor; // color
       playReq.idRequest = COUP;   // here is always COUP (PLAY)
-      playReq.typeCoup = POS_PION;
+      playReq.typeCoup = javaAPIRes.typeMove;
       playReq.action.posPion = javaAPIRes.placeMove;
 
       // Send first play
       err = send(sockC, &playReq, sizeof(TCoupReq), 0);
 
-      if (playReq.coul == BLANC)
-        printf("(client) BLANC send FIRST play of the match\n");
-      else
-        printf("(client) NOIR send FIRST play of the match\n");
+      printf("(client) FIRST play of the match has been sent!\n");
 
       // Receive my play validation
       err = recv(sockC, &playRes, sizeof(TCoupRep), 0);
@@ -233,98 +231,109 @@ int main(int argc, char **argv)
         break;
       }
 
-      sockAI = socketClient(nomMachServ, portAI);
-      err = requestAI(playerColor, sockAI, &javaAPIRes);
-
-      printf("Received from API: type: %d, placeMove col: %d, placeMove lg: %d, displaceMove col: %d, displaceMove lg: %d.\n",
-             javaAPIRes.typeMove,
-             javaAPIRes.placeMove.col,
-             javaAPIRes.placeMove.lg,
-             javaAPIRes.displaceMove.caseArr.col,
-             javaAPIRes.displaceMove.caseArr.lg);
-
-      playReq.coul = playerColor; // color
-      playReq.idRequest = COUP;   // here is always COUP (PLAY)
-      switch (javaAPIRes.typeMove)
+      if (matchIsOn)
       {
-      case POS_PION:
-        playReq.typeCoup = POS_PION;
-        playReq.action.posPion = javaAPIRes.placeMove;
-        break;
-      case DEPL_PION:
-        playReq.typeCoup = DEPL_PION;
-        playReq.action.deplPion = javaAPIRes.displaceMove;
-        break;
-      case PASSE:
-        playReq.typeCoup = PASSE;
-        break;
-      }
+        sockAI = socketClient(nomMachServ, portAI);
+        err = requestAI(playerColor, sockAI, &javaAPIRes);
+        printf("Received from API: type: %d, placeMove col: %d, placeMove lg: %d, displaceMove col: %d, displaceMove lg: %d.\n",
+               javaAPIRes.typeMove,
+               javaAPIRes.placeMove.col,
+               javaAPIRes.placeMove.lg,
+               javaAPIRes.displaceMove.caseArr.col,
+               javaAPIRes.displaceMove.caseArr.lg);
 
-      // Send play
-      err = send(sockC, &playReq, sizeof(TCoupReq), 0);
-
-      if (playReq.coul == BLANC)
-        printf("(client) BLANC send play\n");
-      else
-        printf("(client) NOIR send play \n");
-
-      // Receive validation of own play
-      err = recv(sockC, &playRes, sizeof(TCoupRep), 0);
-      switch (playRes.err)
-      {
-      case ERR_OK:
-        switch (playRes.validCoup)
+        playReq.coul = playerColor; // color
+        playReq.idRequest = COUP;   // here is always COUP (PLAY)
+        switch (javaAPIRes.typeMove)
         {
-        case VALID:
-          switch (playRes.propCoup)
+        case POS_PION:
+          playReq.typeCoup = POS_PION;
+          playReq.action.posPion = javaAPIRes.placeMove;
+          break;
+        case DEPL_PION:
+          playReq.typeCoup = DEPL_PION;
+          playReq.action.deplPion = javaAPIRes.displaceMove;
+          break;
+        case PASSE:
+          playReq.typeCoup = PASSE;
+          break;
+        }
+
+        // Send play
+        err = send(sockC, &playReq, sizeof(TCoupReq), 0);
+
+        if (playerColor == BLANC)
+          printf("(client) BLANC send play!\n");
+        else
+          printf("(client) NOIR send play!\n");
+
+        // Receive validation of own play
+        err = recv(sockC, &playRes, sizeof(TCoupRep), 0);
+        switch (playRes.err)
+        {
+        case ERR_OK:
+          switch (playRes.validCoup)
           {
-          case CONT:
-            printf("(Client) Game continues!\n");
+          case VALID:
+            switch (playRes.propCoup)
+            {
+            case CONT:
+              printf("(Client) Game continues!\n");
+              break;
+            case GAGNE:
+              printf("(Client)I am winning!\n");
+              matchIsOn = false;
+              break;
+            case NULLE:
+              printf("(Client) Ive made a mistake!\n");
+              matchIsOn = false;
+              break;
+            case PERDU:
+              printf("(Client) Ive LOST!\n");
+              matchIsOn = false;
+              break;
+            }
             break;
-          case GAGNE:
-            printf("(Client)I am winning!\n");
+          case TIMEOUT:
+            printf("(Client) My sent response got timeout!\n");
             matchIsOn = false;
             break;
-          case NULLE:
-            printf("(Client) Ive made a mistake!\n");
-            matchIsOn = false;
-            break;
-          case PERDU:
-            printf("(Client) Ive LOST!\n");
+          case TRICHE:
+            printf("(Client) Iam cheating on the game!\n");
             matchIsOn = false;
             break;
           }
           break;
-        case TIMEOUT:
-          printf("(Client) My sent response got timeout!\n");
+        case ERR_COUP:
+          printf("(Client) My play had an error\n");
           matchIsOn = false;
           break;
-        case TRICHE:
-          printf("(Client) Iam cheating on the game!\n");
+        case ERR_TYP:
+          printf("(Client) My request type was wrong\n");
+          matchIsOn = false;
+          break;
+        case ERR_PARTIE:
+          printf("(Client) My request type was wrong\n");
           matchIsOn = false;
           break;
         }
-        break;
-      case ERR_COUP:
-        printf("(Client) My play had an error\n");
-        matchIsOn = false;
-        break;
-      case ERR_TYP:
-        printf("(Client) My request type was wrong\n");
-        matchIsOn = false;
-        break;
-      case ERR_PARTIE:
-        printf("(Client) My request type was wrong\n");
-        matchIsOn = false;
-        break;
       }
     }
 
+    // Prepare for next match
+    if (matchNumber == 0)
+    {
+      printf("(client) Players changed colors!\n");
+      if (playerColor == BLANC)
+        playerColor = NOIR;
+      else
+        playerColor = BLANC;
+    }
     matchIsOn = true;
     matchNumber++;
   }
 
-  printf("GAME FINISHED, TURNING OF THE SERVER");
+  printf("GAME FINISHED, TURNING OFF THE SERVER\n");
   close(sockC);
   return 0;
 }
