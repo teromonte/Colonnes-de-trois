@@ -1,21 +1,24 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "../../header/protocolColonne.h"
+
 /*
  * Structures demande de partie
  */
 typedef struct
 {
-  int color;
-  int type;
-} Req;
+  TPion color;
+  TCoup typeMove;
+  TCase placeMove;
+  TDeplPion displaceMove;
+} responseAI;
 
 // request play
-int requestAI(int color, int sockAI);
+int requestAI(TPion color, int sockAI, responseAI *res);
 
 /*
   output:
-    TIdRequest -> PARTIE, COUP
     TCoup ->   POS_PION, DEPL_PION, PASSE
     option:
       TCase = TCol + TLigne -> (  UN, DEUX, TROIS) + (  A, B, C)

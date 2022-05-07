@@ -6,8 +6,9 @@ int main(int argc, char **argv)
 {
 
   int sockC,
-      portC,  /* variables de lecture */
-      sockAI, /* descripteur de la socket locale */
+      portC, /* variables de lecture */
+      sockAI,
+      sockAI1, /* descripteur de la socket locale */
       portAI,
       err;
 
@@ -36,8 +37,6 @@ int main(int argc, char **argv)
   sockC = socketClient(nomMachServ, portC);
 
   /////////////// CONNECT TO IA SERVER ///////////
-
-  sockAI = socketClient(nomMachServ, portAI);
 
   /////////////// GET NAME ///////////
 
@@ -103,10 +102,12 @@ int main(int argc, char **argv)
     printf("(Client) you are the first player! lancer un coup\n");
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
-    int color = 0;
-    int responseAI;
-    responseAI = requestAI(color, sockAI);
-    printf("WOW::::: %c\n", responseAI);
+    printf("trying to reach java API: %s\n", nomMachServ);
+    sockAI1 = socketClient(nomMachServ, portAI);
+    int color = participationRep.coul;
+    responseAI rex;
+    requestAI(color, sockAI1, &rex);
+    printf("WOW::::: %c\n", rex.color);
 
     playReq.coul = participationRep.coul;
     playReq.idRequest = COUP;
@@ -211,6 +212,13 @@ int main(int argc, char **argv)
     }
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
+    printf("trying to reach java API: %s\n", nomMachServ);
+    sockAI = socketClient(nomMachServ, portAI);
+    responseAI rex1;
+    int color1 = 56;
+    requestAI(color1, sockAI, &rex1);
+    printf("WOW::::: %c\n", rex1.color);
+
     playReq.idRequest = COUP;
     playReq.typeCoup = POS_PION;
     playReq.coul = participationRep.coul;
