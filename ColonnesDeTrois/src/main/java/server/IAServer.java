@@ -35,8 +35,8 @@ public class IAServer {
 				request1.type = (char) Integer.reverseBytes(dis1.readInt());
 				request1.status = (char) Integer.reverseBytes(dis1.readInt());
 
-				System.out.println("Received : " + request1.color + " " + request1.type + " " +
-						request1.status);
+				System.out.println("Received : " + request1.color + " " +
+						request1.type + " " + request1.status);
 
 				dos1.writeInt(Integer.reverseBytes('a'));
 

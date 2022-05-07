@@ -31,15 +31,15 @@ int main(int argc, char **argv)
   portC = atoi(argv[2]);
   portAI = atoi(argv[3]);
 
-  /////////////////////////////////////// CONNECT TO C SERVER ///////////////////////////////////////////////////////////////////////
+  ////////////// CONNECT TO C SERVER ////////////
 
   sockC = socketClient(nomMachServ, portC);
 
-  /////////////////////////////////////// CONNECT TO IA SERVER ///////////////////////////////////////////////////////////////////////
+  /////////////// CONNECT TO IA SERVER ///////////
 
   sockAI = socketClient(nomMachServ, portAI);
 
-  /////////////////////////////////////// ASK FOR PARTICIPATION ///////////////////////////////////////////////////////////////////////
+  ///////// ASK FOR PARTICIPATION //////////
 
   printf("(client) tapez p pour participer ainsi votre nom ou login : ");
   scanf("%c %s", &dem, chaine);
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
   }
   printf("\n");
 
-  /////////////////////////////////////// FINISH OF ASKING PARTICIPATION //////////////////////////////////////////////////////////////
+  /////////////////////////////////////// FINISH OF ASKING PARTICIPATION //
 
   if (rep.coul == BLANC)
   {
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
     int responseAI;
     responseAI = requestAI(color, sockAI);
     printf("WOW::::: %c\n", responseAI);
-    
+
     playRequest.coul = rep.coul;
     playRequest.idRequest = COUP;
     playRequest.typeCoup = POS_PION;
