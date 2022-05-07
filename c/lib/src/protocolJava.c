@@ -3,7 +3,9 @@
 int requestAI(int color, int sockAI)
 {
   int res, err;
-
+  
+  err = send(sockAI, &color, sizeof(int), 0);
+  err = send(sockAI, &color, sizeof(int), 0);
   err = send(sockAI, &color, sizeof(int), 0);
   if (err <= 0)
   {

@@ -4,21 +4,26 @@
 
 #include <stdbool.h>
 #define MAX_CLIENT 2
-#define MAXB 30
 
 int main(int argc, char **argv)
 {
   int sockConx, /* descripteur socket connexion */
       port,     /* numero de port */
-      sizeAddr; /* taille de l'adresse d'une socket */
+      sizeAddr, /* taille de l'adresse d'une socket */
+      err;
 
   int sockTrans[MAX_CLIENT];
-  int acc = 0;
-
-  int nPlays0 = 0;
-  int nPlays1 = 0;
-
   struct sockaddr_in addClient; /* adresse de la socket client connectee */
+
+  int nPlays0 = 0, nPlays1 = 0;
+
+  char nom1[TNOM], nom2[TNOM];
+
+  TPartieReq matchReq;
+  TPartieRep matchRep;
+  TCoupReq playReq;
+  TCoupRep playRep;
+  bool verif;
 
   /*
    * verification des arguments
@@ -33,211 +38,172 @@ int main(int argc, char **argv)
   sockConx = socketServeur(port);
   sizeAddr = sizeof(struct sockaddr_in);
 
-  char nom1[MAXB];
-  char nom2[MAXB];
-
-  TIdRequest Idreq;
-  TPartieReq Preq;
-  TPartieRep Prep;
-
-  bool gameon = true;
-  while (gameon)
+  // attente de connexion
+  int k = 0;
+  while (k < MAX_CLIENT)
   {
-    // attente de connexion
-    int err;
-    while (acc < MAX_CLIENT)
+    sockTrans[k] = accept(sockConx, (struct sockaddr *)&addClient, (socklen_t *)&sizeAddr);
+    if (sockTrans[k] < 0)
     {
-
-      sockTrans[acc] = accept(sockConx, (struct sockaddr *)&addClient, (socklen_t *)&sizeAddr);
-      if (sockTrans[acc] < 0)
-      {
-        perror("(serveurTCP) erreur sur accept");
-        return -5;
-      }
-
-      acc++;
-
-      printf("acc = %d \n", acc);
+      perror("(serveurTCP) erreur sur accept");
+      return -5;
     }
-    printf("(serveur) exit attente de connexion\n");
-    // Receive of participate
-    int i = 0;
-    while (i < MAX_CLIENT)
+
+    k++;
+
+    printf("acc = %d \n", k);
+  }
+  printf("(serveur) Received both connections request\n");
+  // Receive match request of participate
+  int i = 0;
+  while (i < MAX_CLIENT)
+  {
+    printf("Receive match request in sockTrans[%d]\n", i);
+    err = recv(sockTrans[i], &matchReq, sizeof(TPartieReq), 0);
+    if (err < 0)
     {
-      err = recv(sockTrans[i], &Idreq, sizeof(TIdRequest), MSG_PEEK);
-      if (err > 0)
+      perror("(serveur) Error recv Match request");
+      return -10;
+    }
+    switch (matchReq.idRequest)
+    {
+    case PARTIE:
+      if (i == 0)
       {
-        printf("(serveur) recu demande parti OK de client %d \n", i);
+        strncpy(nom1, matchReq.nomJoueur, TNOM);
+        printf("(serveurTCP) Name received: %s\n", nom1);
       }
-      switch (Idreq)
+      else if (i == 1)
       {
-      case PARTIE:
-        err = recv(sockTrans[i], &Preq, sizeof(TPartieReq), 0);
+        strncpy(nom2, matchReq.nomJoueur, TNOM);
+        printf("(serveurTCP) Name received: %s\n", nom2);
+      }
+      break;
+    default:
+      printf("(serveurTCP) Error while receiving MATCH REQUEST\n");
+      return -1;
+      break;
+    }
+    i++;
+  }
+  printf("(serveur) Received both matches request\n");
+  // Match response to the participants
+  int j = 0;
+  matchRep.err = ERR_OK;
+  while (j < MAX_CLIENT)
+  {
+    if (j == 0)
+    {
+      matchRep.coul = BLANC;
+      strncpy(matchRep.nomAdvers, nom2, TNOM);
+      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom1, matchRep.coul, j);
+    }
+    else if (j == 1)
+    {
+      matchRep.coul = NOIR;
+      strncpy(matchRep.nomAdvers, nom1, TNOM);
+      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom2, matchRep.coul, j);
+    }
+    err = send(sockTrans[j], &matchRep, sizeof(TPartieRep), 0);
+    if (err < 0)
+    {
+      perror("(serveur) error sending match responde to player " + i);
+      return -11;
+    }
+    j++;
+  }
+  printf("(serveur) Sent Match response to participants\n");
 
-        if (err > 0)
+  // Start Game
+  int match = 0;
+  int turn = 0;
+  bool matchRunning = true;
+  printf("(serveur) initialiserPartie\n");
+  initialiserPartie();
+  while (match < 2) // server
+  {
+    while (nPlays0 < 20 && nPlays1 < 20 && matchRunning)
+    {
+      // receive coup
+      printf("(serveur) Receiving the play request from player %d\n", turn);
+      err = recv(sockTrans[turn], &playReq, sizeof(TCoupReq), 0);
+      if (err < 0)
+      {
+        perror("(serveur) Error receiving the play request from player");
+        return -10;
+      }
+
+      // validate coup
+      verif = validationCoup(turn + 1, playReq, &playRep.propCoup);
+      printf("(serveur) Just verified pos\n");
+      // Create response Crep COUP du J1
+
+      switch (verif)
+      {
+      case true:
+        playRep.err = ERR_OK;
+        switch (playRep.propCoup)
         {
-          printf("(serveur) recu complet de demande de parti de client %d \n", i);
+        case NULLE:
+          printf("(serveur) resultats est egeau\n");
+          playRep.validCoup = TIMEOUT;
+          break;
+
+        case GAGNE:
+          printf("(serveur) the first player gagne\n");
+          playRep.validCoup = VALID;
+          match++;
+          break;
+
+        case PERDU:
+          printf("(serveur) the seconde player gagne\n");
+          playRep.validCoup = TRICHE;
+          match++;
+          break;
+
+        case CONT:
+          printf("(serveur) no one won the game!!\n");
+          playRep.validCoup = VALID;
+          break;
         }
-        else
-        {
-          printf("(serveur) erreur recu complet de parti de client %d \n", i);
-        }
-
-        if (i == 0)
-        {
-
-          memcpy(nom1, Preq.nomJoueur, sizeof nom1);
-          printf("(serveurTCP) voila le nom recu : %s\n", nom1);
-        }
-
-        if (i == 1)
-        {
-
-          memcpy(nom2, Preq.nomJoueur, sizeof nom2);
-          printf("(serveurTCP) voila le nom recu : %s\n", nom2);
-        }
-
         break;
-      case COUP:
+      case false:
+        matchRunning = false;
+        printf("(serveur) Play not valid, ending match...\n");
         break;
       }
-      i++;
-    }
-    printf("(serveur) exit receive of participate\n");
-    // Response to the participants
-    int j = 0;
-    while (j < MAX_CLIENT)
-    {
 
-      if (j == 0)
+      // send response to players
+      for (int i = 0; i < 2; i++)
       {
-
-        printf("(serveur) waitt !%d \n", j);
-        Prep.err = ERR_OK;
-        Prep.coul = BLANC;
-
-        memcpy(Prep.nomAdvers, nom2, sizeof Prep.nomAdvers);
-
-        printf("(serveur) le nom adverse est %s\n", Prep.nomAdvers);
-        err = send(sockTrans[j], &Prep, sizeof(TPartieRep), 0);
-        if (err > 0)
-          printf("(serveur) send complet de demande de parti de client %d \n", j);
-        j++;
-      }
-
-      if (j == 1)
-      {
-        Prep.err = ERR_OK;
-        Prep.coul = NOIR;
-        memcpy(Prep.nomAdvers, nom1, sizeof Prep.nomAdvers);
-        printf("(serveur) le nom adverse est %s\n", Prep.nomAdvers);
-        err = send(sockTrans[j], &Prep, sizeof(TPartieRep), 0);
-        if (err > 0)
-        {
-          printf("(serveur) send complet de demande de parti de client %d \n", j);
-        }
-        else
-        {
-          printf("(serveur) send recu complet de parti de client %d \n", j);
-        }
-      }
-
-      j++;
-    }
-    printf("(serveur) exit Response to the participants\n");
-
-    // Start Game
-    int match = 0;
-    int turn = 0;
-    printf("(serveur) initialiserPartie\n");
-    initialiserPartie();
-    while (match < 2) // server
-    {
-      while (nPlays0 < 20 && nPlays1 < 20)
-      {
-        // receive and response
-        TCoupReq request1;
-        TCoupRep response1;
-        TPropCoup propCoup;
-        bool verif;
-
-        // receive coup
-        printf("(serveur) Attente de la reception de la requete COUP du J1\n");
-        err = recv(sockTrans[turn], &request1, sizeof(TCoupReq), 0);
+        printf("(serveur) Sending play acknolegment to player %d\n", i);
+        err = send(sockTrans[i], &playRep, sizeof(TCoupRep), 0);
         if (err < 0)
         {
-          perror("(serveur) erreur sur la reception de la requete COUP du J1 ");
-          return -10;
-        }
-
-        // validate coup
-        verif = validationCoup(turn + 1, request1, &propCoup);
-        printf("(serveur) Just verified pos\n");
-        // Create response Crep COUP du J1
-
-        switch (verif)
-        {
-        case true:
-          response1.err = ERR_OK;
-          response1.propCoup = propCoup;
-          switch (propCoup)
-          {
-          case NULLE:
-            printf("(serveur) resultats est egeau\n");
-            response1.validCoup = TIMEOUT;
-            break;
-
-          case GAGNE:
-            printf("(serveur) the first player gagne\n");
-            response1.validCoup = VALID;
-            match++;
-            break;
-
-          case PERDU:
-            printf("(serveur) the seconde player gagne\n");
-            response1.validCoup = TRICHE;
-            match++;
-            break;
-
-          case CONT:
-            printf("(serveur) no one won the game!!\n");
-            response1.validCoup = VALID;
-            break;
-          }
-          break;
-        case false:
-          printf("(serveur) Couldn't validate\n");
-          return -1;
-          break;
-        }
-
-        // send response to players
-        for (int i = 0; i < 2; i++)
-        {
-          printf("(serveur) Envoie de la reponse COUP\n");
-          err = send(sockTrans[i], &response1, sizeof(TCoupRep), 0);
-          if (err < 0)
-          {
-            perror("(serveur) erreur sur l'envoi de la reponse COUP a J" + i);
-            return -11;
-          }
-        }
-
-        if (turn == 0)
-        {
-          nPlays0++;
-          turn = 1;
-        }
-        else
-        {
-          nPlays1++;
-          turn = 0;
+          perror("(serveur) Error sending play acknolegment to player");
+          return -11;
         }
       }
-      turn = 1;
+
+      if (turn == 0)
+      {
+        nPlays0++;
+        turn = 1;
+      }
+      else
+      {
+        nPlays1++;
+        turn = 0;
+      }
     }
-    printf("\n");
+    match++;
+    matchRunning = true;
+
+    printf("(serveur) Going to second match\n");
+    turn = 1;
   }
+  printf("THE END");
+  printf("\n");
 
   /*
    * arret de la connexion et fermeture

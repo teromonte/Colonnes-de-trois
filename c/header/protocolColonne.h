@@ -43,8 +43,8 @@ typedef struct
 
 typedef enum
 {
-  BLANC = 1,
-  NOIR = 1
+  BLANC,
+  NOIR
 } TPion;
 
 typedef struct

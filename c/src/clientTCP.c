@@ -11,14 +11,14 @@ int main(int argc, char **argv)
       portAI,
       err;
 
-  char chaine[30], dem, *nomMachServ;
+  char chaine[TNOM], dem, *nomMachServ;
 
-  TPartieReq req;            // Participation request
-  TPartieRep rep;            // Answer to the participation request
-  TCase square;              // Case
-  TCoupReq playRequest;      // Play request
-  TCoupRep ownResponse;      // Response to the play request
-  TCoupRep opponentResponse; // delete
+  TPartieReq participationReq; // Participation request
+  TPartieRep participationRep; // Answer to the participation request
+  TCase square;                // Case
+  TCoupReq playReq;            // Play request
+  TCoupRep ownPlayRes;         // Response to the play request
+  TCoupRep opponentPlayRes;    // delete
 
   // verification des arguments
   if (argc != 4)
@@ -39,25 +39,27 @@ int main(int argc, char **argv)
 
   sockAI = socketClient(nomMachServ, portAI);
 
-  ///////// ASK FOR PARTICIPATION //////////
+  /////////////// GET NAME ///////////
 
-  printf("(client) tapez p pour participer ainsi votre nom ou login : ");
+  printf("(client) To play use: p playername\n");
   scanf("%c %s", &dem, chaine);
-  printf("(client) envoi de - %s - \n", chaine);
-
   switch (dem)
   {
   case 'p':
-    req.idRequest = PARTIE;
+    participationReq.idRequest = PARTIE;
     break;
   default:
+    printf("(client) wrong command %c\n", dem);
+    return -1;
     break;
   }
 
+  ///////// ASK FOR PARTICIPATION //////////
+
   // Requesting to play
-  strncpy(req.nomJoueur, chaine, sizeof(chaine));
-  printf("(client) send nom est %s \n", req.nomJoueur);
-  err = send(sockC, &req, sizeof(TPartieReq), 0);
+  strncpy(participationReq.nomJoueur, chaine, TNOM);
+  printf("(client) send name: '%s'\n", participationReq.nomJoueur);
+  err = send(sockC, &participationReq, sizeof(TPartieReq), 0);
   if (err <= 0)
   {
     perror("(client) erreur sur le send");
@@ -66,38 +68,37 @@ int main(int argc, char **argv)
   }
 
   // Receive anwser from server
-  err = recv(sockC, &rep, sizeof(TPartieRep), 0);
+  err = recv(sockC, &participationRep, sizeof(TPartieRep), 0);
   if (err <= 0)
   {
-    perror("(Client) erreur dans la reception");
-    close(sockC);
+    perror("(Client) Error receiving participation response");
     return -6;
   }
-
-  switch (rep.err)
+  switch (participationRep.err)
   {
   case ERR_OK:
-    if (rep.coul == BLANC)
+    if (participationRep.coul == BLANC)
     {
-      printf("(Client) vous etes le jouer blanc et le nom de votre adverse c'est : %s\n", rep.nomAdvers);
-      break;
+      printf("(Client) vous etes le jouer blanc et le nom de votre adverse c'est : %s\n", participationRep.nomAdvers);
     }
-    if (rep.coul == NOIR)
+    else if (participationRep.coul == NOIR)
     {
-      printf("(Client) vous etes le jouer noir et le nom de votre adverse c'est : %s\n", rep.nomAdvers);
-      break;
+      printf("(Client) vous etes le jouer noir et le nom de votre adverse c'est : %s\n", participationRep.nomAdvers);
     }
+    break;
   case ERR_PARTIE:
     printf("pas possible de participer !\n");
     break;
   default:
     break;
   }
+
+  printf("FINISHED BUROCRACY\n");
   printf("\n");
 
-  /////////////////////////////////////// FINISH OF ASKING PARTICIPATION //
+  /////////// PLAYS START ////////////////
 
-  if (rep.coul == BLANC)
+  if (participationRep.coul == BLANC)
   {
     printf("(Client) you are the first player! lancer un coup\n");
     // Arrange Play protocol package
@@ -107,14 +108,14 @@ int main(int argc, char **argv)
     responseAI = requestAI(color, sockAI);
     printf("WOW::::: %c\n", responseAI);
 
-    playRequest.coul = rep.coul;
-    playRequest.idRequest = COUP;
-    playRequest.typeCoup = POS_PION;
+    playReq.coul = participationRep.coul;
+    playReq.idRequest = COUP;
+    playReq.typeCoup = POS_PION;
     square.lg = DEUX;
     square.col = C;
-    playRequest.action.posPion = square;
+    playReq.action.posPion = square;
     // Send play
-    err = send(sockC, &playRequest, sizeof(TCoupReq), 0);
+    err = send(sockC, &playReq, sizeof(TCoupReq), 0);
     if (err <= 0)
     {
       perror("(client) erreur sur le send de coup ");
@@ -122,7 +123,7 @@ int main(int argc, char **argv)
       close(sockC);
     }
     // Receive validation of own play
-    err = recv(sockC, &ownResponse, sizeof(TCoupRep), 0);
+    err = recv(sockC, &ownPlayRes, sizeof(TCoupRep), 0);
     if (err <= 0)
     {
       perror("(Client) erreur dans la reception de resultats coup ");
@@ -132,17 +133,17 @@ int main(int argc, char **argv)
     printf("(cclient) BLANC send play - first play!!!\n");
     printf("\n");
     // Treat Play Response
-    switch (ownResponse.err)
+    switch (ownPlayRes.err)
     {
     case ERR_OK:
-      if (ownResponse.validCoup == VALID)
+      if (ownPlayRes.validCoup == VALID)
       {
         printf("(Client) coup bien jouee!! \n");
-        if (ownResponse.propCoup == CONT)
+        if (ownPlayRes.propCoup == CONT)
         {
           printf("(Client) votre coup est valid et aucun gagne pour le moment! \n");
         }
-        else if (ownResponse.propCoup == GAGNE)
+        else if (ownPlayRes.propCoup == GAGNE)
         {
           printf("(Client) you are winning! \n");
         }
@@ -150,6 +151,8 @@ int main(int argc, char **argv)
       else
       {
         // TODO treat TIMEOUT AND TRICHE
+        printf("(Client) My own play was timeout or I was cheating! \n");
+        return 1;
       }
       break;
     case ERR_COUP:
@@ -165,7 +168,7 @@ int main(int argc, char **argv)
   {
 
     // Receive validation of adversaire play
-    err = recv(sockC, &opponentResponse, sizeof(TCoupRep), 0);
+    err = recv(sockC, &opponentPlayRes, sizeof(TCoupRep), 0);
     if (err <= 0)
     {
       perror("(Client) erreur dans la reception de resultats coup ");
@@ -175,21 +178,16 @@ int main(int argc, char **argv)
     printf("(client) Received validation of adversaire play \n");
 
     // Treat adversaire play
-    switch (opponentResponse.err)
+    switch (opponentPlayRes.err)
     {
     case ERR_OK:
-      if (opponentResponse.validCoup == VALID)
+      if (opponentPlayRes.validCoup == VALID)
       {
-        printf("(Client) coup adverse bien jouee!! \n");
-        if (playRequest.typeCoup == POS_PION)
-        {
-          printf("(Client) il a fait un pos \n");
-        }
-        else if (opponentResponse.propCoup == CONT)
+        if (opponentPlayRes.propCoup == CONT)
         {
           printf("(Client) aucun gagne pour le moment! \n");
         }
-        else if (opponentResponse.propCoup == GAGNE)
+        else if (opponentPlayRes.propCoup == GAGNE)
         {
           printf("(Client) the adverse is wenning! \n");
         }
@@ -213,27 +211,27 @@ int main(int argc, char **argv)
     }
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
-    playRequest.idRequest = COUP;
-    playRequest.typeCoup = POS_PION;
-    playRequest.coul = rep.coul;
+    playReq.idRequest = COUP;
+    playReq.typeCoup = POS_PION;
+    playReq.coul = participationRep.coul;
     square.lg = TROIS;
     square.col = B;
-    playRequest.action.posPion = square;
+    playReq.action.posPion = square;
     // Send play
-    err = send(sockC, &playRequest, sizeof(TCoupReq), 0);
+    err = send(sockC, &playReq, sizeof(TCoupReq), 0);
     if (err <= 0)
     {
       perror("(client) erreur sur le send de coup ");
       shutdown(sockC, SHUT_RDWR);
       close(sockC);
     }
-    if (playRequest.coul == BLANC)
+    if (playReq.coul == BLANC)
       printf("(client) BLANC send play\n");
     else
       printf("(client) NOIR send play \n");
 
     // Receive validation of own play
-    err = recv(sockC, &ownResponse, sizeof(TCoupRep), 0);
+    err = recv(sockC, &ownPlayRes, sizeof(TCoupRep), 0);
     if (err <= 0)
     {
       perror("(Client) erreur dans la reception de resultats coup ");
@@ -242,21 +240,21 @@ int main(int argc, char **argv)
     }
 
     // Treat validation of own Play Response
-    switch (ownResponse.err)
+    switch (ownPlayRes.err)
     {
     case ERR_OK:
-      if (ownResponse.validCoup == VALID)
+      if (ownPlayRes.validCoup == VALID)
       {
         printf("(Client) coup bien jouee!! \n");
-        if (playRequest.typeCoup == POS_PION)
+        if (playReq.typeCoup == POS_PION)
         {
           printf("(Client) Ive just made a position movement \n");
         }
-        if (ownResponse.propCoup == CONT)
+        if (ownPlayRes.propCoup == CONT)
         {
           printf("(Client) Game continues! \n");
         }
-        else if (ownResponse.propCoup == GAGNE)
+        else if (ownPlayRes.propCoup == GAGNE)
         {
           printf("(Client)I am winning!\n");
         }
