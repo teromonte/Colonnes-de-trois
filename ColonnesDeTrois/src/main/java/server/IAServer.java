@@ -4,9 +4,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import entities.Request;
 import entities.Response;
 import game.Game;
+import utils.Utils;
 
 public class IAServer {
 
@@ -20,46 +20,82 @@ public class IAServer {
 
 		int portRecv = Integer.parseInt(args[0]);
 
-		Game g = new Game();
+		Game game = new Game();
 
 		while (true) {
+			System.out.println("(javaAPI) Server started");
 
 			try (ServerSocket srv = new ServerSocket(portRecv)) {
 				while (true) {
-					Socket sockComm1 = srv.accept();
-					System.out.println("Accept: " + sockComm1.getRemoteSocketAddress().toString());
 
-					InputStream is1 = sockComm1.getInputStream();
-					DataInputStream dis1 = new DataInputStream(is1);
-					OutputStream os1 = sockComm1.getOutputStream();
-					DataOutputStream dos1 = new DataOutputStream(os1);
+					Socket sock = srv.accept();
+					System.out.println("Accept: " + sock.getRemoteSocketAddress().toString());
 
-					Request request = new Request();
+					InputStream is = sock.getInputStream();
+					DataInputStream dis = new DataInputStream(is);
+					OutputStream os = sock.getOutputStream();
+					DataOutputStream dos = new DataOutputStream(os);
 
-					request.color = Integer.reverseBytes(dis1.readInt());
+					int input = Integer.reverseBytes(dis.readInt());
 
-					System.out.println("(javaAPI) Received request with color :" + request.color);
+					Response response = callAPI(input, game);
 
-					Response response = g.getNextMove(request.color);
+					sendResponse(dos, response);
 
-					dos1.writeInt(Integer.reverseBytes(response.moveType));
-					dos1.writeInt(Integer.reverseBytes(response.depCol));
-					dos1.writeInt(Integer.reverseBytes(response.depLg));
-					dos1.writeInt(Integer.reverseBytes(response.arrCol));
-					dos1.writeInt(Integer.reverseBytes(response.arrLg));
-
-					System.out.println("(javaAPI) Sent resonse. Type of move: " + response.moveType);
-
-					is1.close();
-					os1.close();
-					dis1.close();
-					dos1.close();
-					sockComm1.close();
+					close(sock, dos, os, dis, is);
 				}
 			} catch (Exception e) {
 				System.out.println("Exception!");
 			}
 		}
 
+	}
+
+	private static Response callAPI(int input, Game game) {
+		switch (input) {
+			case 0:
+				System.out.println("(javaAPI) Processing BLANC request");
+
+				return game.getNextMove(Utils.BLANC);
+			case 1:
+				System.out.println("(javaAPI) Processing NOIR request");
+
+				return game.getNextMove(Utils.NOIR);
+			default:
+				System.out.println("(javaAPI) Reset match");
+				return game.reset();
+		}
+	}
+
+	private static void sendResponse(DataOutputStream dos, Response response) throws IOException {
+		switch (response.moveType) {
+
+			case Utils.PLACE:
+				System.out.println("(javaAPI) Sent resonse. PLACE");
+
+				break;
+			case Utils.MOVE:
+				System.out.println("(javaAPI) Sent resonse. MOVE");
+
+				break;
+			case Utils.RESET:
+				System.out.println("(javaAPI) Going to the second match");
+				break;
+		}
+		dos.writeInt(Integer.reverseBytes(response.moveType));
+		dos.writeInt(Integer.reverseBytes(response.depCol));
+		dos.writeInt(Integer.reverseBytes(response.depLg));
+		dos.writeInt(Integer.reverseBytes(response.arrCol));
+		dos.writeInt(Integer.reverseBytes(response.arrLg));
+	}
+
+	private static void close(Socket sock, DataOutputStream dos, OutputStream os, DataInputStream dis, InputStream is)
+			throws IOException {
+		is.close();
+		os.close();
+		dis.close();
+		dos.close();
+		sock.close();
+		System.out.println("(javaAPI)------CYCLE ------");
 	}
 }

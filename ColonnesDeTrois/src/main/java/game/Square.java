@@ -3,7 +3,6 @@ package game;
 import java.util.ArrayList;
 import java.util.List;
 import utils.*;
-import utils.Utils.Color;
 
 public class Square {
     private List<Piece> pieces;
@@ -18,16 +17,16 @@ public class Square {
         return pieces.size();
     }
 
-    public void addPiece(Color c) {
+    public void addPiece(int color) {
         if (size < 3) {
             if (size == 0) {
-                pieces.add(new Piece(c));
+                pieces.add(new Piece(color));
                 size++;
             } else {
                 for (Piece piece : pieces) {
                     piece.swichState();
                 }
-                pieces.add(new Piece(c));
+                pieces.add(new Piece(color));
                 size++;
             }
         }

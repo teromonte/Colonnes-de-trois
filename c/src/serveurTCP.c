@@ -203,9 +203,7 @@ int main(int argc, char **argv)
   printf("THE END");
   printf("\n");
 
-  /*
-   * arret de la connexion et fermeture
-   */
+  // Close communication
   for (int i = 0; i < MAX_CLIENT; i++)
   {
     shutdown(sockTrans[i], SHUT_RDWR);

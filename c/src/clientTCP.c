@@ -10,15 +10,17 @@ int main(int argc, char **argv)
       sockAI, /* descripteur de la socket locale */
       portAI,
       err,
-      playerColor;
+      playerColor,
+      matchNumber;
+
+  bool matchIsOn;
 
   char chaine[TNOM], dem, *nomMachServ;
 
   TPartieReq participationReq; // Participation request
   TPartieRep participationRep; // Answer to the participation request
   TCoupReq playReq;            // Play request
-  TCoupRep ownPlayRes;         // Response to the play request
-  TCoupRep opponentPlayRes;
+  TCoupRep playRes;            // Response to the play request
   responseAI javaAPIRes;
 
   // verification des arguments
@@ -43,317 +45,286 @@ int main(int argc, char **argv)
   switch (dem)
   {
   case 'p':
-    participationReq.idRequest = PARTIE;
+    printf("(client) My name is: %s.\n", chaine);
     break;
   default:
-    printf("(client) wrong command %c\n", dem);
+    printf("(client) Wrong command %c\n", dem);
     return -1;
     break;
   }
 
   ///////// ASK FOR PARTICIPATION //////////
 
-  // Requesting to play
   strncpy(participationReq.nomJoueur, chaine, TNOM);
-  printf("(client) send name: '%s'\n", participationReq.nomJoueur);
-  err = send(sockC, &participationReq, sizeof(TPartieReq), 0);
-  if (err <= 0)
-  {
-    perror("(client) erreur sur le send");
-    shutdown(sockC, SHUT_RDWR);
-    close(sockC);
-  }
+  participationReq.idRequest = PARTIE;
 
-  // Receive anwser from server
+  // send participation request
+  err = send(sockC, &participationReq, sizeof(TPartieReq), 0);
+
+  // Receive participation request response
   err = recv(sockC, &participationRep, sizeof(TPartieRep), 0);
-  if (err <= 0)
-  {
-    perror("(Client) Error receiving participation response");
-    return -6;
-  }
   switch (participationRep.err)
   {
   case ERR_OK:
     if (participationRep.coul == BLANC)
-    {
-      printf("(Client) vous etes le jouer blanc et le nom de votre adverse c'est : %s\n", participationRep.nomAdvers);
-    }
-    else if (participationRep.coul == NOIR)
-    {
-      printf("(Client) vous etes le jouer noir et le nom de votre adverse c'est : %s\n", participationRep.nomAdvers);
-    }
+      printf("(Client) Your color is BLANC and you are playing against: %s\n", participationRep.nomAdvers);
+    else
+      printf("(Client) Your color is NOIR and you are playing against: %s\n", participationRep.nomAdvers);
     playerColor = participationRep.coul;
     break;
   case ERR_PARTIE:
-    printf("pas possible de participer !\n");
+    printf("(client) Error PARTIE, cannot participate!\n");
+    return -1;
     break;
-  default:
+  case ERR_TYP:
+    printf("(client) Error TYP, cannot participate!\n");
+    return -1;
+    break;
+  case ERR_COUP:
+    printf("(client) Error COUP, cannot participate!\n");
+    return -1;
     break;
   }
 
-  printf("FINISHED BUROCRACY\n");
+  printf("\n");
+  printf("FINISHED BUROCRACY");
   printf("\n");
 
   /////////// PLAYS START ////////////////
 
-  if (participationRep.coul == BLANC)
+  matchNumber = 0;
+  matchIsOn = true;
+  while (matchNumber < NUM_OF_MATCHES)
   {
-    printf("(Client) you are the first player! lancer un coup\n");
-
-    printf("Client) Trying to reach java API: %s\n", nomMachServ);
-    sockAI = socketClient(nomMachServ, portAI);
-    err = requestAI(playerColor, sockAI, &javaAPIRes);
-    if (err <= 0)
+    // Do first play of the match
+    if (participationRep.coul == BLANC && matchNumber == 0 || participationRep.coul == NOIR && matchNumber == 1)
     {
-      perror("(client) javaAPI problem!");
-      shutdown(sockAI, SHUT_RDWR);
-      close(sockAI);
-    }
-    printf("Received from API: type %d placeMove col %d placeMove lg %d displaceMove col %d displaceMove lg %d\n",
-           javaAPIRes.typeMove,
-           javaAPIRes.placeMove.col,
-           javaAPIRes.placeMove.lg,
-           javaAPIRes.displaceMove.caseArr.col,
-           javaAPIRes.displaceMove.caseArr.lg);
+      printf("(Client) you are the first player! lancer un coup\n");
 
-    // Arrange Play protocol package
-    playReq.coul = playerColor; // color
-    playReq.idRequest = COUP;   // here is always COUP (PLAY)
+      printf("Client) Trying to reach java API: %s\n", nomMachServ);
+      sockAI = socketClient(nomMachServ, portAI);
+      err = requestAI(playerColor, sockAI, &javaAPIRes);
 
-    // Deal with type of move
-    switch (javaAPIRes.typeMove)
-    {
-    case POS_PION:
+      printf("Received from API: type %d placeMove col %d placeMove lg %d displaceMove col %d displaceMove lg %d\n",
+             javaAPIRes.typeMove,
+             javaAPIRes.placeMove.col,
+             javaAPIRes.placeMove.lg,
+             javaAPIRes.displaceMove.caseArr.col,
+             javaAPIRes.displaceMove.caseArr.lg);
+
+      // Arrange Play protocol package
+      playReq.coul = playerColor; // color
+      playReq.idRequest = COUP;   // here is always COUP (PLAY)
       playReq.typeCoup = POS_PION;
       playReq.action.posPion = javaAPIRes.placeMove;
-      break;
-    case DEPL_PION:
-      playReq.typeCoup = DEPL_PION;
-      playReq.action.deplPion = javaAPIRes.displaceMove;
-      break;
-    case PASSE:
-      playReq.typeCoup = PASSE;
-      break;
-    default:
-      break;
-    }
-    // Send play
-    err = send(sockC, &playReq, sizeof(TCoupReq), 0);
-    if (err <= 0)
-    {
-      perror("(client) erreur sur le send de coup ");
-      shutdown(sockC, SHUT_RDWR);
-      close(sockC);
-    }
-    // Receive validation of own play
-    err = recv(sockC, &ownPlayRes, sizeof(TCoupRep), 0);
-    if (err <= 0)
-    {
-      perror("(Client) erreur dans la reception de resultats coup ");
-      close(sockC);
-      return -20;
-    }
-    printf("(cclient) BLANC send play - first play!!!\n");
-    printf("\n");
-    // Treat Play Response
-    switch (ownPlayRes.err)
-    {
-    case ERR_OK:
-      if (ownPlayRes.validCoup == VALID)
-      {
-        printf("(Client) coup bien jouee!! \n");
-        if (ownPlayRes.propCoup == CONT)
-        {
-          printf("(Client) votre coup est valid et aucun gagne pour le moment! \n");
-        }
-        else if (ownPlayRes.propCoup == GAGNE)
-        {
-          printf("(Client) you are winning! \n");
-        }
-      }
+
+      // Send first play
+      err = send(sockC, &playReq, sizeof(TCoupReq), 0);
+
+      if (playReq.coul == BLANC)
+        printf("(client) BLANC send FIRST play of the match\n");
       else
+        printf("(client) NOIR send FIRST play of the match\n");
+
+      // Receive my play validation
+      err = recv(sockC, &playRes, sizeof(TCoupRep), 0);
+      switch (playRes.err)
       {
-        // TODO treat TIMEOUT AND TRICHE
-        printf("(Client) My own play was timeout or I was cheating! \n");
-        return 1;
+      case ERR_OK:
+        switch (playRes.validCoup)
+        {
+        case VALID:
+          switch (playRes.propCoup)
+          {
+          case CONT:
+            printf("(Client) Game continues!\n");
+            break;
+          case GAGNE:
+            printf("(Client)I am winning!\n");
+            matchIsOn = false;
+            break;
+          case NULLE:
+            printf("(Client) Ive made a mistake!\n");
+            matchIsOn = false;
+            break;
+          case PERDU:
+            printf("(Client) Ive LOST!\n");
+            matchIsOn = false;
+            break;
+          }
+          break;
+        case TIMEOUT:
+          printf("(Client) My sent response got timeout!\n");
+          matchIsOn = false;
+          break;
+        case TRICHE:
+          printf("(Client) Iam cheating on the game!\n");
+          matchIsOn = false;
+          break;
+        }
+        break;
+      case ERR_COUP:
+        printf("(Client) My play had an error\n");
+        matchIsOn = false;
+        break;
+      case ERR_TYP:
+        printf("(Client) My request type was wrong\n");
+        matchIsOn = false;
+        break;
+      case ERR_PARTIE:
+        printf("(Client) My request type was wrong\n");
+        matchIsOn = false;
+        break;
       }
-      break;
-    case ERR_COUP:
-      printf("tu ne peut pas jouer un coup avant de participer !\n");
-      break;
-    default:
-      break;
     }
+
+    // Start to send plays, runs till match is gange, perdu, triche, timeout
+    while (matchIsOn)
+    {
+
+      // Receive validation of adversaire play
+      err = recv(sockC, &playRes, sizeof(TCoupRep), 0);
+      switch (playRes.err)
+      {
+      case ERR_OK:
+        switch (playRes.validCoup)
+        {
+        case VALID:
+          switch (playRes.propCoup)
+          {
+          case CONT:
+            printf("(Client) Adversaire played: Game continues!\n");
+            break;
+          case GAGNE:
+            printf("(Client) Adversaire played: I am winning!\n");
+            matchIsOn = false;
+            break;
+          case NULLE:
+            printf("(Client) Adversaire played: Ive made a mistake!\n");
+            matchIsOn = false;
+            break;
+          case PERDU:
+            printf("(Client) Adversaire played: Ive LOST!\n");
+            matchIsOn = false;
+            break;
+          }
+          break;
+        case TIMEOUT:
+          printf("(Client) Adversaire played: My sent response got timeout!\n");
+          matchIsOn = false;
+          break;
+        case TRICHE:
+          printf("(Client) Adversaire played: Iam cheating on the game!\n");
+          matchIsOn = false;
+          break;
+        }
+        break;
+      case ERR_COUP:
+        printf("(Client) Adversaire played: My play had an error\n");
+        matchIsOn = false;
+        break;
+      case ERR_TYP:
+        printf("(Client) Adversaire played: My request type was wrong\n");
+        matchIsOn = false;
+        break;
+      case ERR_PARTIE:
+        printf("(Client) Adversaire played: My request type was wrong\n");
+        matchIsOn = false;
+        break;
+      }
+
+      sockAI = socketClient(nomMachServ, portAI);
+      err = requestAI(playerColor, sockAI, &javaAPIRes);
+
+      printf("Received from API: type: %d, placeMove col: %d, placeMove lg: %d, displaceMove col: %d, displaceMove lg: %d.\n",
+             javaAPIRes.typeMove,
+             javaAPIRes.placeMove.col,
+             javaAPIRes.placeMove.lg,
+             javaAPIRes.displaceMove.caseArr.col,
+             javaAPIRes.displaceMove.caseArr.lg);
+
+      playReq.coul = playerColor; // color
+      playReq.idRequest = COUP;   // here is always COUP (PLAY)
+      switch (javaAPIRes.typeMove)
+      {
+      case POS_PION:
+        playReq.typeCoup = POS_PION;
+        playReq.action.posPion = javaAPIRes.placeMove;
+        break;
+      case DEPL_PION:
+        playReq.typeCoup = DEPL_PION;
+        playReq.action.deplPion = javaAPIRes.displaceMove;
+        break;
+      case PASSE:
+        playReq.typeCoup = PASSE;
+        break;
+      }
+
+      // Send play
+      err = send(sockC, &playReq, sizeof(TCoupReq), 0);
+
+      if (playReq.coul == BLANC)
+        printf("(client) BLANC send play\n");
+      else
+        printf("(client) NOIR send play \n");
+
+      // Receive validation of own play
+      err = recv(sockC, &playRes, sizeof(TCoupRep), 0);
+      switch (playRes.err)
+      {
+      case ERR_OK:
+        switch (playRes.validCoup)
+        {
+        case VALID:
+          switch (playRes.propCoup)
+          {
+          case CONT:
+            printf("(Client) Game continues!\n");
+            break;
+          case GAGNE:
+            printf("(Client)I am winning!\n");
+            matchIsOn = false;
+            break;
+          case NULLE:
+            printf("(Client) Ive made a mistake!\n");
+            matchIsOn = false;
+            break;
+          case PERDU:
+            printf("(Client) Ive LOST!\n");
+            matchIsOn = false;
+            break;
+          }
+          break;
+        case TIMEOUT:
+          printf("(Client) My sent response got timeout!\n");
+          matchIsOn = false;
+          break;
+        case TRICHE:
+          printf("(Client) Iam cheating on the game!\n");
+          matchIsOn = false;
+          break;
+        }
+        break;
+      case ERR_COUP:
+        printf("(Client) My play had an error\n");
+        matchIsOn = false;
+        break;
+      case ERR_TYP:
+        printf("(Client) My request type was wrong\n");
+        matchIsOn = false;
+        break;
+      case ERR_PARTIE:
+        printf("(Client) My request type was wrong\n");
+        matchIsOn = false;
+        break;
+      }
+    }
+
+    matchIsOn = true;
+    matchNumber++;
   }
 
-  // Start to send plays, runs till match is gange, perdu, triche, timeout
-  while (1)
-  {
-
-    // Receive validation of adversaire play
-    err = recv(sockC, &opponentPlayRes, sizeof(TCoupRep), 0);
-    if (err <= 0)
-    {
-      perror("(Client) erreur dans la reception de resultats coup ");
-      close(sockC);
-      return -20;
-    }
-    printf("(client) Received validation of adversaire play \n");
-
-    // Treat adversaire play
-    switch (opponentPlayRes.err)
-    {
-    case ERR_OK:
-      if (opponentPlayRes.validCoup == VALID)
-      {
-        if (opponentPlayRes.propCoup == CONT)
-        {
-          printf("(Client) aucun gagne pour le moment! \n");
-        }
-        else if (opponentPlayRes.propCoup == GAGNE)
-        {
-          printf("(Client) the adverse is wenning! \n");
-        }
-      }
-      else
-      {
-        printf("(Client) Your opponent made a mistake!! \n");
-        return -1;
-      }
-      break;
-    case ERR_COUP:
-      printf("tu ne peut pas jouer un coup avant de participer !\n");
-      return -1;
-      break;
-    case ERR_TYP:
-      printf("Erreur dans le type de requete\n");
-      return -1;
-      break;
-    default:
-      break;
-    }
-    // Arrange Play protocol package
-    // TODO ask the IA for a coup and get the result
-
-    printf("Client) Trying to reach java API: %s\n", nomMachServ);
-    sockAI = socketClient(nomMachServ, portAI);
-    err = requestAI(playerColor, sockAI, &javaAPIRes);
-    if (err <= 0)
-    {
-      perror("(client) javaAPI problem");
-      shutdown(sockAI, SHUT_RDWR);
-      close(sockAI);
-    }
-
-    printf("Received from API: type %d placeMove col %d placeMove lg %d displaceMove col %d displaceMove lg %d\n",
-           javaAPIRes.typeMove,
-           javaAPIRes.placeMove.col,
-           javaAPIRes.placeMove.lg,
-           javaAPIRes.displaceMove.caseArr.col,
-           javaAPIRes.displaceMove.caseArr.lg);
-
-    printf("Client) Trying to reach java API: %s\n", nomMachServ);
-    sockAI = socketClient(nomMachServ, portAI);
-    err = requestAI(playerColor, sockAI, &javaAPIRes);
-    if (err <= 0)
-    {
-      perror("(client) javaAPI problem!");
-      shutdown(sockAI, SHUT_RDWR);
-      close(sockAI);
-    }
-    printf("Received from API: type %d placeMove col %d placeMove lg %d displaceMove col %d displaceMove lg %d\n",
-           javaAPIRes.typeMove,
-           javaAPIRes.placeMove.col,
-           javaAPIRes.placeMove.lg,
-           javaAPIRes.displaceMove.caseArr.col,
-           javaAPIRes.displaceMove.caseArr.lg);
-
-    // Arrange Play protocol package
-    playReq.coul = playerColor; // color
-    playReq.idRequest = COUP;   // here is always COUP (PLAY)
-
-    // Deal with type of move
-    switch (javaAPIRes.typeMove)
-    {
-    case POS_PION:
-      playReq.typeCoup = POS_PION;
-      playReq.action.posPion = javaAPIRes.placeMove;
-      break;
-    case DEPL_PION:
-      playReq.typeCoup = DEPL_PION;
-      playReq.action.deplPion = javaAPIRes.displaceMove;
-      break;
-    case PASSE:
-      playReq.typeCoup = PASSE;
-      break;
-    default:
-      break;
-    }
-
-    // Send play
-    err = send(sockC, &playReq, sizeof(TCoupReq), 0);
-    if (err <= 0)
-    {
-      perror("(client) erreur sur le send de coup ");
-      shutdown(sockC, SHUT_RDWR);
-      close(sockC);
-    }
-    if (playReq.coul == BLANC)
-      printf("(client) BLANC send play\n");
-    else
-      printf("(client) NOIR send play \n");
-
-    // Receive validation of own play
-    err = recv(sockC, &ownPlayRes, sizeof(TCoupRep), 0);
-    if (err <= 0)
-    {
-      perror("(Client) erreur dans la reception de resultats coup ");
-      close(sockC);
-      return -20;
-    }
-
-    // Treat validation of own Play Response
-    switch (ownPlayRes.err)
-    {
-    case ERR_OK:
-      if (ownPlayRes.validCoup == VALID)
-      {
-        printf("(Client) coup bien jouee!! \n");
-        if (playReq.typeCoup == POS_PION)
-        {
-          printf("(Client) Ive just made a position movement \n");
-        }
-        if (ownPlayRes.propCoup == CONT)
-        {
-          printf("(Client) Game continues! \n");
-        }
-        else if (ownPlayRes.propCoup == GAGNE)
-        {
-          printf("(Client)I am winning!\n");
-        }
-      }
-      else
-      {
-        printf("(Client) Ive made a mistake!! \n");
-        return -1;
-      }
-      break;
-    case ERR_COUP:
-      printf("tu ne peut pas jouer un coup avant de participer !\n");
-      return -1;
-      break;
-    case ERR_TYP:
-      printf("Erreur dans le type de requete\n");
-      return -1;
-      break;
-    default:
-      break;
-    }
-    printf("(client) GOING BACK TO TOP OF LOOP\n");
-    printf("\n");
-  }
-
+  printf("GAME FINISHED, TURNING OF THE SERVER");
   close(sockC);
-
   return 0;
 }

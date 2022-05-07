@@ -6,16 +6,15 @@ import game.Square;
 import utils.Move;
 import utils.Pair;
 import utils.Utils;
-import utils.Utils.Color;
 
 public class Algo {
     private Square[][] table;
-    private Color color;
+    private int color;
     private List<Move> validMoves;
 
-    public Algo(Color color, Square[][] table) {
-        this.table = table;
+    public Algo(int color, Square[][] table) {
         this.color = color;
+        this.table = table;
     }
 
     private List<Move> calcValisMoves() {

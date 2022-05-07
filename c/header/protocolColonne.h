@@ -15,6 +15,7 @@
 
 /* Taille des chaines de caracteres pour les noms */
 #define TNOM 30
+#define NUM_OF_MATCHES 2
 
 /* Identificateurs des requetes */
 typedef enum

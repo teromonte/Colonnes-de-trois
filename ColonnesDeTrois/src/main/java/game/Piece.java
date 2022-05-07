@@ -1,14 +1,13 @@
 package game;
 
-import utils.Utils.Color;
 
 public class Piece {
 
-    private Color couleur;
+    private int color;
     private boolean isLocked;
 
-    public Piece(Color couleur) {
-        this.couleur = couleur;
+    public Piece(int color) {
+        this.color = color;
         this.isLocked = false;
     }
 
@@ -24,8 +23,8 @@ public class Piece {
         return isLocked;
     }
 
-    public Color getColor() {
-        return couleur;
+    public int getColor() {
+        return color;
     }
 
 }
