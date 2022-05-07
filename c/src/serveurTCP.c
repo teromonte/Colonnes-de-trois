@@ -25,9 +25,7 @@ int main(int argc, char **argv)
   TCoupRep playRep;
   bool verif;
 
-  /*
-   * verification des arguments
-   */
+  // verification des arguments
   if (argc != 2)
   {
     printf("usage : %s port\n", argv[0]);
@@ -38,7 +36,7 @@ int main(int argc, char **argv)
   sockConx = socketServeur(port);
   sizeAddr = sizeof(struct sockaddr_in);
 
-  // attente de connexion
+  ////////////// WAIT CONNECTION ////////////
   int k = 0;
   while (k < MAX_CLIENT)
   {
@@ -54,7 +52,7 @@ int main(int argc, char **argv)
     printf("acc = %d \n", k);
   }
   printf("(serveur) Received both connections request\n");
-  // Receive match request of participate
+  ////////////// RECEIVE PLAYES REQUEST ////////////
   int i = 0;
   while (i < MAX_CLIENT)
   {
@@ -87,7 +85,7 @@ int main(int argc, char **argv)
     i++;
   }
   printf("(serveur) Received both matches request\n");
-  // Match response to the participants
+  ////////////// SEND ACK TO PLAYERS ////////////
   int j = 0;
   matchRep.err = ERR_OK;
   while (j < MAX_CLIENT)
@@ -114,7 +112,7 @@ int main(int argc, char **argv)
   }
   printf("(serveur) Sent Match response to participants\n");
 
-  // Start Game
+  ////////////// GAME START ////////////
   int match = 0;
   int turn = 0;
   bool matchRunning = true;

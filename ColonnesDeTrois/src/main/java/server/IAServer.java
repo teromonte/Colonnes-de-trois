@@ -6,6 +6,7 @@ import java.net.Socket;
 
 import entities.Request;
 import entities.Response;
+import game.Game;
 
 public class IAServer {
 
@@ -18,6 +19,8 @@ public class IAServer {
 		}
 
 		int portRecv = Integer.parseInt(args[0]);
+
+		Game g = new Game();
 
 		while (true) {
 
@@ -32,22 +35,20 @@ public class IAServer {
 					DataOutputStream dos1 = new DataOutputStream(os1);
 
 					Request request = new Request();
+
 					request.color = Integer.reverseBytes(dis1.readInt());
+
 					System.out.println("(javaAPI) Received request with color :" + request.color);
 
-					Response response = new Response();
-					response.moveType = 1;
-					response.depCol = 2;
-					response.depLg = 3;
-					response.arrCol = 4;
-					response.arrLg = 5;
+					Response response = g.getNextMove(request.color);
 
 					dos1.writeInt(Integer.reverseBytes(response.moveType));
 					dos1.writeInt(Integer.reverseBytes(response.depCol));
 					dos1.writeInt(Integer.reverseBytes(response.depLg));
 					dos1.writeInt(Integer.reverseBytes(response.arrCol));
 					dos1.writeInt(Integer.reverseBytes(response.arrLg));
-					System.out.println("(javaAPI sent resonse. Type of move: " + response.moveType);
+
+					System.out.println("(javaAPI) Sent resonse. Type of move: " + response.moveType);
 
 					is1.close();
 					os1.close();

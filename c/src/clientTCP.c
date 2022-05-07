@@ -16,7 +16,6 @@ int main(int argc, char **argv)
 
   TPartieReq participationReq; // Participation request
   TPartieRep participationRep; // Answer to the participation request
-  TCase square;                // Case
   TCoupReq playReq;            // Play request
   TCoupRep ownPlayRes;         // Response to the play request
   TCoupRep opponentPlayRes;
@@ -36,8 +35,6 @@ int main(int argc, char **argv)
   ////////////// CONNECT TO C SERVER ////////////
 
   sockC = socketClient(nomMachServ, portC);
-
-  /////////////// CONNECT TO IA SERVER ///////////
 
   /////////////// GET NAME ///////////
 
@@ -120,12 +117,26 @@ int main(int argc, char **argv)
            javaAPIRes.displaceMove.caseArr.lg);
 
     // Arrange Play protocol package
-    playReq.coul = participationRep.coul;
-    playReq.idRequest = COUP;
-    playReq.typeCoup = POS_PION;
-    square.lg = DEUX;
-    square.col = C;
-    playReq.action.posPion = square;
+    playReq.coul = playerColor; // color
+    playReq.idRequest = COUP;   // here is always COUP (PLAY)
+
+    // Deal with type of move
+    switch (javaAPIRes.typeMove)
+    {
+    case POS_PION:
+      playReq.typeCoup = POS_PION;
+      playReq.action.posPion = javaAPIRes.placeMove;
+      break;
+    case DEPL_PION:
+      playReq.typeCoup = DEPL_PION;
+      playReq.action.deplPion = javaAPIRes.displaceMove;
+      break;
+    case PASSE:
+      playReq.typeCoup = PASSE;
+      break;
+    default:
+      break;
+    }
     // Send play
     err = send(sockC, &playReq, sizeof(TCoupReq), 0);
     if (err <= 0)
@@ -241,12 +252,44 @@ int main(int argc, char **argv)
            javaAPIRes.displaceMove.caseArr.col,
            javaAPIRes.displaceMove.caseArr.lg);
 
-    playReq.idRequest = COUP;
-    playReq.typeCoup = POS_PION;
-    playReq.coul = participationRep.coul;
-    square.lg = TROIS;
-    square.col = B;
-    playReq.action.posPion = square;
+    printf("Client) Trying to reach java API: %s\n", nomMachServ);
+    sockAI = socketClient(nomMachServ, portAI);
+    err = requestAI(playerColor, sockAI, &javaAPIRes);
+    if (err <= 0)
+    {
+      perror("(client) javaAPI problem!");
+      shutdown(sockAI, SHUT_RDWR);
+      close(sockAI);
+    }
+    printf("Received from API: type %d placeMove col %d placeMove lg %d displaceMove col %d displaceMove lg %d\n",
+           javaAPIRes.typeMove,
+           javaAPIRes.placeMove.col,
+           javaAPIRes.placeMove.lg,
+           javaAPIRes.displaceMove.caseArr.col,
+           javaAPIRes.displaceMove.caseArr.lg);
+
+    // Arrange Play protocol package
+    playReq.coul = playerColor; // color
+    playReq.idRequest = COUP;   // here is always COUP (PLAY)
+
+    // Deal with type of move
+    switch (javaAPIRes.typeMove)
+    {
+    case POS_PION:
+      playReq.typeCoup = POS_PION;
+      playReq.action.posPion = javaAPIRes.placeMove;
+      break;
+    case DEPL_PION:
+      playReq.typeCoup = DEPL_PION;
+      playReq.action.deplPion = javaAPIRes.displaceMove;
+      break;
+    case PASSE:
+      playReq.typeCoup = PASSE;
+      break;
+    default:
+      break;
+    }
+
     // Send play
     err = send(sockC, &playReq, sizeof(TCoupReq), 0);
     if (err <= 0)
