@@ -6,11 +6,11 @@ int main(int argc, char **argv)
 {
 
   int sockC,
-      portC, /* variables de lecture */
-      sockAI,
-      sockAI1, /* descripteur de la socket locale */
+      portC,  /* variables de lecture */
+      sockAI, /* descripteur de la socket locale */
       portAI,
-      err;
+      err,
+      playerColor;
 
   char chaine[TNOM], dem, *nomMachServ;
 
@@ -19,7 +19,8 @@ int main(int argc, char **argv)
   TCase square;                // Case
   TCoupReq playReq;            // Play request
   TCoupRep ownPlayRes;         // Response to the play request
-  TCoupRep opponentPlayRes;    // delete
+  TCoupRep opponentPlayRes;
+  responseAI javaAPIRes;
 
   // verification des arguments
   if (argc != 4)
@@ -84,6 +85,7 @@ int main(int argc, char **argv)
     {
       printf("(Client) vous etes le jouer noir et le nom de votre adverse c'est : %s\n", participationRep.nomAdvers);
     }
+    playerColor = participationRep.coul;
     break;
   case ERR_PARTIE:
     printf("pas possible de participer !\n");
@@ -100,15 +102,24 @@ int main(int argc, char **argv)
   if (participationRep.coul == BLANC)
   {
     printf("(Client) you are the first player! lancer un coup\n");
-    // Arrange Play protocol package
-    // TODO ask the IA for a coup and get the result
-    printf("trying to reach java API: %s\n", nomMachServ);
-    sockAI1 = socketClient(nomMachServ, portAI);
-    int color = participationRep.coul;
-    responseAI rex;
-    requestAI(color, sockAI1, &rex);
-    printf("WOW::::: %c\n", rex.color);
 
+    printf("Client) Trying to reach java API: %s\n", nomMachServ);
+    sockAI = socketClient(nomMachServ, portAI);
+    err = requestAI(playerColor, sockAI, &javaAPIRes);
+    if (err <= 0)
+    {
+      perror("(client) javaAPI problem!");
+      shutdown(sockAI, SHUT_RDWR);
+      close(sockAI);
+    }
+    printf("Received from API: type %d placeMove col %d placeMove lg %d displaceMove col %d displaceMove lg %d\n",
+           javaAPIRes.typeMove,
+           javaAPIRes.placeMove.col,
+           javaAPIRes.placeMove.lg,
+           javaAPIRes.displaceMove.caseArr.col,
+           javaAPIRes.displaceMove.caseArr.lg);
+
+    // Arrange Play protocol package
     playReq.coul = participationRep.coul;
     playReq.idRequest = COUP;
     playReq.typeCoup = POS_PION;
@@ -212,12 +223,23 @@ int main(int argc, char **argv)
     }
     // Arrange Play protocol package
     // TODO ask the IA for a coup and get the result
-    printf("trying to reach java API: %s\n", nomMachServ);
+
+    printf("Client) Trying to reach java API: %s\n", nomMachServ);
     sockAI = socketClient(nomMachServ, portAI);
-    responseAI rex1;
-    int color1 = 56;
-    requestAI(color1, sockAI, &rex1);
-    printf("WOW::::: %c\n", rex1.color);
+    err = requestAI(playerColor, sockAI, &javaAPIRes);
+    if (err <= 0)
+    {
+      perror("(client) javaAPI problem");
+      shutdown(sockAI, SHUT_RDWR);
+      close(sockAI);
+    }
+
+    printf("Received from API: type %d placeMove col %d placeMove lg %d displaceMove col %d displaceMove lg %d\n",
+           javaAPIRes.typeMove,
+           javaAPIRes.placeMove.col,
+           javaAPIRes.placeMove.lg,
+           javaAPIRes.displaceMove.caseArr.col,
+           javaAPIRes.displaceMove.caseArr.lg);
 
     playReq.idRequest = COUP;
     playReq.typeCoup = POS_PION;
