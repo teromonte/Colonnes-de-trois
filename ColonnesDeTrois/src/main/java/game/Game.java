@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import entities.Response;
 import strategies.Algo;
@@ -11,7 +10,6 @@ import utils.Pair;
 import utils.Utils;
 
 public class Game {
-
     private Square[][] table;
     private List<Piece> blanc;
     private List<Piece> noir;
@@ -36,40 +34,37 @@ public class Game {
     }
 
     public Response getNextMove(int color) {
+        Algo alg = new Algo(color, table);
         Response res;
-        Algo alog = new Algo(color, table);
-        Pair pair = alog.getPair();
-        Move m = alog.getMove();
 
-        if (blanc.size() != 0 || noir.size() != 0) {// still needs to place pieces in the table
-
-            if (pair == null) {// move type = passe
+        if (blanc.size() != 0 || noir.size() != 0) {
+            // still needs to place pieces in the table
+            Pair pair = alg.getPair();
+            if (pair == null) {
+                // move type = passe
                 res = new Response(2);
-            } else {// move type = place
+            } else {
+                // move type = place
                 if (Utils.BLANC == color) {
                     blanc.remove(blanc.size() - 1);
-                    table[pair.getX()][pair.getY()].addPiece(color);
+                    table[pair.getX()][pair.getY()].addPiece(Utils.BLANC);
                 } else {
                     noir.remove(noir.size() - 1);
                     table[pair.getX()][pair.getY()].addPiece(Utils.NOIR);
-
                 }
                 res = new Response(0, pair.getX(), pair.getY());
             }
-
         } else { // all pieces are already in the table
+            Move m = alg.getMove();
             if (Utils.BLANC == color) {
-                table[pair.getX()][pair.getY()].removeTop();
-                table[m.getMove().getX()][m.getMove().getY()].addPiece(color);
-
+                table[m.getPiece().getX()][m.getPiece().getY()].removeTop();
+                table[m.getMove().getX()][m.getMove().getY()].addPiece(Utils.BLANC);
             } else {
-                table[pair.getX()][pair.getY()].removeTop();
+                table[m.getPiece().getX()][m.getPiece().getY()].removeTop();
                 table[m.getMove().getX()][m.getMove().getY()].addPiece(Utils.NOIR);
-
             }
-            res = new Response(0, pair.getX(), pair.getY(), m.getMove().getX(), m.getMove().getY());
+            res = new Response(0, m.getPiece().getX(), m.getPiece().getY(), m.getMove().getX(), m.getMove().getY());
         }
-
         return res;
     }
 

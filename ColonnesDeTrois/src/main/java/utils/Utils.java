@@ -1,7 +1,5 @@
 package utils;
 
-import java.io.ObjectOutputStream.PutField;
-
 import game.Square;
 
 public class Utils {

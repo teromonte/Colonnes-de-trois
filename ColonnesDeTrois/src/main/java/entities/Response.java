@@ -15,7 +15,7 @@ public class Response {
         this.arrCol = arrCol;
         this.arrLg = arrLg;
     }
-    
+
     // PLACE
     public Response(int moveType, int depCol, int depLg) {
         this.moveType = moveType;
