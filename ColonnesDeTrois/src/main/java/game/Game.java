@@ -6,6 +6,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import entities.Response;
 import strategies.Algo;
+import utils.Move;
+import utils.Pair;
 import utils.Utils;
 
 public class Game {
@@ -35,48 +37,38 @@ public class Game {
 
     public Response getNextMove(int color) {
         Response res;
+        Algo alog = new Algo(color, table);
+        Pair pair = alog.getPair();
+        Move m = alog.getMove();
 
-        // if (matchRound == 0) {
-        // if (blanc.size() != 8) { // NOIR TURN
-        // } else if (blanc.size() == noir.size() && blanc.size() == 0) { // BLANC TURN
-        // }
-        // } else {
-        // }
-        // Algo d = new Algo(color, table);
-        // Move m = d.getMove();
-        // take cara if its a move or a place - TODO
-        // table[m.getPiece().getX()][m.getPiece().getY()].removeTop();
-        // table[m.getMove().getX()][m.getMove().getY()].addPiece(color);
-        // res = new Response(0,ThreadLocalRandom.current().nextInt(0, 3),
-        // ThreadLocalRandom.current().nextInt(0, 3));
+        if (blanc.size() != 0 || noir.size() != 0) {// still needs to place pieces in the table
 
-        if (counter == 3)
-            lin = 1;
-        if (counter == 6)
-            lin = 2;
-        if (counter == 9) {
-            lin = 0;
-            col = 1;
+            if (pair == null) {// move type = passe
+                res = new Response(2);
+            } else {// move type = place
+                if (Utils.BLANC == color) {
+                    blanc.remove(blanc.size() - 1);
+                    table[pair.getX()][pair.getY()].addPiece(color);
+                } else {
+                    noir.remove(noir.size() - 1);
+                    table[pair.getX()][pair.getY()].addPiece(Utils.NOIR);
+
+                }
+                res = new Response(0, pair.getX(), pair.getY());
+            }
+
+        } else { // all pieces are already in the table
+            if (Utils.BLANC == color) {
+                table[pair.getX()][pair.getY()].removeTop();
+                table[m.getMove().getX()][m.getMove().getY()].addPiece(color);
+
+            } else {
+                table[pair.getX()][pair.getY()].removeTop();
+                table[m.getMove().getX()][m.getMove().getY()].addPiece(Utils.NOIR);
+
+            }
+            res = new Response(0, pair.getX(), pair.getY(), m.getMove().getX(), m.getMove().getY());
         }
-        if (counter == 12)
-            lin = 1;
-        if (counter == 15)
-            lin = 2;
-        if (counter == 18) {
-            counter = 0;
-            lin = 0;
-            col = 0;
-        }
-
-        counter++;
-
-        if (color == Utils.BLANC) {
-            res = new Response(0, col, lin);
-        } else {
-            res = new Response(0, col, lin);
-        }
-
-        
 
         return res;
     }

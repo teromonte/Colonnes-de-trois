@@ -1,5 +1,7 @@
 package utils;
 
+import java.io.ObjectOutputStream.PutField;
+
 import game.Square;
 
 public class Utils {
@@ -14,6 +16,10 @@ public class Utils {
     public static final int RESET = 2;
     public static final int N_PLAYERS = 2;
 
+    public static boolean checkIfNeighbor(Pair p1, Pair p2) {
+
+        return Math.abs(p1.getX() - p2.getX()) < 2 && Math.abs(p1.getY() - p2.getY()) < 2;
+    }
 
     public static int countPieces(Square[][] table) {
         int res = 0;
