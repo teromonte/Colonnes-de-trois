@@ -1,5 +1,7 @@
 ColonnesDeTrois/target/
 c/bin/fonctionsTCP.o
 c/bin/protocolJava.o
+c/bin/functionsClient.o
+c/bin/functionsServer.o
 c/bin/clientTCP
 c/bin/serveurTCP

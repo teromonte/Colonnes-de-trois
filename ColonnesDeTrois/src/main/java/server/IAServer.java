@@ -18,37 +18,58 @@ public class IAServer {
 			return;
 		}
 
+		System.out.println("(javaAPI) Server started");
+
 		int portRecv = Integer.parseInt(args[0]);
+		ServerSocket srv = new ServerSocket(portRecv);
+		Socket[] socks = new Socket[Utils.N_PLAYERS];
+
+		socks[Utils.BLANC] = srv.accept();
+		InputStream is0 = socks[Utils.BLANC].getInputStream();
+		DataInputStream dis0 = new DataInputStream(is0);
+		OutputStream os0 = socks[Utils.BLANC].getOutputStream();
+		DataOutputStream dos0 = new DataOutputStream(os0);
+		System.out.println("(javaAPI) First player loged in: " +
+				socks[Utils.BLANC].getRemoteSocketAddress().toString());
+
+		socks[Utils.NOIR] = srv.accept();
+		InputStream is1 = socks[Utils.NOIR].getInputStream();
+		DataInputStream dis1 = new DataInputStream(is1);
+		OutputStream os1 = socks[Utils.NOIR].getOutputStream();
+		DataOutputStream dos1 = new DataOutputStream(os1);
+		System.out.println("(javaAPI) Second player loged in: " +
+				socks[Utils.NOIR].getRemoteSocketAddress().toString());
+
+		System.out.println("(javaAPI) Listening...");
 
 		Game game = new Game();
-		int farah = 0 ;
-
-		while (true) {
-			System.out.println("(javaAPI) Server started");
-
-			try (ServerSocket srv = new ServerSocket(portRecv)) {
-				while (true) {
-
-					Socket sock = srv.accept();
-					System.out.println("(javaAPI) Accept: " + sock.getRemoteSocketAddress().toString());
-
-					InputStream is = sock.getInputStream();
-					DataInputStream dis = new DataInputStream(is);
-					OutputStream os = sock.getOutputStream();
-					DataOutputStream dos = new DataOutputStream(os);
-
-					int input = Integer.reverseBytes(dis.readInt());
-
-					Response response = callAPI(input, game);
-
-					sendResponse(dos, response);
-
-					close(sock, dos, os, dis, is);
-				}
-			} catch (Exception e) {
-				System.out.println("Exception!");
+		int turn = 0;
+		int input = -1;
+		Response response;
+		while (input != 2) {
+			switch (turn) {
+				case Utils.BLANC:
+					input = Integer.reverseBytes(dis0.readInt());
+					response = callAPI(input, game);
+					sendResponse(dos0, response);
+					break;
+				case Utils.NOIR:
+					input = Integer.reverseBytes(dis1.readInt());
+					response = callAPI(input, game);
+					sendResponse(dos1, response);
+					break;
 			}
+			if (turn == 0)
+				turn = 1;
+			else
+				turn = 0;
 		}
+
+		srv.close();
+		close(socks[Utils.BLANC], dos0, os0, dis0, is0);
+		close(socks[Utils.NOIR], dos1, os1, dis1, is1);
+		System.out.println("(javaAPI) Server closed!");
+
 
 	}
 

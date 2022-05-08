@@ -1,6 +1,6 @@
-#include "../headers/protocolJava.h"
+#include "../headers/functionsServer.h"
 
-int requestAI(TPion color, int sockAI,struct ResponseAI *res)
+int fun2(TPion color, int sockAI, stru2 *res)
 {
   int err;
   int moveType;

@@ -1,6 +1,7 @@
 #include "../header/protocolColonne.h"
 #include "../lib/headers/fonctionsTCP.h"
 #include "../lib/headers/validation.h"
+#include "../lib/headers/functionsServer.h"
 
 #include <stdbool.h>
 #define MAX_CLIENT 2
@@ -10,7 +11,6 @@ int main(int argc, char **argv)
   int sockConx, /* descripteur socket connexion */
       port,     /* numero de port */
       sizeAddr, /* taille de l'adresse d'une socket */
-      err,
       nPlays0 = 0,
       nPlays1 = 0,
       match = 0,
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
   ////////////// RECEIVE PLAYERS REQUEST /////
   for (int i = 0; i < MAX_CLIENT; i++)
   {
-    err = recv(sockTrans[i], &matchReq, sizeof(TPartieReq), 0);
+    recv(sockTrans[i], &matchReq, sizeof(TPartieReq), 0);
     switch (matchReq.idRequest)
     {
     case PARTIE:
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
       printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom2, matchRep.coul, i);
     }
     matchRep.err = ERR_OK;
-    err = send(sockTrans[i], &matchRep, sizeof(TPartieRep), 0);
+    send(sockTrans[i], &matchRep, sizeof(TPartieRep), 0);
   }
 
   ////////////// GAME START ////////////
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     {
       // receive coup
       printf("(serveur) Receiving the play request from player %d\n", turn);
-      err = recv(sockTrans[turn], &playReq, sizeof(TCoupReq), 0);
+      recv(sockTrans[turn], &playReq, sizeof(TCoupReq), 0);
 
       // validate coup
       verif = validationCoup(turn + 1, playReq, &playRep.propCoup);
@@ -156,7 +156,7 @@ int main(int argc, char **argv)
       printf("(serveur) Sending play acknolegment to both players!\n");
       for (int i = 0; i < 2; i++)
       {
-        err = send(sockTrans[i], &playRep, sizeof(TCoupRep), 0);
+        send(sockTrans[i], &playRep, sizeof(TCoupRep), 0);
       }
 
       if (turn == 0 && matchRunning)
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
 
       printf("\n");
     }
-    
+
     match++;
     nPlays1 = 0;
     nPlays0 = 0;
@@ -181,7 +181,6 @@ int main(int argc, char **argv)
     int temp = sockTrans[0];
     sockTrans[0] = sockTrans[1];
     sockTrans[1] = temp;
-    
   }
 
   ////////////// CLOSE COMMUNICATION ////////
@@ -191,7 +190,7 @@ int main(int argc, char **argv)
     close(sockTrans[i]);
     close(sockConx);
   }
-  
-  printf("THE END\n");
+
+  printf("GAME FINISHED, TURNING OFF THE SERVER!!!\n");
   return 0;
 }

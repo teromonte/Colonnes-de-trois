@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun May  8 10:06:28 2022
+# Make data base, printed on Sun May  8 16:42:02 2022
 
 # Variables
 
@@ -187,6 +187,7 @@ APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # environment
+ 
 SNAP_CONTEXT = w0VnHPUR_c35EOem4jl5g4yIDuQSrJ7eQYsYRkVQDg99bzu0y-fq
 # environment
 CONDA_PROMPT_MODIFIER = (base) 
@@ -311,7 +312,6 @@ LC_ALL = C
 # environment
 CONDA_PYTHON_EXE = /home/thiago/anaconda3/bin/python
 # environment
- 
 QT4_IM_MODULE = ibus
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
@@ -406,6 +406,6 @@ GNUmakefile:
 # strcache performance: lookups = 20 / hit rate = 15%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/20=5%
-# Finished Make data base on Sun May  8 10:06:28 2022
+# Finished Make data base on Sun May  8 16:42:02 2022
 
  

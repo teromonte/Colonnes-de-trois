@@ -12,6 +12,8 @@ public class Utils {
     public static final int PLACE = 0;
     public static final int MOVE = 1;
     public static final int RESET = 2;
+    public static final int N_PLAYERS = 2;
+
 
     public static int countPieces(Square[][] table) {
         int res = 0;
