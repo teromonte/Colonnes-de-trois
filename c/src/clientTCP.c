@@ -52,7 +52,7 @@ int main(int argc, char **argv)
   printf("(Client) Participation request sent in name of %s!\n", participationReq.nomJoueur);
   err = send(sockC, &participationReq, sizeof(TPartieReq), 0);
 
-  ///////// RECEIVE PARTICIPATION RESPONSE//////////
+  ///////// RECICIPATION ACK ///EIVE PART///////
   err = recv(sockC, &participationRep, sizeof(TPartieRep), 0);
   switch (participationRep.err)
   {
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
     printf("\n");
 
     // Do first play of the match
-    if (playerColor == BLANC && matchIsOn)
+    if ((playerColor == BLANC && matchNumber == 0 && matchIsOn) || (playerColor == NOIR && matchNumber == 1 && matchIsOn))
     {
       sockAI = socketClient(nomMachServ, portAI);
       err = requestAI(playerColor, sockAI, &javaAPIRes);
@@ -291,17 +291,10 @@ int main(int argc, char **argv)
     }
     // Prepare for next match
 
-    if (matchNumber == 0)
-    {
-      if (playerColor == BLANC)
-        playerColor = NOIR;
-      else
-        playerColor = BLANC;
-    }
-
     matchIsOn = true;
     matchNumber++;
   }
+
   printf("GAME FINISHED, TURNING OFF THE SERVER\n");
   close(sockC);
   return 0;

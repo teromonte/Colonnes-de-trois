@@ -19,8 +19,8 @@ public class Algo {
 
     private List<Move> calcValisMoves() {
         List<Move> res;
-        if(Utils.countPieces(table) <= 16) {
-            
+        if (Utils.countPieces(table) <= 16) {
+
         } else {
 
         }

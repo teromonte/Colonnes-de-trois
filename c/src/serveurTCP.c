@@ -99,6 +99,7 @@ int main(int argc, char **argv)
   }
 
   ////////////// GAME START ////////////
+
   while (match < NUM_OF_MATCHES) // server
   {
     printf("\n");
@@ -109,7 +110,7 @@ int main(int argc, char **argv)
 
     int turn = 0;
 
-    while (nPlays0 < 200 && nPlays1 < 200 && matchRunning)
+    while (nPlays0 < 2000 && nPlays1 < 2000 && matchRunning)
     {
       // receive coup
       printf("(serveur) Receiving the play request from player %d\n", turn);
@@ -171,18 +172,17 @@ int main(int argc, char **argv)
 
       printf("\n");
     }
+    
     match++;
     nPlays1 = 0;
     nPlays0 = 0;
     matchRunning = true;
-    
+
     int temp = sockTrans[0];
     sockTrans[0] = sockTrans[1];
     sockTrans[1] = temp;
     
   }
-
-  printf("THE END\n");
 
   ////////////// CLOSE COMMUNICATION ////////
   for (int i = 0; i < MAX_CLIENT; i++)
@@ -191,6 +191,7 @@ int main(int argc, char **argv)
     close(sockTrans[i]);
     close(sockConx);
   }
-
+  
+  printf("THE END\n");
   return 0;
 }

@@ -35,7 +35,7 @@ public class Game {
 
     public Response getNextMove(int color) {
         Response res;
-        
+
         // if (matchRound == 0) {
         // if (blanc.size() != 8) { // NOIR TURN
         // } else if (blanc.size() == noir.size() && blanc.size() == 0) { // BLANC TURN
@@ -62,8 +62,11 @@ public class Game {
             lin = 1;
         if (counter == 15)
             lin = 2;
-        if (counter == 18)
+        if (counter == 18) {
             counter = 0;
+            lin = 0;
+            col = 0;
+        }
 
         counter++;
 
@@ -72,6 +75,8 @@ public class Game {
         } else {
             res = new Response(0, col, lin);
         }
+
+        
 
         return res;
     }
