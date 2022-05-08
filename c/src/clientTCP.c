@@ -16,8 +16,7 @@ int main(int argc, char **argv)
 
   bool matchIsOn = true;
 
-  char chaine[TNOM],
-      *nomMachServ;
+  char *nomMachServ;
 
   ////////////// VERIFY INPUT ////////////
   if (argc != 4)
@@ -38,20 +37,12 @@ int main(int argc, char **argv)
   printf("(Client) Connected to JAVA Server!\n");
 
   /////////////// GET NAME ///////////
+  char chaine[TNOM];
   printf("(Client) To play, type the player name!\n");
   scanf("%s", chaine);
 
-  ///////// ASK FOR PARTICIPATION //////////
-  TPartieReq participationReq;
-  strcpy(participationReq.nomJoueur, chaine);
-  participationReq.idRequest = PARTIE;
-  send(sockC, &participationReq, sizeof(TPartieReq), 0);
-  printf("(Client) Participation request sent in name of %s!\n", participationReq.nomJoueur);
-
-  ///////// RECIEIVE PARTICIPATION ACK //////////
-  TPartieRep participationRes;
-  recv(sockC, &participationRes, sizeof(TPartieRep), 0);
-  playerColor = handleParticipationAck(participationRes);
+  ////////////// DO HANDSHAKE ////////////
+  playerColor = doHandshake(sockC, chaine);
 
   /////////// PLAYS START ////////////////
   while (matchNumber < NUM_OF_MATCHES)

@@ -173,6 +173,21 @@ bool makeMove(int playerColor, int sockAI, int sockC)
   // Receive & Treat OwnPlayValidation
   TCoupRep playRes1;
   recv(sockC, &playRes1, sizeof(TCoupRep), 0);
-  
+
   return handleOwnPlayValidation(playRes1);
+}
+
+int doHandshake(int sockC, char chaine[])
+{
+  ///////// ASK FOR PARTICIPATION //////////
+  TPartieReq participationReq;
+  strcpy(participationReq.nomJoueur, chaine);
+  participationReq.idRequest = PARTIE;
+  send(sockC, &participationReq, sizeof(TPartieReq), 0);
+  printf("(Client) Participation request sent in name of %s!\n", participationReq.nomJoueur);
+
+  ///////// RECIEIVE PARTICIPATION ACK //////////
+  TPartieRep participationRes;
+  recv(sockC, &participationRes, sizeof(TPartieRep), 0);
+  return handleParticipationAck(participationRes);
 }

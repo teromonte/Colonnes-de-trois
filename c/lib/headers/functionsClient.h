@@ -3,13 +3,13 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <string.h>
 #include "../../header/protocolColonne.h"
 #include "../../header/responseAI.h"
 #include "protocolJava.h"
 
 #ifndef FUNCTIONSCLIENT_H
 #define FUNCTIONSCLIENT_H
-
 
 // Handler
 int handleParticipationAck(TPartieRep participationRes);
@@ -25,5 +25,7 @@ int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, TCoupReq *p
 
 // make move
 bool makeMove(int playerColor, int sockAI, int sockC);
+
+int doHandshake(int sockC, char *chaine);
 
 #endif

@@ -43,6 +43,7 @@ int doHandshake(int sockTrans[])
 {
   ////////////// RECEIVE PLAYERS REQUEST /////
   char nom1[TNOM], nom2[TNOM];
+
   for (int i = 0; i < MAX_CLIENT; i++)
   {
     TPartieReq matchReq;
@@ -67,25 +68,27 @@ int doHandshake(int sockTrans[])
       break;
     }
   }
-  return 1;
 
   ////////////// SEND ACK TO PLAYERS ////////
   for (int i = 0; i < MAX_CLIENT; i++)
   {
     TPartieRep matchRep;
+    matchRep.err = ERR_OK;
     if (i == 0)
     {
       matchRep.coul = BLANC;
       strcpy(matchRep.nomAdvers, nom2);
-      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom1, matchRep.coul, i);
+      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n",
+             nom1, matchRep.coul, i);
     }
     else
     {
       matchRep.coul = NOIR;
       strcpy(matchRep.nomAdvers, nom1);
-      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom2, matchRep.coul, i);
+      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n",
+             nom2, matchRep.coul, i);
     }
-    matchRep.err = ERR_OK;
     send(sockTrans[i], &matchRep, sizeof(TPartieRep), 0);
   }
+  return 1;
 }

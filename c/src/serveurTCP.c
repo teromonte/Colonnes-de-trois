@@ -74,15 +74,19 @@ int main(int argc, char **argv)
       for (int i = 0; i < 2; i++)
         send(sockTrans[i], &playRep, sizeof(TCoupRep), 0);
 
-      if (turn == 0 && matchRunning)
+      // change turns and increment play
+      if (matchRunning)
       {
-        nPlays0++;
-        turn = 1;
-      }
-      else if (turn == 1 && matchRunning)
-      {
-        nPlays1++;
-        turn = 0;
+        if (turn == 0)
+        {
+          nPlays0++;
+          turn = 1;
+        }
+        else
+        {
+          nPlays1++;
+          turn = 0;
+        }
       }
 
       printf("\n");
