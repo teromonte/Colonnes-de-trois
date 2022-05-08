@@ -1,26 +1,91 @@
 #include "../headers/functionsServer.h"
 
-int fun2(TPion color, int sockAI, stru2 *res)
+bool buildPlayResponse(bool verif, int turn, TCoupRep *playRep)
 {
-  int err;
-  int moveType;
-  int depCol, depLg, arrCol, arrLg;
+  bool matchRunning = true;
+  switch (verif)
+  {
+  case true:
+    playRep->err = ERR_OK;
+    switch (playRep->propCoup)
+    {
+    case CONT:
+      printf("(serveur) Play from player %d resulted in CONT\n", turn);
+      playRep->validCoup = VALID;
+      break;
+    case NULLE:
+      printf("(serveur) Play from player %d resulted in NULLE\n", turn);
+      playRep->validCoup = TIMEOUT;
+      matchRunning = false;
+      break;
+    case GAGNE:
+      printf("(serveur) Play from player %d resulted in GAGNE\n", turn);
+      playRep->validCoup = VALID;
+      matchRunning = false;
+      break;
+    case PERDU:
+      printf("(serveur) Play from player %d resulted in PERDU\n", turn);
+      playRep->validCoup = TRICHE;
+      matchRunning = false;
+      break;
+    }
+    break;
+  case false:
+    playRep->err = ERR_COUP;
+    matchRunning = false;
+    printf("(serveur) Play from player %d is NOT VALID!\n", turn);
+    break;
+  }
+  return matchRunning;
+}
 
-  err = send(sockAI, &color, sizeof(int), 0);
+int doHandshake(int sockTrans[])
+{
+  ////////////// RECEIVE PLAYERS REQUEST /////
+  char nom1[TNOM], nom2[TNOM];
+  for (int i = 0; i < MAX_CLIENT; i++)
+  {
+    TPartieReq matchReq;
+    recv(sockTrans[i], &matchReq, sizeof(TPartieReq), 0);
+    switch (matchReq.idRequest)
+    {
+    case PARTIE:
+      if (i == 0)
+      {
+        strcpy(nom1, matchReq.nomJoueur);
+        printf("(serveurTCP) Name received from player %d: %s.\n", i, nom1);
+      }
+      else
+      {
+        strcpy(nom2, matchReq.nomJoueur);
+        printf("(serveurTCP) Name received from player %d: %s.\n", i, nom2);
+      }
+      break;
+    case COUP:
+      printf("(serveurTCP) Received COUP request instead of PARTIE, going down\n");
+      exit(0);
+      break;
+    }
+  }
+  return 1;
 
-  err = recv(sockAI, &moveType, sizeof(int), 0);
-  err = recv(sockAI, &depCol, sizeof(int), 0);
-  err = recv(sockAI, &depLg, sizeof(int), 0);
-  err = recv(sockAI, &arrCol, sizeof(int), 0);
-  err = recv(sockAI, &arrLg, sizeof(int), 0);
-
-  TCase dep = {.col = depCol, .lg = depLg};
-  TCase arr = {.col = arrCol, .lg = arrLg};
-  TDeplPion displace = {.caseDep = dep, .caseArr = arr};
-
-  res->typeMove = moveType;
-  res->placeMove = dep;
-  res->displaceMove = displace;
-
-  return err;
+  ////////////// SEND ACK TO PLAYERS ////////
+  for (int i = 0; i < MAX_CLIENT; i++)
+  {
+    TPartieRep matchRep;
+    if (i == 0)
+    {
+      matchRep.coul = BLANC;
+      strcpy(matchRep.nomAdvers, nom2);
+      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom1, matchRep.coul, i);
+    }
+    else
+    {
+      matchRep.coul = NOIR;
+      strcpy(matchRep.nomAdvers, nom1);
+      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom2, matchRep.coul, i);
+    }
+    matchRep.err = ERR_OK;
+    send(sockTrans[i], &matchRep, sizeof(TPartieRep), 0);
+  }
 }

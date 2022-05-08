@@ -1,18 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <string.h>
 #include "../../header/protocolColonne.h"
 
-/*
- * Structure responseAPI
- */
-typedef struct
-{
-  TCoup typeMove;
-  TCase placeMove;
-  TDeplPion displaceMove;
-} stru2;
+#ifndef FUNCTIONSSERVER_H
+#define FUNCTIONSSERVER_H
 
-// request play
-int fun2(TPion color, int sockAI, stru2 *res);
+#define MAX_CLIENT 2
+
+// buildPlayResponse
+bool buildPlayResponse(bool verif, int turn, TCoupRep *playRep);
+
+int doHandshake(int sockTrans[]);
+
+#endif

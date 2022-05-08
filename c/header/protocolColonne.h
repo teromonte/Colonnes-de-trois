@@ -10,8 +10,8 @@
  *
 */
 
-#ifndef _protocolColonne_h
-#define _protocolColonne_h
+#ifndef PROTOCOLCOLONNE_H
+#define PROTOCOLCOLONNE_H
 
 /* Taille des chaines de caracteres pour les noms */
 #define TNOM 30

@@ -1,7 +1,7 @@
+#include "../lib/headers/functionsServer.h"
+#include "../lib/headers/validation.h"
 #include "../header/protocolColonne.h"
 #include "../lib/headers/fonctionsTCP.h"
-#include "../lib/headers/validation.h"
-#include "../lib/headers/functionsServer.h"
 
 #include <stdbool.h>
 #define MAX_CLIENT 2
@@ -21,26 +21,15 @@ int main(int argc, char **argv)
   bool matchRunning = true,
        verif;
 
-  char nom1[TNOM],
-      nom2[TNOM];
-
-  TPartieReq matchReq;
-  TPartieRep matchRep;
-  TCoupReq playReq;
-  TCoupRep playRep;
-
   ////////////// VERIFY INPUT ////////////
   if (argc != 2)
   {
     printf("usage : %s port\n", argv[0]);
     return -1;
   }
-  else
-  {
-    port = atoi(argv[1]);
-    sockConx = socketServeur(port);
-    sizeAddr = sizeof(struct sockaddr_in);
-  }
+  port = atoi(argv[1]);
+  sockConx = socketServeur(port);
+  sizeAddr = sizeof(struct sockaddr_in);
 
   ////////////// WAIT CONNECTION ////////////
   for (int i = 0; i < MAX_CLIENT; i++)
@@ -54,52 +43,10 @@ int main(int argc, char **argv)
     printf("(serveurTCP) Player number %d, connection accepted\n", i);
   }
 
-  ////////////// RECEIVE PLAYERS REQUEST /////
-  for (int i = 0; i < MAX_CLIENT; i++)
-  {
-    recv(sockTrans[i], &matchReq, sizeof(TPartieReq), 0);
-    switch (matchReq.idRequest)
-    {
-    case PARTIE:
-      if (i == 0)
-      {
-        strcpy(nom1, matchReq.nomJoueur);
-        printf("(serveurTCP) Name received from player %d: %s.\n", i, nom1);
-      }
-      else
-      {
-        strcpy(nom2, matchReq.nomJoueur);
-        printf("(serveurTCP) Name received from player %d: %s.\n", i, nom2);
-      }
-      break;
-    case COUP:
-      printf("(serveurTCP) Received COUP request instead of PARTIE, going down\n");
-      return -1;
-      break;
-    }
-  }
-
-  ////////////// SEND ACK TO PLAYERS ////////
-  for (int i = 0; i < MAX_CLIENT; i++)
-  {
-    if (i == 0)
-    {
-      matchRep.coul = BLANC;
-      strcpy(matchRep.nomAdvers, nom2);
-      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom1, matchRep.coul, i);
-    }
-    else
-    {
-      matchRep.coul = NOIR;
-      strcpy(matchRep.nomAdvers, nom1);
-      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n", nom2, matchRep.coul, i);
-    }
-    matchRep.err = ERR_OK;
-    send(sockTrans[i], &matchRep, sizeof(TPartieRep), 0);
-  }
+  ////////////// DO HANDSHAKE ////////////
+  doHandshake(sockTrans);
 
   ////////////// GAME START ////////////
-
   while (match < NUM_OF_MATCHES) // server
   {
     printf("\n");
@@ -113,51 +60,19 @@ int main(int argc, char **argv)
     while (nPlays0 < 2000 && nPlays1 < 2000 && matchRunning)
     {
       // receive coup
+      TCoupReq playReq;
       printf("(serveur) Receiving the play request from player %d\n", turn);
       recv(sockTrans[turn], &playReq, sizeof(TCoupReq), 0);
 
       // validate coup
+      TCoupRep playRep;
       verif = validationCoup(turn + 1, playReq, &playRep.propCoup);
-      switch (verif)
-      {
-      case true:
-        playRep.err = ERR_OK;
-        switch (playRep.propCoup)
-        {
-        case CONT:
-          printf("(serveur) Play from player %d resulted in CONT\n", turn);
-          playRep.validCoup = VALID;
-          break;
-        case NULLE:
-          printf("(serveur) Play from player %d resulted in NULLE\n", turn);
-          playRep.validCoup = TIMEOUT;
-          matchRunning = false;
-          break;
-        case GAGNE:
-          printf("(serveur) Play from player %d resulted in GAGNE\n", turn);
-          playRep.validCoup = VALID;
-          matchRunning = false;
-          break;
-        case PERDU:
-          printf("(serveur) Play from player %d resulted in PERDU\n", turn);
-          playRep.validCoup = TRICHE;
-          matchRunning = false;
-          break;
-        }
-        break;
-      case false:
-        playRep.err = ERR_COUP;
-        matchRunning = false;
-        printf("(serveur) Play from player %d is NOT VALID!\n", turn);
-        break;
-      }
+      matchRunning = buildPlayResponse(verif, turn, &playRep);
 
       // send ack to players
       printf("(serveur) Sending play acknolegment to both players!\n");
       for (int i = 0; i < 2; i++)
-      {
         send(sockTrans[i], &playRep, sizeof(TCoupRep), 0);
-      }
 
       if (turn == 0 && matchRunning)
       {
