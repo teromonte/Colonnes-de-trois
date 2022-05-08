@@ -7,6 +7,7 @@ import utils.*;
 public class Square {
     private List<Piece> pieces;
     private int size;
+    int thiago;
 
     public Square() {
         pieces = new ArrayList<Piece>(Utils.MAX_PILE_SIZE);
