@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat May  7 02:00:08 2022
+# Make data base, printed on Sun May  8 10:06:28 2022
 
 # Variables
 
@@ -105,7 +105,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GOLANG_EXECUTABLE = go
 # environment
-SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/3293,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/3293
+SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/2963,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/2963
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -139,7 +139,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 420073
+GIO_LAUNCHED_DESKTOP_FILE_PID = 5143
 # automatic
 %F = $(notdir $%)
 # environment
@@ -161,7 +161,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 3435
+SSH_AGENT_PID = 3119
 # environment
 PKG_CONFIG_PATH = /home/thiago/.opam/default/lib/pkgconfig:/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig/
 # environment
@@ -227,7 +227,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/95
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-45ded4ce-b49c-425e-8836-30b2ef9f8ae8.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-1180ce8d-966e-4e1e-b951-60a753bdc599.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -287,7 +287,6 @@ LC_PAPER = pt_PT.UTF-8
 # environment
 CINNAMON_VERSION = 5.0.7
 # environment
- 
 LC_IDENTIFICATION = pt_PT.UTF-8
 # environment
 HOMEBREW_REPOSITORY = /home/linuxbrew/.linuxbrew/Homebrew
@@ -312,6 +311,7 @@ LC_ALL = C
 # environment
 CONDA_PYTHON_EXE = /home/thiago/anaconda3/bin/python
 # environment
+ 
 QT4_IM_MODULE = ibus
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
@@ -336,7 +336,7 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 420119
+VSCODE_PID = 5189
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
@@ -348,9 +348,9 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 66306, inode 1850581): 8 files, no impossibilities.
+# . (device 66306, inode 1850581): 9 files, no impossibilities.
 
-# 8 files, no impossibilities in 1 directories.
+# 9 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -400,12 +400,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 16 / storage = 138 B / avg = 8 B
-# current buf: size = 8162 B / used = 138 B / count = 16 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 17 / storage = 148 B / avg = 8 B
+# current buf: size = 8162 B / used = 148 B / count = 17 / avg = 8 B
 
-# strcache performance: lookups = 19 / hit rate = 15%
+# strcache performance: lookups = 20 / hit rate = 15%
 # hash-table stats:
-# Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
-# Finished Make data base on Sat May  7 02:00:08 2022
+# Load=17/8192=0%, Rehash=0, Collisions=1/20=5%
+# Finished Make data base on Sun May  8 10:06:28 2022
 
  

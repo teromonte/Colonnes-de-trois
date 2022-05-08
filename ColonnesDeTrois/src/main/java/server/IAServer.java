@@ -29,7 +29,7 @@ public class IAServer {
 				while (true) {
 
 					Socket sock = srv.accept();
-					System.out.println("Accept: " + sock.getRemoteSocketAddress().toString());
+					System.out.println("(javaAPI) Accept: " + sock.getRemoteSocketAddress().toString());
 
 					InputStream is = sock.getInputStream();
 					DataInputStream dis = new DataInputStream(is);
@@ -96,6 +96,5 @@ public class IAServer {
 		dis.close();
 		dos.close();
 		sock.close();
-		System.out.println("(javaAPI)------CYCLE ------");
 	}
 }
