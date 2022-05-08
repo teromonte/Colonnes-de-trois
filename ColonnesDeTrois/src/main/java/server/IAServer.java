@@ -70,7 +70,6 @@ public class IAServer {
 		close(socks[Utils.NOIR], dos1, os1, dis1, is1);
 		System.out.println("(javaAPI) Server closed!");
 
-
 	}
 
 	private static Response callAPI(int input, Game game) {

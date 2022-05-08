@@ -26,6 +26,7 @@ int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, TCoupReq *p
 // make move
 bool makeMove(int playerColor, int sockAI, int sockC);
 
+// Do handshake
 int doHandshake(int sockC, char *chaine);
 
 #endif
