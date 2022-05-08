@@ -12,7 +12,8 @@ int main(int argc, char **argv)
       portAI,
       err,
       playerColor,
-      matchNumber = 0;
+      matchNumber = 0 ,
+      test ;
 
   bool matchIsOn = true;
 

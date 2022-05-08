@@ -21,6 +21,7 @@ public class IAServer {
 		int portRecv = Integer.parseInt(args[0]);
 
 		Game game = new Game();
+		int farah = 0 ;
 
 		while (true) {
 			System.out.println("(javaAPI) Server started");
