@@ -31,10 +31,6 @@ int main(int argc, char **argv)
   sockC = socketClient(nomMachServ, portC);
   printf("(Client) Connected to C Server!\n");
 
-  ////////////// CONNECT TO JAVA SERVER ////////////
-  sockAI = socketClient(nomMachServ, portAI);
-  printf("(Client) Connected to JAVA Server!\n");
-
   /////////////// GET NAME ///////////
   char chaine[TNOM];
   printf("(Client) To play, type the player name!\n");
@@ -42,6 +38,11 @@ int main(int argc, char **argv)
 
   ////////////// DO HANDSHAKE ////////////
   playerColor = doHandshake(sockC, chaine);
+
+  ////////////// CONNECT TO JAVA SERVER AND START IT ////////////
+  sockAI = socketClient(nomMachServ, portAI);
+  printf("(Client) Connected to JAVA Server!\n");
+  startAI(sockAI, playerColor);
 
   /////////// PLAYS START ////////////////
   while (matchNumber < NUM_OF_MATCHES)
@@ -69,7 +70,7 @@ int main(int argc, char **argv)
       // Receive & Treat Oponent Play information
       struct TCoupReq playReq;
       recv(sockC, &playReq, sizeof(struct TCoupReq), 0);
-      handleOponentPlayInformation(playerColor , sockAI,  playReq);
+      handleOponentPlayInformation(playerColor, sockAI, playReq);
 
       // Make new play
       if (matchIsOn)

@@ -13,7 +13,7 @@ public class Game {
     private Square[][] table;
     private List<Piece> blanc;
     private List<Piece> noir;
-    private int matchRound;
+    private int matchRound; // maybe we use that to know who starts the game
     private int lin = 0;
     private int col = 0;
     private int counter = 0;

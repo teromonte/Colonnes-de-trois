@@ -13,8 +13,11 @@
 // request play
 int requestAI(enum TPion color, int sockAI, struct ResponseAI *res);
 
-// initialise AI
+// Go to next match AI
 int setNextStateAI(int sockAI);
+
+// Start request to AI
+int startAI(int sockAI, int playerColor);
 
 // buildPlayRequest
 int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCoupReq *playReq);
@@ -22,7 +25,10 @@ int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCou
 // make move
 bool makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1);
 
-// send info coup advers
+// handleOponentPlayInformation
 void handleOponentPlayInformation(enum TPion color, int sockAI, struct TCoupReq playReq);
+
+// send opponent move to ai
+int sendOpponentMoveToAI(enum TPion color, int sockAI, struct TCoupReq playReq);
 
 #endif

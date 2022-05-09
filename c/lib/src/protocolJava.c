@@ -25,20 +25,46 @@ int requestAI(enum TPion color, int sockAI, struct ResponseAI *res)
   return err;
 }
 
-void handleOponentPlayInformation(enum TPion color, int sockAI, struct TCoupReq playReq)
+int sendOpponentMoveToAI(enum TPion color, int sockAI, struct TCoupReq playReq)
 {
+  int err;
   int moveType = playReq.typeCoup;
   int depCol = playReq.action.deplPion.caseDep.col;
   int depLg = playReq.action.deplPion.caseDep.lg;
   int arrCol = playReq.action.posPion.col;
   int arrLg = playReq.action.posPion.lg;
 
-  send(sockAI, &color, sizeof(int), 0);
-  send(sockAI, &moveType, sizeof(int), 0);
-  send(sockAI, &depCol, sizeof(int), 0);
-  send(sockAI, &depLg, sizeof(int), 0);
-  send(sockAI, &arrCol, sizeof(int), 0);
-  send(sockAI, &arrLg, sizeof(int), 0);
+  err = send(sockAI, &color, sizeof(int), 0);
+  err = send(sockAI, &moveType, sizeof(int), 0);
+  err = send(sockAI, &depCol, sizeof(int), 0);
+  err = send(sockAI, &depLg, sizeof(int), 0);
+  err = send(sockAI, &arrCol, sizeof(int), 0);
+  err = send(sockAI, &arrLg, sizeof(int), 0);
+  return err;
+}
+
+void handleOponentPlayInformation(enum TPion color, int sockAI, struct TCoupReq playReq)
+{
+  int err;
+  err = sendOpponentMoveToAI(color, sockAI, playReq);
+  if (err > 0)
+  {
+    printf("(Client) Opponent play sent to AI!");
+  }
+  else
+  {
+    printf("(Client) Fail to send Opponent play to AI!");
+    exit(0);
+  }
+}
+
+int startAI(int sockAI, int playerColor)
+{
+  int err;
+  err = send(sockAI, &playerColor, sizeof(int), 0);
+  printf("(Client) Asking Server AI to START!");
+
+  return err;
 }
 
 int setNextStateAI(int sockAI)

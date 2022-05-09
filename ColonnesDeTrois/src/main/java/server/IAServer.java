@@ -51,12 +51,10 @@ public class IAServer {
 						response = game.getNextMove(input);
 						sendResponse(dos, response);
 					} else {
-						System.out.println("(javaAPI) Processing NOIR request.");
 						getOpponentMoveAndSave(input, dis);
 					}
 				} else {
 					if (matchNum == Utils.FIRST_MATCH) {
-						System.out.println("(javaAPI) Processing NOIR request.");
 						getOpponentMoveAndSave(input, dis);
 					} else {
 						System.out.println("(javaAPI) Processing BLANC request.");
@@ -75,11 +73,32 @@ public class IAServer {
 		System.out.println("(javaAPI) Server closed!");
 	}
 
-	private static void getOpponentMoveAndSave(int input, DataInputStream dis) throws IOException {
-		input = Integer.reverseBytes(dis.readInt());
-		input = Integer.reverseBytes(dis.readInt());
-		input = Integer.reverseBytes(dis.readInt());
-		input = Integer.reverseBytes(dis.readInt());
+	private static Response getOpponentMoveAndSave(int color, DataInputStream dis) throws IOException {
+
+		int moveType = Integer.reverseBytes(dis.readInt());
+		int depCol = Integer.reverseBytes(dis.readInt());
+		int depLg = Integer.reverseBytes(dis.readInt());
+		int arrCol = Integer.reverseBytes(dis.readInt());
+		int arrLg = Integer.reverseBytes(dis.readInt());
+
+		Response r = null;
+
+		switch (moveType) {
+			case Utils.PLACE:
+				System.out.println("(javaAPI) Received opponent play. PLACE!");
+				r = new Response(moveType, depCol, depLg);
+				break;
+			case Utils.MOVE:
+				System.out.println("(javaAPI) Received opponent play. MOVE!");
+				r = new Response(moveType, depCol, depLg, arrCol, arrLg);
+				break;
+			case Utils.PASSE:
+				System.out.println("(javaAPI) Received opponent play. PASSE!");
+				r = new Response(moveType);
+				break;
+
+		}
+		return r;
 
 	}
 
@@ -90,13 +109,13 @@ public class IAServer {
 		}
 		switch (response.moveType) {
 			case Utils.PLACE:
-				System.out.println("(javaAPI) Sent response. PLACE");
+				System.out.println("(javaAPI) Sent response. PLACE!");
 				break;
 			case Utils.MOVE:
-				System.out.println("(javaAPI) Sent response. MOVE");
+				System.out.println("(javaAPI) Sent response. MOVE!");
 				break;
-			case Utils.SET:
-				System.out.println("(javaAPI) Initialise AI!");
+			case Utils.PASSE:
+				System.out.println("(javaAPI) Sent response. PASSE!");
 				break;
 		}
 		dos.writeInt(Integer.reverseBytes(response.moveType));

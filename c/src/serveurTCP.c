@@ -73,6 +73,8 @@ int main(int argc, char **argv)
       printf("(serveur) Sending play acknolegment to both players!\n");
       for (int i = 0; i < 2; i++)
         send(sockTrans[i], &playRep, sizeof(struct TCoupRep), 0);
+      
+      // Send what was played to the opponent
       if (verif && matchRunning)
       {
         if (turn == 0)
