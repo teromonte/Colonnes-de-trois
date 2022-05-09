@@ -44,6 +44,7 @@ int main(int argc, char **argv)
   /////////// PLAYS START ////////////////
   int matchNumber = 0;
   bool matchIsOn = true;
+
   while (matchNumber < NUM_OF_MATCHES)
   {
     printf("\n");
@@ -51,20 +52,21 @@ int main(int argc, char **argv)
     printf("\n");
 
     // Do first play of the match
-    if ((playerColor == 1 && matchNumber == 1) || (playerColor == 0 && matchNumber == 0))
+    if (((playerColor == BLANC && matchNumber == 0 && matchIsOn) ||
+        (playerColor == NOIR && matchNumber == 1 && matchIsOn)))
     {
-      struct TCoupRep playRes;
-      makeMove(playerColor, sockAI, sockC, &playRes);
-      matchIsOn = handleOwnPlayValidation(playRes);
+      struct TCoupRep plasyRes;
+      makeMove(playerColor, sockAI, sockC, &plasyRes);
+      matchIsOn = handleOwnPlayValidation(plasyRes);
     }
 
     // Start to send plays
     while (matchIsOn)
     {
       // Receive & Treat Oponent Play Validation
-      struct TCoupRep playRes;
-      recv(sockC, &playRes, sizeof(struct TCoupRep), 0);
-      matchIsOn = handleOponentPlayValidation(playRes);
+      struct TCoupRep playRes1;
+      recv(sockC, &playRes1, sizeof(struct TCoupRep), 0);
+      matchIsOn = handleOponentPlayValidation(playRes1);
 
       // Make new play
       if (matchIsOn)

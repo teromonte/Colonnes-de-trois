@@ -22,17 +22,17 @@
 /* Identificateurs des requetes */
 enum TIdRequest
 {
-  PARTIE,
-  COUP
+  PARTIE = 0,
+  COUP = 1
 };
 
 /* Types d'erreur */
 enum TErreur
 {
-  ERR_OK,     /* Validation de la requete */
-  ERR_PARTIE, /* Erreur sur la demande de partie */
-  ERR_COUP,   /* Erreur sur le coup joue */
-  ERR_TYP     /* Erreur sur le type de requete */
+  ERR_OK = 0,     /* Validation de la requete */
+  ERR_PARTIE = 1, /* Erreur sur la demande de partie */
+  ERR_COUP = 2,   /* Erreur sur le coup joue */
+  ERR_TYP = 3     /* Erreur sur le type de requete */
 };
 
 /*
@@ -41,7 +41,7 @@ enum TErreur
 struct TPartieReq
 {
   enum TIdRequest idRequest; /* Identificateur de la requete */
-  char nomJoueur[TNOM]; /* Nom du joueur */
+  char nomJoueur[TNOM];      /* Nom du joueur */
 };
 
 enum TPion
@@ -52,8 +52,8 @@ enum TPion
 
 struct TPartieRep
 {
-  enum TErreur err;          /* Code d'erreur */
-  enum TPion coul;           /* Couleur du pion */
+  enum TErreur err;     /* Code d'erreur */
+  enum TPion coul;      /* Couleur du pion */
   char nomAdvers[TNOM]; /* Nom du joueur */
 };
 
@@ -62,15 +62,15 @@ struct TPartieRep
  */
 enum TLigne
 {
-  UN,
-  DEUX,
-  TROIS
+  UN = 0,
+  DEUX = 1,
+  TROIS = 2
 };
 enum TCol
 {
-  A,
-  B,
-  C
+  A = 0,
+  B = 1,
+  C = 2
 };
 
 struct TCase
@@ -95,9 +95,9 @@ struct TDeplPion
 /* Precision des types de coups */
 enum TCoup
 {
-  POS_PION,
-  DEPL_PION,
-  PASSE
+  POS_PION = 0,
+  DEPL_PION = 1,
+  PASSE = 2
 };
 
 struct TCoupReq
@@ -115,18 +115,18 @@ struct TCoupReq
 /* Validite du coup */
 enum TValCoup
 {
-  VALID,   // cont gagne
-  TIMEOUT, // nulle
-  TRICHE   // perdu
+  VALID = 0,   // cont gagne
+  TIMEOUT = 1, // nulle
+  TRICHE = 2   // perdu
 };
 
 /* Propriete des coups */
 enum TPropCoup
 {
-  CONT,
-  GAGNE,
-  NULLE,
-  PERDU
+  CONT = 0,
+  GAGNE = 1,
+  NULLE = 2,
+  PERDU = 3
 };
 
 /* Reponse a un coup */

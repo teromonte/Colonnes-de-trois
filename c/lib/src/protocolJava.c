@@ -3,7 +3,7 @@
 int requestAI(enum TPion color, int sockAI, struct ResponseAI *res)
 {
 
-  printf("(Client) Sent new play request to AI Server!");
+  printf("(Client) Sent new play request to AI Server!\n");
 
   int err;
   int moveType;
@@ -94,7 +94,7 @@ int setNextStateAI(int sockAI)
   return err;
 }
 
-int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCoupReq *playReq)
+void buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCoupReq *playReq)
 {
   playReq->typeCoup = javaAPIRes->typeMove;
   playReq->coul = playerColor; // color
@@ -116,11 +116,9 @@ int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCou
     printf("(Client) Player %d sent new play of type PASSE!\n", playerColor);
     break;
   }
-
-  return 1;
 }
 
-bool makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1)
+void makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1)
 {
   // Request play to Server IA and send to Server C
   struct ResponseAI javaAPIRes1;
@@ -130,12 +128,9 @@ bool makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1)
   send(sockC, &playReq1, sizeof(struct TCoupReq), 0);
 
   // Receive & Treat OwnPlayValidation
-  int err;
   struct TCoupRep temp;
-  err = recv(sockC, &temp, sizeof(struct TCoupRep), 0);
+  recv(sockC, &temp, sizeof(struct TCoupRep), 0);
   playRes1->err = temp.err;
   playRes1->propCoup = temp.propCoup;
   playRes1->validCoup = temp.validCoup;
-
-  return err > 0;
 }

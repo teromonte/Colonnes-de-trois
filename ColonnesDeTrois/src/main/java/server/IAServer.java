@@ -30,10 +30,12 @@ public class IAServer {
 		DataOutputStream dos = new DataOutputStream(os);
 
 		Response response;
-		Game game = new Game();
+
 		int input, matchNum = 0;
 
 		int startingColor = Integer.reverseBytes(dis.readInt());
+
+		Game game = new Game(startingColor);
 
 		if (startingColor == Utils.BLANC)
 			System.out.println("(javaAPI) BLANC started the Server!");
@@ -42,7 +44,7 @@ public class IAServer {
 
 		System.out.println("(javaAPI) Listening...");
 
-		while (matchNum != Utils.N_GAMES) {
+		while (matchNum < Utils.N_GAMES) {
 			input = Integer.reverseBytes(dis.readInt());
 			if (input != Utils.SET) {
 				if (startingColor == Utils.BLANC) {
@@ -51,11 +53,11 @@ public class IAServer {
 							response = game.getNextMove(input);
 							sendResponse(dos, response);
 						} else {
-							getOpponentMoveAndSave(input, dis);
+							getOpponentMoveAndSave(input, dis, game);
 						}
 					} else {
 						if (input == Utils.BLANC) {
-							getOpponentMoveAndSave(input, dis);
+							getOpponentMoveAndSave(input, dis, game);
 
 						} else {
 							response = game.getNextMove(input);
@@ -65,7 +67,7 @@ public class IAServer {
 				} else {
 					if (matchNum == Utils.FIRST_MATCH) {
 						if (input == Utils.BLANC) {
-							getOpponentMoveAndSave(input, dis);
+							getOpponentMoveAndSave(input, dis, game);
 						} else {
 							response = game.getNextMove(input);
 							sendResponse(dos, response);
@@ -75,7 +77,7 @@ public class IAServer {
 							response = game.getNextMove(input);
 							sendResponse(dos, response);
 						} else {
-							getOpponentMoveAndSave(input, dis);
+							getOpponentMoveAndSave(input, dis, game);
 						}
 					}
 				}
@@ -90,7 +92,7 @@ public class IAServer {
 		System.out.println("(javaAPI) Server closed!");
 	}
 
-	private static Response getOpponentMoveAndSave(int color, DataInputStream dis) throws IOException {
+	private static void getOpponentMoveAndSave(int color, DataInputStream dis, Game game) throws IOException {
 
 		int moveType = Integer.reverseBytes(dis.readInt());
 		int depCol = Integer.reverseBytes(dis.readInt());
@@ -115,7 +117,7 @@ public class IAServer {
 				break;
 
 		}
-		return r;
+		game.saveOpponentMove(r);
 
 	}
 

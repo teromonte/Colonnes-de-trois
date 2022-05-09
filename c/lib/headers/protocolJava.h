@@ -5,10 +5,31 @@
 #include <stdbool.h>
 #include <string.h>
 #include "../../header/protocolColonne.h"
-#include "../../header/responseAI.h"
 
 #ifndef PROTOCOLJAVA_H
 #define PROTOCOLJAVA_H
+
+#define SET 2
+
+/*
+ * Structure responseAPI
+ */
+struct ResponseAI
+{
+    enum TCoup typeMove;
+    struct TCase placeMove;
+    struct TDeplPion displaceMove;
+};
+
+/*
+ * Structure responseAPI
+ */
+struct SendOpenentPlay
+{
+    enum TCoup typeMove;
+    struct TCase placeMove;
+    struct TDeplPion displaceMove;
+};
 
 // request play
 int requestAI(enum TPion color, int sockAI, struct ResponseAI *res);
@@ -20,10 +41,10 @@ int setNextStateAI(int sockAI);
 int startAI(int sockAI, int playerColor);
 
 // buildPlayRequest
-int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCoupReq *playReq);
+void buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCoupReq *playReq);
 
 // make move
-bool makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1);
+void makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1);
 
 // handleOponentPlayInformation
 void handleOponentPlayInformation(enum TPion color, int sockAI, struct TCoupReq playReq);

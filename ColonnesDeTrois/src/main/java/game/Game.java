@@ -17,12 +17,14 @@ public class Game {
     private int lin = 0;
     private int col = 0;
     private int counter = 0;
+    private int color;
 
-    public Game() {
+    public Game(int color) {
+        this.color = color;
         this.table = initialiseTable();
         this.blanc = initialiseArray(Utils.BLANC);
         this.noir = initialiseArray(Utils.NOIR);
-        matchRound = 0;
+        this.matchRound = 0;
     }
 
     public void reset() {
@@ -32,40 +34,61 @@ public class Game {
         matchRound++;
     }
 
-    //SOMETHING BAD, PUTS 3 PIECES IN SAME PILE
+    public void saveOpponentMove(Response res) {
+        switch (res.moveType) {
+            case Utils.PLACE:
+                if (matchRound == Utils.FIRST_MATCH) {
+                    noir.remove(noir.size() - 1);
+                    table[res.depCol][res.depLg].addPiece(Utils.NOIR);
+                } else {
+                    blanc.remove(blanc.size() - 1);
+                    table[res.depCol][res.depLg].addPiece(Utils.BLANC);
+                }
+                break;
+            case Utils.MOVE:
+                Piece removed = table[res.depCol][res.depLg].removeTop();
+                table[res.arrCol][res.arrLg].addPiece(removed.getColor());
+                break;
+            case Utils.PASSE:
+                break;
+        }
+
+    }
+
+    // SOMETHING BAD, PUTS 3 PIECES IN SAME PILE
     public Response getNextMove(int color) {
         Algo alg = new Algo(color, table);
-        Response res;
 
+        // still needs to place pieces in the table
         if (blanc.size() != 0 || noir.size() != 0) {
-            // still needs to place pieces in the table
             Pair pair = alg.getBestPlace();
             if (pair == null) {
                 // move type = passe
                 return new Response(Utils.PASSE);
             } else {
                 // move type = place
-                if (Utils.BLANC == color) {
+                if (matchRound == Utils.FIRST_MATCH) {
                     blanc.remove(blanc.size() - 1);
                     table[pair.getX()][pair.getY()].addPiece(Utils.BLANC);
                 } else {
                     noir.remove(noir.size() - 1);
                     table[pair.getX()][pair.getY()].addPiece(Utils.NOIR);
                 }
-                res = new Response(0, pair.getX(), pair.getY());
+                return new Response(Utils.PLACE, pair.getX(), pair.getY());
             }
         } else { // all pieces are already in the table
             Move move = alg.getBestDisplace();
             if (move == null) {
-                res = new Response(Utils.PASSE);
+                // move type = passe
+                return new Response(Utils.PASSE);
             } else {
+                // move type = move
                 Piece removed = table[move.getPiece().getX()][move.getPiece().getY()].removeTop();
                 table[move.getMove().getX()][move.getMove().getY()].addPiece(removed.getColor());
-                res = new Response(0, move.getPiece().getX(), move.getPiece().getY(), move.getMove().getX(),
+                return new Response(Utils.MOVE, move.getPiece().getX(), move.getPiece().getY(), move.getMove().getX(),
                         move.getMove().getY());
             }
         }
-        return res;
     }
 
     private List<Piece> initialiseArray(int color) {
