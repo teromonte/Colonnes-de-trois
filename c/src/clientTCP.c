@@ -43,18 +43,18 @@ int main(int argc, char **argv)
 
   /////////// PLAYS START ////////////////
   int matchNumber = 0;
-  bool matchIsOn = true;
-
   while (matchNumber < NUM_OF_MATCHES)
   {
+    bool matchIsOn = true;
+
     printf("\n");
     printf("(Client) Match number %d is about to START!\n", matchNumber);
-    printf("\n");
 
     // Do first play of the match
-    if (((playerColor == BLANC && matchNumber == 0 && matchIsOn) ||
-        (playerColor == NOIR && matchNumber == 1 && matchIsOn)))
+    if (((playerColor == BLANC && matchNumber == 0) ||
+         (playerColor == NOIR && matchNumber == 1)))
     {
+      printf("\n");
       struct TCoupRep plasyRes;
       makeMove(playerColor, sockAI, sockC, &plasyRes);
       matchIsOn = handleOwnPlayValidation(plasyRes);
@@ -84,11 +84,11 @@ int main(int argc, char **argv)
 
     // Prepare for next match
     setNextStateAI(sockAI);
-    matchIsOn = true;
+    playerColor = 1 - playerColor;
     matchNumber++;
   }
 
-  printf("GAME FINISHED, TURNING OFF THE SERVER!!!\n");
+  printf("(Client) GAME FINISHED, TURNING OFF THE SERVER!!!\n");
   close(sockC);
   return 0;
 }

@@ -21,16 +21,6 @@ struct ResponseAI
     struct TDeplPion displaceMove;
 };
 
-/*
- * Structure responseAPI
- */
-struct SendOpenentPlay
-{
-    enum TCoup typeMove;
-    struct TCase placeMove;
-    struct TDeplPion displaceMove;
-};
-
 // request play
 int requestAI(enum TPion color, int sockAI, struct ResponseAI *res);
 

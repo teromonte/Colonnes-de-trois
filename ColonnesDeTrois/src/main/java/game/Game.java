@@ -56,8 +56,8 @@ public class Game {
     }
 
     // SOMETHING BAD, PUTS 3 PIECES IN SAME PILE
-    public Response getNextMove(int color) {
-        Algo alg = new Algo(color, table);
+    public Response getNextMove() {
+        Algo alg = new Algo(color, matchRound, table);
 
         // still needs to place pieces in the table
         if (blanc.size() != 0 || noir.size() != 0) {
@@ -85,6 +85,7 @@ public class Game {
                 // move type = move
                 Piece removed = table[move.getPiece().getX()][move.getPiece().getY()].removeTop();
                 table[move.getMove().getX()][move.getMove().getY()].addPiece(removed.getColor());
+
                 return new Response(Utils.MOVE, move.getPiece().getX(), move.getPiece().getY(), move.getMove().getX(),
                         move.getMove().getY());
             }

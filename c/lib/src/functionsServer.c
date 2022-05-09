@@ -2,6 +2,8 @@
 
 bool validateAndBuildPlayResponse(bool verif, int turn, struct TCoupRep *playRep)
 {
+  printf("\n");
+
   bool matchRunning = true;
   switch (verif)
   {
@@ -36,6 +38,8 @@ bool validateAndBuildPlayResponse(bool verif, int turn, struct TCoupRep *playRep
     printf("(serveur) Play from player %d is NOT VALID!\n", turn);
     break;
   }
+  printf("\n");
+
   return matchRunning;
 }
 

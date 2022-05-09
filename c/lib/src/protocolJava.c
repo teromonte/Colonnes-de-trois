@@ -89,8 +89,8 @@ int setNextStateAI(int sockAI)
   int err;
   int i = SET;
   err = send(sockAI, &i, sizeof(int), 0);
-  printf("(Client) Asking Server AI to set NEXT STATE!");
-
+  printf("(Client) Asking Server AI to set NEXT STATE!\n");
+  printf("\n");
   return err;
 }
 

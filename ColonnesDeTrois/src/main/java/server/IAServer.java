@@ -50,34 +50,34 @@ public class IAServer {
 				if (startingColor == Utils.BLANC) {
 					if (matchNum == Utils.FIRST_MATCH) {
 						if (input == Utils.BLANC) {
-							response = game.getNextMove(input);
+							response = game.getNextMove();
 							sendResponse(dos, response);
 						} else {
-							getOpponentMoveAndSave(input, dis, game);
+							getOpponentMoveAndSave(dis, game);
 						}
 					} else {
 						if (input == Utils.BLANC) {
-							getOpponentMoveAndSave(input, dis, game);
+							getOpponentMoveAndSave(dis, game);
 
 						} else {
-							response = game.getNextMove(input);
+							response = game.getNextMove();
 							sendResponse(dos, response);
 						}
 					}
 				} else {
 					if (matchNum == Utils.FIRST_MATCH) {
 						if (input == Utils.BLANC) {
-							getOpponentMoveAndSave(input, dis, game);
+							getOpponentMoveAndSave(dis, game);
 						} else {
-							response = game.getNextMove(input);
+							response = game.getNextMove();
 							sendResponse(dos, response);
 						}
 					} else {
 						if (input == Utils.BLANC) {
-							response = game.getNextMove(input);
+							response = game.getNextMove();
 							sendResponse(dos, response);
 						} else {
-							getOpponentMoveAndSave(input, dis, game);
+							getOpponentMoveAndSave(dis, game);
 						}
 					}
 				}
@@ -92,7 +92,7 @@ public class IAServer {
 		System.out.println("(javaAPI) Server closed!");
 	}
 
-	private static void getOpponentMoveAndSave(int color, DataInputStream dis, Game game) throws IOException {
+	private static void getOpponentMoveAndSave(DataInputStream dis, Game game) throws IOException {
 
 		int moveType = Integer.reverseBytes(dis.readInt());
 		int depCol = Integer.reverseBytes(dis.readInt());

@@ -11,15 +11,9 @@ int main(int argc, char **argv)
   int sockConx, /* descripteur socket connexion */
       port,     /* numero de port */
       sizeAddr, /* taille de l'adresse d'une socket */
-      nPlays0 = 0,
-      nPlays1 = 0,
-      match = 0,
       sockTrans[MAX_CLIENT];
 
   struct sockaddr_in addClient; /* adresse de la socket client connectee */
-
-  bool matchRunning = true,
-       verif;
 
   ////////////// VERIFY INPUT ////////////
   if (argc != 2)
@@ -47,6 +41,7 @@ int main(int argc, char **argv)
   doHandshake(sockTrans);
 
   ////////////// GAME START ////////////
+  int match = 0;
   while (match < NUM_OF_MATCHES) // server
   {
     printf("\n");
@@ -56,17 +51,19 @@ int main(int argc, char **argv)
     initialiserPartie();
 
     int turn = 0;
-
-    while (nPlays0 < 2000 && nPlays1 < 2000 && matchRunning)
+    bool matchRunning = true;
+    while (matchRunning)
     {
       // receive coup
       struct TCoupReq playReq;
+      printf("\n");
       printf("(serveur) Receiving the play request from player %d\n", turn);
+      printf("\n");
       recv(sockTrans[turn], &playReq, sizeof(struct TCoupReq), 0);
 
       // validate coup
       struct TCoupRep playRep;
-      verif = validationCoup(turn + 1, playReq, &playRep.propCoup);
+      bool verif = validationCoup(turn + 1, playReq, &playRep.propCoup);
       matchRunning = validateAndBuildPlayResponse(verif, turn, &playRep);
 
       // send ack to players
@@ -75,46 +72,18 @@ int main(int argc, char **argv)
         send(sockTrans[i], &playRep, sizeof(struct TCoupRep), 0);
 
       // Send what was played to the opponent
-      if (verif && matchRunning)
+      if (matchRunning)
       {
-        if (turn == BLANC)
-        {
-          send(sockTrans[NOIR], &playReq, sizeof(struct TCoupReq), 0);
-          printf("(serveur) Sending play request to opponent player!\n");
-        }
-        else
-        {
-          send(sockTrans[BLANC], &playReq, sizeof(struct TCoupReq), 0);
-          printf("(serveur) Sending play request to opponent player!\n");
-        }
+        send(sockTrans[1 - turn], &playReq, sizeof(struct TCoupReq), 0);
+        printf("(serveur) Sending play request to opponent player %d!\n", 1 - turn);
       }
 
       // change turns and increment play
-      if (matchRunning)
-      {
-        if (turn == 0)
-        {
-          nPlays0++;
-          turn = 1;
-        }
-        else
-        {
-          nPlays1++;
-          turn = 0;
-        }
-      }
-
-      printf("\n");
+      turn = 1 - turn;
     }
 
+    printf("\n");
     match++;
-    nPlays1 = 0;
-    nPlays0 = 0;
-    matchRunning = true;
-
-    int temp = sockTrans[0];
-    sockTrans[0] = sockTrans[1];
-    sockTrans[1] = temp;
   }
 
   ////////////// CLOSE COMMUNICATION ////////
@@ -125,6 +94,6 @@ int main(int argc, char **argv)
     close(sockConx);
   }
 
-  printf("GAME FINISHED, TURNING OFF THE SERVER!!!\n");
+  printf("(Server) GAME FINISHED, TURNING OFF THE SERVER!!!\n");
   return 0;
 }
