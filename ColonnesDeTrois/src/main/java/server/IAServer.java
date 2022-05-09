@@ -44,29 +44,28 @@ public class IAServer {
 
 		while (matchNum != Utils.N_GAMES) {
 			input = Integer.reverseBytes(dis.readInt());
-
 			if (input != Utils.SET) {
 				if (startingColor == Utils.BLANC) {
 					if (matchNum == Utils.FIRST_MATCH) {
-						System.out.println("(javaAPI) Processing BLANC request");
+						System.out.println("(javaAPI) Processing BLANC request.");
 						response = game.getNextMove(input);
 						sendResponse(dos, response);
 					} else {
-						System.out.println("(javaAPI) Processing NOIR request");
-						game.getNextMove(input);
+						System.out.println("(javaAPI) Processing NOIR request.");
+						getOpponentMoveAndSave(input, dis);
 					}
 				} else {
 					if (matchNum == Utils.FIRST_MATCH) {
-						System.out.println("(javaAPI) Processing NOIR request");
-						game.getNextMove(input);
+						System.out.println("(javaAPI) Processing NOIR request.");
+						getOpponentMoveAndSave(input, dis);
 					} else {
-						System.out.println("(javaAPI) Processing BLANC request");
+						System.out.println("(javaAPI) Processing BLANC request.");
 						response = game.getNextMove(input);
 						sendResponse(dos, response);
 					}
 				}
 			} else {
-				System.out.println("(javaAPI) Reset match");
+				System.out.println("(javaAPI) Reset match.");
 				game.reset();
 				matchNum++;
 			}
@@ -74,6 +73,13 @@ public class IAServer {
 
 		close(sock, dos, os, dis, is, srv);
 		System.out.println("(javaAPI) Server closed!");
+	}
+
+	private static void getOpponentMoveAndSave(int input, DataInputStream dis) throws IOException {
+		input = Integer.reverseBytes(dis.readInt());
+		input = Integer.reverseBytes(dis.readInt());
+		input = Integer.reverseBytes(dis.readInt());
+		input = Integer.reverseBytes(dis.readInt());
 
 	}
 
