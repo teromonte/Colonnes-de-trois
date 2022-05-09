@@ -25,12 +25,11 @@ public class Game {
         matchRound = 0;
     }
 
-    public Response reset() {
+    public void reset() {
         this.table = initialiseTable();
         this.blanc = initialiseArray(Utils.BLANC);
         this.noir = initialiseArray(Utils.NOIR);
         matchRound++;
-        return null;
     }
 
     public Response getNextMove(int color) {
