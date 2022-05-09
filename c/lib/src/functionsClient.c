@@ -77,6 +77,7 @@ bool handleOwnPlayValidation(struct TCoupRep playRes)
     break;
   }
   printf("\n");
+
   return matchIsOn;
 }
 

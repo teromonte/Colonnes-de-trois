@@ -72,7 +72,11 @@ bool makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1)
 
   // Receive & Treat OwnPlayValidation
   int err;
-  err = recv(sockC, &playRes1, sizeof(struct TCoupRep), 0);
+  struct TCoupRep temp;
+  err = recv(sockC, &temp, sizeof(struct TCoupRep), 0);
+  playRes1->err = temp.err;
+  playRes1->propCoup = temp.propCoup;
+  playRes1->validCoup = temp.validCoup;
 
   return err > 0;
 }
