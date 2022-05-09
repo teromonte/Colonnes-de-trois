@@ -7,9 +7,9 @@ int handleParticipationAck(struct TPartieRep participationRes)
   {
   case ERR_OK:
     if (participationRes.coul == BLANC)
-      printf("(Client) Your color is BLANC and you are playing against: %s\n", participationRes.nomAdvers);
+      printf("(Client) Your color is BLANC and you are playing against: %s!\n", participationRes.nomAdvers);
     else
-      printf("(Client) Your color is NOIR and you are playing against: %s\n", participationRes.nomAdvers);
+      printf("(Client) Your color is NOIR and you are playing against: %s!\n", participationRes.nomAdvers);
     playerColor = participationRes.coul;
     break;
   case ERR_PARTIE:
@@ -93,43 +93,43 @@ bool handleOponentPlayValidation(struct TCoupRep playRes)
       switch (playRes.propCoup)
       {
       case CONT:
-        printf("(Client) Adversaire play was VALID and resulted in CONT\n");
+        printf("(Client) Adversaire play was VALID and resulted in CONT!\n");
         break;
       case GAGNE:
-        printf("(Client) Adversaire play was VALID and resulted in GAGNE\n");
+        printf("(Client) Adversaire play was VALID and resulted in GAGNE!\n");
         matchIsOn = false;
         break;
       case NULLE:
-        printf("(Client) Adversaire play was VALID and resulted in NULLE\n");
+        printf("(Client) Adversaire play was VALID and resulted in NULLE!\n");
         matchIsOn = false;
         break;
       case PERDU:
-        printf("(Client) Adversaire play was VALID and resulted in PERDU\n");
+        printf("(Client) Adversaire play was VALID and resulted in PERDU!\n");
         matchIsOn = false;
         break;
       }
       break;
     case TIMEOUT:
-      printf("(Client) Adversaire play was NOT VALID and resulted in TIMEOUT\n");
+      printf("(Client) Adversaire play was NOT VALID and resulted in TIMEOUT!\n");
       matchIsOn = false;
       break;
     case TRICHE:
-      printf("(Client) Adversaire play was NOT VALID and resulted in TRICHE\n");
+      printf("(Client) Adversaire play was NOT VALID and resulted in TRICHE!\n");
 
       matchIsOn = false;
       break;
     }
     break;
   case ERR_COUP:
-    printf("(Client) Adversaire play was NOT VALID and resulted in ERR_COUP\n");
+    printf("(Client) Adversaire play was NOT VALID and resulted in ERR_COUP!\n");
     matchIsOn = false;
     break;
   case ERR_TYP:
-    printf("(Client) Adversaire play was NOT VALID and resulted in ERR_TYP\n");
+    printf("(Client) Adversaire play was NOT VALID and resulted in ERR_TYP!\n");
     matchIsOn = false;
     break;
   case ERR_PARTIE:
-    printf("(Client) Adversaire play was NOT VALID and resulted in ERR_PARTIE\n");
+    printf("(Client) Adversaire play was NOT VALID and resulted in ERR_PARTIE!\n");
     matchIsOn = false;
     break;
   }

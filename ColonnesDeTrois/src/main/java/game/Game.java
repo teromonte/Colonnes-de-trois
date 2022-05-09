@@ -32,6 +32,7 @@ public class Game {
         matchRound++;
     }
 
+    //SOMETHING BAD, PUTS 3 PIECES IN SAME PILE
     public Response getNextMove(int color) {
         Algo alg = new Algo(color, table);
         Response res;

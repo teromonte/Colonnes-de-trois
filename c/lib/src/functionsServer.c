@@ -10,21 +10,21 @@ bool validateAndBuildPlayResponse(bool verif, int turn, struct TCoupRep *playRep
     switch (playRep->propCoup)
     {
     case CONT:
-      printf("(serveur) Play from player %d resulted in CONT\n", turn);
+      printf("(serveur) Play from player %d resulted in CONT!\n", turn);
       playRep->validCoup = VALID;
       break;
     case NULLE:
-      printf("(serveur) Play from player %d resulted in NULLE\n", turn);
+      printf("(serveur) Play from player %d resulted in NULLE!\n", turn);
       playRep->validCoup = TIMEOUT;
       matchRunning = false;
       break;
     case GAGNE:
-      printf("(serveur) Play from player %d resulted in GAGNE\n", turn);
+      printf("(serveur) Play from player %d resulted in GAGNE!\n", turn);
       playRep->validCoup = VALID;
       matchRunning = false;
       break;
     case PERDU:
-      printf("(serveur) Play from player %d resulted in PERDU\n", turn);
+      printf("(serveur) Play from player %d resulted in PERDU!\n", turn);
       playRep->validCoup = TRICHE;
       matchRunning = false;
       break;
@@ -63,7 +63,7 @@ int doHandshake(int sockTrans[])
       }
       break;
     case COUP:
-      printf("(serveurTCP) Received COUP request instead of PARTIE, going down\n");
+      printf("(serveurTCP) Received COUP request instead of PARTIE, going down!\n");
       exit(0);
       break;
     }
@@ -78,14 +78,14 @@ int doHandshake(int sockTrans[])
     {
       matchRep.coul = BLANC;
       strcpy(matchRep.nomAdvers, nom2);
-      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n",
+      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]!\n",
              nom1, matchRep.coul, i);
     }
     else
     {
       matchRep.coul = NOIR;
       strcpy(matchRep.nomAdvers, nom1);
-      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n",
+      printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]!\n",
              nom2, matchRep.coul, i);
     }
     send(sockTrans[i], &matchRep, sizeof(struct TPartieRep), 0);

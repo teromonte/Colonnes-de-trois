@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     while (nPlays0 < 2000 && nPlays1 < 2000 && matchRunning)
     {
       // receive coup
-      struct TCoupReq playReq; 
+      struct TCoupReq playReq;
       printf("(serveur) Receiving the play request from player %d\n", turn);
       recv(sockTrans[turn], &playReq, sizeof(struct TCoupReq), 0);
 
@@ -71,19 +71,21 @@ int main(int argc, char **argv)
 
       // send ack to players
       printf("(serveur) Sending play acknolegment to both players!\n");
-      for (int i = 0; i < 2; i++)
+      for (int i = 0; i < MAX_CLIENT; i++)
         send(sockTrans[i], &playRep, sizeof(struct TCoupRep), 0);
-      
+
       // Send what was played to the opponent
       if (verif && matchRunning)
       {
-        if (turn == 0)
+        if (turn == BLANC)
         {
-          send(sockTrans[1], &playReq, sizeof(struct TCoupReq), 0);
+          send(sockTrans[NOIR], &playReq, sizeof(struct TCoupReq), 0);
+          printf("(serveur) Sending play request to opponent player!\n");
         }
         else
         {
-          send(sockTrans[0], &playReq, sizeof(struct TCoupReq), 0);
+          send(sockTrans[BLANC], &playReq, sizeof(struct TCoupReq), 0);
+          printf("(serveur) Sending play request to opponent player!\n");
         }
       }
 

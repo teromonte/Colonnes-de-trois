@@ -47,19 +47,36 @@ public class IAServer {
 			if (input != Utils.SET) {
 				if (startingColor == Utils.BLANC) {
 					if (matchNum == Utils.FIRST_MATCH) {
-						System.out.println("(javaAPI) Processing BLANC request.");
-						response = game.getNextMove(input);
-						sendResponse(dos, response);
+						if (input == Utils.BLANC) {
+							response = game.getNextMove(input);
+							sendResponse(dos, response);
+						} else {
+							getOpponentMoveAndSave(input, dis);
+						}
 					} else {
-						getOpponentMoveAndSave(input, dis);
+						if (input == Utils.BLANC) {
+							getOpponentMoveAndSave(input, dis);
+
+						} else {
+							response = game.getNextMove(input);
+							sendResponse(dos, response);
+						}
 					}
 				} else {
 					if (matchNum == Utils.FIRST_MATCH) {
-						getOpponentMoveAndSave(input, dis);
+						if (input == Utils.BLANC) {
+							getOpponentMoveAndSave(input, dis);
+						} else {
+							response = game.getNextMove(input);
+							sendResponse(dos, response);
+						}
 					} else {
-						System.out.println("(javaAPI) Processing BLANC request.");
-						response = game.getNextMove(input);
-						sendResponse(dos, response);
+						if (input == Utils.BLANC) {
+							response = game.getNextMove(input);
+							sendResponse(dos, response);
+						} else {
+							getOpponentMoveAndSave(input, dis);
+						}
 					}
 				}
 			} else {
@@ -109,13 +126,13 @@ public class IAServer {
 		}
 		switch (response.moveType) {
 			case Utils.PLACE:
-				System.out.println("(javaAPI) Sent response. PLACE!");
+				System.out.println("(javaAPI) Received request and sent response. PLACE!");
 				break;
 			case Utils.MOVE:
-				System.out.println("(javaAPI) Sent response. MOVE!");
+				System.out.println("(javaAPI) Received request and sent response. MOVE!");
 				break;
 			case Utils.PASSE:
-				System.out.println("(javaAPI) Sent response. PASSE!");
+				System.out.println("(javaAPI) Received request and sent response. PASSE!");
 				break;
 		}
 		dos.writeInt(Integer.reverseBytes(response.moveType));

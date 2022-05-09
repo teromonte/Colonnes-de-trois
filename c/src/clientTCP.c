@@ -10,10 +10,7 @@ int main(int argc, char **argv)
       portC,  /* variables de lecture */
       sockAI, /* descripteur de la socket locale */
       portAI,
-      playerColor,
-      matchNumber = 0;
-
-  bool matchIsOn = true;
+      playerColor;
 
   char *nomMachServ;
 
@@ -45,6 +42,8 @@ int main(int argc, char **argv)
   startAI(sockAI, playerColor);
 
   /////////// PLAYS START ////////////////
+  int matchNumber = 0;
+  bool matchIsOn = true;
   while (matchNumber < NUM_OF_MATCHES)
   {
     printf("\n");
@@ -52,13 +51,13 @@ int main(int argc, char **argv)
     printf("\n");
 
     // Do first play of the match
-    if ((playerColor == BLANC && matchNumber == 0 && matchIsOn) ||
-        (playerColor == NOIR && matchNumber == 1 && matchIsOn))
+    if ((playerColor == 1 && matchNumber == 1) || (playerColor == 0 && matchNumber == 0))
     {
       struct TCoupRep playRes;
       makeMove(playerColor, sockAI, sockC, &playRes);
       matchIsOn = handleOwnPlayValidation(playRes);
     }
+
     // Start to send plays
     while (matchIsOn)
     {
@@ -67,14 +66,14 @@ int main(int argc, char **argv)
       recv(sockC, &playRes, sizeof(struct TCoupRep), 0);
       matchIsOn = handleOponentPlayValidation(playRes);
 
-      // Receive & Treat Oponent Play information
-      struct TCoupReq playReq;
-      recv(sockC, &playReq, sizeof(struct TCoupReq), 0);
-      handleOponentPlayInformation(playerColor, sockAI, playReq);
-
       // Make new play
       if (matchIsOn)
       {
+        // Receive & Treat Oponent Play information
+        struct TCoupReq playReq;
+        recv(sockC, &playReq, sizeof(struct TCoupReq), 0);
+        handleOponentPlayInformation(playReq.coul, sockAI, playReq);
+
         struct TCoupRep playRes2;
         makeMove(playerColor, sockAI, sockC, &playRes2);
         matchIsOn = handleOwnPlayValidation(playRes2);
