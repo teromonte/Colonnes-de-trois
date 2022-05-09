@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 #include "../../header/protocolColonne.h"
 #include "../../header/responseAI.h"
 
@@ -8,6 +11,15 @@
 #define PROTOCOLJAVA_H
 
 // request play
-int requestAI(TPion color, int sockAI, struct ResponseAI *res);
+int requestAI(enum TPion color, int sockAI, struct ResponseAI *res);
+
+// initialise AI
+int setNextStateAI(int sockAI);
+
+// buildPlayRequest
+int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCoupReq *playReq);
+
+// make move
+bool makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1);
 
 #endif

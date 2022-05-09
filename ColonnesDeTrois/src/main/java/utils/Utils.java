@@ -11,8 +11,11 @@ public class Utils {
     public static final int NOIR = 1;
     public static final int PLACE = 0;
     public static final int MOVE = 1;
-    public static final int RESET = 2;
+    public static final int PASSE = 2;
+    public static final int SET = 2;
     public static final int N_PLAYERS = 2;
+    public static final int FIRST_PLAYER = 0;
+    public static final int SECOND_PLAYER = 1;
 
     public static boolean checkIfNeighbor(Pair p1, Pair p2) {
 

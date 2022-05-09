@@ -1,6 +1,11 @@
-make --dry-run --keep-going --print-directory
+make all --dry-run --keep-going --print-directory
 make: Entering directory '/home/thiago/Desktop/Tournoi/Colonnes-de-trois'
+gcc -c c/lib/src/fonctionsTCP.c -o c/bin/fonctionsTCP.o -Wall
+gcc -c c/lib/src/protocolJava.c -o c/bin/protocolJava.o -Wall
+ 
+gcc -c c/lib/src/functionsClient.c -o c/bin/functionsClient.o -Wall
+gcc -c c/lib/src/functionsServer.c -o c/bin/functionsServer.o -Wall
+gcc c/src/clientTCP.c -o c/bin/clientTCP c/bin/fonctionsTCP.o c/bin/protocolJava.o c/bin/functionsClient.o -Wall
+gcc c/src/serveurTCP.c -o c/bin/serveurTCP c/bin/fonctionsTCP.o c/bin/colonne-fPIC.o c/bin/functionsServer.o -Wall
 make: Leaving directory '/home/thiago/Desktop/Tournoi/Colonnes-de-trois'
  
-make: *** No targets specified and no makefile found.  Stop.
-

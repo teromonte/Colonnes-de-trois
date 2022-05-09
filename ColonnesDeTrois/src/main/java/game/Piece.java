@@ -1,6 +1,5 @@
 package game;
 
-
 public class Piece {
 
     private int color;
@@ -15,12 +14,14 @@ public class Piece {
         return isLocked;
     }
 
-    public boolean swichState() {
-        if (isLocked)
-            isLocked = false;
-        else
-            isLocked = true;
-        return isLocked;
+    public void lock() {
+
+        isLocked = true;
+    }
+
+    public void unlock() {
+        isLocked = false;
+
     }
 
     public int getColor() {

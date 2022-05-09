@@ -42,27 +42,27 @@ public class IAServer {
 
 		System.out.println("(javaAPI) Listening...");
 
-		Game game = new Game();
-		int turn = 0;
-		int input = -1;
 		Response response;
+		Game game = new Game();
+		int input = -1;
+		int turn = Utils.FIRST_PLAYER;
 		while (input != 2) {
 			switch (turn) {
-				case Utils.BLANC:
+				case Utils.FIRST_PLAYER:
 					input = Integer.reverseBytes(dis0.readInt());
 					response = callAPI(input, game);
 					sendResponse(dos0, response);
 					break;
-				case Utils.NOIR:
+				case Utils.SECOND_PLAYER:
 					input = Integer.reverseBytes(dis1.readInt());
 					response = callAPI(input, game);
 					sendResponse(dos1, response);
 					break;
 			}
-			if (turn == 0)
-				turn = 1;
+			if (turn == Utils.BLANC)
+				turn = Utils.NOIR;
 			else
-				turn = 0;
+				turn = Utils.BLANC;
 		}
 
 		srv.close();
@@ -74,13 +74,11 @@ public class IAServer {
 
 	private static Response callAPI(int input, Game game) {
 		switch (input) {
-			case 0:
+			case Utils.BLANC:
 				System.out.println("(javaAPI) Processing BLANC request");
-
 				return game.getNextMove(Utils.BLANC);
-			case 1:
+			case Utils.NOIR:
 				System.out.println("(javaAPI) Processing NOIR request");
-
 				return game.getNextMove(Utils.NOIR);
 			default:
 				System.out.println("(javaAPI) Reset match");
@@ -88,19 +86,20 @@ public class IAServer {
 		}
 	}
 
-	private static void sendResponse(DataOutputStream dos, Response response) throws IOException {
+	private static void sendResponse(DataOutputStream dos, Response response)
+			throws IOException {
+		if (response == null) {
+			return;
+		}
 		switch (response.moveType) {
-
 			case Utils.PLACE:
-				System.out.println("(javaAPI) Sent resonse. PLACE");
-
+				System.out.println("(javaAPI) Sent response. PLACE");
 				break;
 			case Utils.MOVE:
-				System.out.println("(javaAPI) Sent resonse. MOVE");
-
+				System.out.println("(javaAPI) Sent response. MOVE");
 				break;
-			case Utils.RESET:
-				System.out.println("(javaAPI) Going to the second match");
+			case Utils.SET:
+				System.out.println("(javaAPI) Initialise AI!");
 				break;
 		}
 		dos.writeInt(Integer.reverseBytes(response.moveType));

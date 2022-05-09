@@ -1,6 +1,6 @@
 #include "../headers/functionsServer.h"
 
-bool buildPlayResponse(bool verif, int turn, TCoupRep *playRep)
+bool validateAndBuildPlayResponse(bool verif, int turn, struct TCoupRep *playRep)
 {
   bool matchRunning = true;
   switch (verif)
@@ -46,8 +46,8 @@ int doHandshake(int sockTrans[])
 
   for (int i = 0; i < MAX_CLIENT; i++)
   {
-    TPartieReq matchReq;
-    recv(sockTrans[i], &matchReq, sizeof(TPartieReq), 0);
+    struct TPartieReq matchReq;
+    recv(sockTrans[i], &matchReq, sizeof(struct TPartieReq), 0);
     switch (matchReq.idRequest)
     {
     case PARTIE:
@@ -72,7 +72,7 @@ int doHandshake(int sockTrans[])
   ////////////// SEND ACK TO PLAYERS ////////
   for (int i = 0; i < MAX_CLIENT; i++)
   {
-    TPartieRep matchRep;
+    struct TPartieRep matchRep;
     matchRep.err = ERR_OK;
     if (i == 0)
     {
@@ -88,7 +88,7 @@ int doHandshake(int sockTrans[])
       printf("(serveur) Sending match response to player: %s, with color: %d, to sockTrans[%d]\n",
              nom2, matchRep.coul, i);
     }
-    send(sockTrans[i], &matchRep, sizeof(TPartieRep), 0);
+    send(sockTrans[i], &matchRep, sizeof(struct TPartieRep), 0);
   }
   return 1;
 }

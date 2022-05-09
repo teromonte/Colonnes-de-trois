@@ -1,7 +1,6 @@
 #include "../lib/headers/protocolJava.h"
 #include "../lib/headers/functionsClient.h"
 #include "../header/protocolColonne.h"
-#include "../header/responseAI.h"
 #include "../lib/headers/fonctionsTCP.h"
 #include <stdbool.h>
 
@@ -55,24 +54,30 @@ int main(int argc, char **argv)
     if ((playerColor == BLANC && matchNumber == 0 && matchIsOn) ||
         (playerColor == NOIR && matchNumber == 1 && matchIsOn))
     {
-      matchIsOn = makeMove(playerColor, sockAI, sockC);
+      struct TCoupRep playRes;
+      makeMove(playerColor, sockAI, sockC, &playRes);
+      matchIsOn = handleOwnPlayValidation(playRes);
     }
     // Start to send plays
     while (matchIsOn)
     {
       // Receive & Treat Oponent Play Validation
-      TCoupRep playRes2;
-      recv(sockC, &playRes2, sizeof(TCoupRep), 0);
-      matchIsOn = handleOponentPlayValidation(playRes2);
+      struct TCoupRep playRes1;
+      recv(sockC, &playRes1, sizeof(struct TCoupRep), 0);
+      matchIsOn = handleOponentPlayValidation(playRes1);
 
       // Make new play
       if (matchIsOn)
       {
-        matchIsOn = makeMove(playerColor, sockAI, sockC);
+        struct TCoupRep playRes2;
+        makeMove(playerColor, sockAI, sockC, &playRes2);
+        matchIsOn = handleOwnPlayValidation(playRes2);
       }
+
     }
 
     // Prepare for next match
+    setNextStateAI(sockAI);
     matchIsOn = true;
     matchNumber++;
   }

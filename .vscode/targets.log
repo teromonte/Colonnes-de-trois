@@ -1,14 +1,13 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
 # License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
+ 
 
-# Make data base, printed on Sun May  8 20:15:34 2022
+# Make data base, printed on Mon May  9 02:41:20 2022
 
 # Variables
 
@@ -64,8 +63,8 @@ SNAP_INSTANCE_NAME = code
 SNAP_ARCH = amd64
 # environment
 GTK_OVERLAY_SCROLLING = 1
-# makefile
-MAKEFILE_LIST := 
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
 # automatic
 @F = $(notdir $@)
 # environment
@@ -139,7 +138,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5143
+GIO_LAUNCHED_DESKTOP_FILE_PID = 170718
 # automatic
 %F = $(notdir $%)
 # environment
@@ -227,7 +226,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/95
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-1180ce8d-966e-4e1e-b951-60a753bdc599.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-9bc417a1-c8c7-4f62-8808-2e2a82206c3b.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -236,17 +235,18 @@ USER = thiago
 SNAP_REVISION = 95
 # environment
 CAML_LD_LIBRARY_PATH = /home/thiago/.opam/default/lib/stublibs:/usr/local/lib/ocaml/4.08.1/stublibs:/usr/lib/ocaml/stublibs
- 
 # environment
 LC_MONETARY = pt_PT.UTF-8
 # makefile
-.DEFAULT_GOAL := 
+.DEFAULT_GOAL := all
 # environment
 XDG_CURRENT_DESKTOP = X-Cinnamon
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
 LC_TELEPHONE = pt_PT.UTF-8
+# makefile (from 'Makefile', line 1)
+LD_FLAGS = -Wall
 # environment
 CONDA_SHLVL = 1
 # default
@@ -281,6 +281,7 @@ HOMEBREW_PREFIX = /home/linuxbrew/.linuxbrew
 +D = $(patsubst %/,%,$(dir $+))
 # environment
 RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
+ 
 # environment
 GDK_BACKEND = x11
 # environment
@@ -336,11 +337,11 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 5189
+VSCODE_PID = 170763
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
-# Load=163/1024=16%, Rehash=0, Collisions=23/185=12%
+# Load=164/1024=16%, Rehash=0, Collisions=25/193=13%
 
 # Pattern-specific Variable Values
 
@@ -348,9 +349,9 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 66306, inode 1850581): 9 files, no impossibilities.
+# . (device 66306, inode 1850581): 10 files, no impossibilities.
 
-# 9 files, no impossibilities in 1 directories.
+# 10 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -359,25 +360,84 @@ _CE_CONDA =
 # Files
 
 # Not a target:
-all:
+c/lib/src/functionsServer.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+c/src/clientTCP.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+c/lib/src/functionsClient.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+c/lib/src/protocolJava.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all: fonctionsTCP protocolJava functionsClient functionsServer clientTCP serveurTCP
 #  Command line target.
 #  Implicit rule search has been done.
 #  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/4=0%
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
 #  File has not been updated.
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  File does not exist.
+#  Last modified 2022-05-09 02:37:34.066891962
 #  File has been updated.
-#  Failed to be updated.
+#  Successfully updated.
 
 # Not a target:
-makefile:
+c/lib/src/fonctionsTCP.c:
 #  Implicit rule search has been done.
-#  File does not exist.
+#  Last modified 2022-05-07 00:51:26.298063143
 #  File has been updated.
-#  Failed to be updated.
+#  Successfully updated.
+
+# Not a target:
+c/lib/headers/functionsClient.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+c/src/serveurTCP.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+functionsClient: c/lib/src/functionsClient.c c/lib/headers/functionsClient.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+ 
+#  recipe to execute (from 'Makefile', line 12):
+	gcc -c c/lib/src/functionsClient.c -o c/bin/functionsClient.o $(LD_FLAGS)
+
+protocolJava: c/lib/src/protocolJava.c c/lib/headers/protocolJava.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 9):
+	gcc -c c/lib/src/protocolJava.c -o c/bin/protocolJava.o $(LD_FLAGS)
 
 # Not a target:
 .DEFAULT:
@@ -385,27 +445,94 @@ makefile:
 #  Modification time never checked.
 #  File has not been updated.
 
+clientTCP: c/src/clientTCP.c fonctionsTCP
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 18):
+	gcc c/src/clientTCP.c -o c/bin/clientTCP c/bin/fonctionsTCP.o c/bin/protocolJava.o c/bin/functionsClient.o $(LD_FLAGS)
+
 # Not a target:
-GNUmakefile:
+c/lib/headers/functionsServer.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+c/lib/headers/protocolJava.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+functionsServer: c/lib/src/functionsServer.c c/lib/headers/functionsServer.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 15):
+	gcc -c c/lib/src/functionsServer.c -o c/bin/functionsServer.o $(LD_FLAGS)
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 24):
+	rm c/bin/fonctionsTCP.o; rm c/bin/protocolJava.o; rm c/bin/functionsClient.o; rm c/bin/functionsServer.o; rm c/bin/clientTCP ; rm c/bin/serveurTCP;
+
+# Not a target:
+c/lib/headers/fonctionsTCP.h:
 #  Implicit rule search has been done.
+#  Last modified 2022-05-08 22:08:12.936939082
+#  File has been updated.
+#  Successfully updated.
+
+fonctionsTCP: c/lib/src/fonctionsTCP.c c/lib/headers/fonctionsTCP.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
 #  File does not exist.
 #  File has been updated.
-#  Failed to be updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := fonctionsTCP
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := c/lib/src/fonctionsTCP.c c/lib/headers/fonctionsTCP.h
+# automatic
+# | := 
+# automatic
+# < := c/lib/src/fonctionsTCP.c
+# automatic
+# ^ := c/lib/src/fonctionsTCP.c c/lib/headers/fonctionsTCP.h
+# automatic
+# ? := c/lib/src/fonctionsTCP.c c/lib/headers/fonctionsTCP.h
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/12=8%
+#  recipe to execute (from 'Makefile', line 6):
+	gcc -c c/lib/src/fonctionsTCP.c -o c/bin/fonctionsTCP.o $(LD_FLAGS)
+
+serveurTCP: c/src/serveurTCP.c fonctionsTCP
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 21):
+	gcc c/src/serveurTCP.c -o c/bin/serveurTCP c/bin/fonctionsTCP.o c/bin/colonne-fPIC.o c/bin/functionsServer.o $(LD_FLAGS)
 
 # files hash-table stats:
-# Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
+# Load=21/1024=2%, Rehash=0, Collisions=2/57=4%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 17 / storage = 148 B / avg = 8 B
-# current buf: size = 8162 B / used = 148 B / count = 17 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 32 / storage = 477 B / avg = 14 B
+# current buf: size = 8162 B / used = 477 B / count = 32 / avg = 14 B
 
-# strcache performance: lookups = 20 / hit rate = 15%
+# strcache performance: lookups = 54 / hit rate = 40%
 # hash-table stats:
-# Load=17/8192=0%, Rehash=0, Collisions=1/20=5%
-# Finished Make data base on Sun May  8 20:15:34 2022
+# Load=32/8192=0%, Rehash=0, Collisions=2/54=4%
+# Finished Make data base on Mon May  9 02:41:20 2022
 
  

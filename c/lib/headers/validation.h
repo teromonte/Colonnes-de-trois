@@ -25,7 +25,7 @@
  * resultat : type bool (coup valide ou non)
  *            propriete du coup  (GAGNE, PERDU, NUL - le coup rend le joueur gagnant, perdant ou la partie est ex aequo, ou CONT si aucune des autres)
  */
-bool validationCoup(int joueur, TCoupReq coup, TPropCoup *propCoup);
+bool validationCoup(int joueur, struct TCoupReq coup, enum TPropCoup *propCoup);
 
 /* Initialiser une partie : informer du demarrage d'une nouvelle partie avant son debut */
 void initialiserPartie();

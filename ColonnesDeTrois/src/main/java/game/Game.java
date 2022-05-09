@@ -19,18 +19,18 @@ public class Game {
     private int counter = 0;
 
     public Game() {
-        this.table = new Square[Utils.N_ROWS][Utils.N_COLS];
+        this.table = initialiseTable();
         this.blanc = initialiseArray(Utils.BLANC);
         this.noir = initialiseArray(Utils.NOIR);
         matchRound = 0;
     }
 
     public Response reset() {
-        this.table = new Square[Utils.N_ROWS][Utils.N_COLS];
+        this.table = initialiseTable();
         this.blanc = initialiseArray(Utils.BLANC);
         this.noir = initialiseArray(Utils.NOIR);
         matchRound++;
-        return new Response(Utils.RESET);
+        return null;
     }
 
     public Response getNextMove(int color) {
@@ -39,10 +39,10 @@ public class Game {
 
         if (blanc.size() != 0 || noir.size() != 0) {
             // still needs to place pieces in the table
-            Pair pair = alg.getPair();
+            Pair pair = alg.getBestPlace();
             if (pair == null) {
                 // move type = passe
-                res = new Response(2);
+                return new Response(Utils.PASSE);
             } else {
                 // move type = place
                 if (Utils.BLANC == color) {
@@ -55,15 +55,15 @@ public class Game {
                 res = new Response(0, pair.getX(), pair.getY());
             }
         } else { // all pieces are already in the table
-            Move m = alg.getMove();
-            if (Utils.BLANC == color) {
-                table[m.getPiece().getX()][m.getPiece().getY()].removeTop();
-                table[m.getMove().getX()][m.getMove().getY()].addPiece(Utils.BLANC);
+            Move move = alg.getBestDisplace();
+            if (move == null) {
+                res = new Response(Utils.PASSE);
             } else {
-                table[m.getPiece().getX()][m.getPiece().getY()].removeTop();
-                table[m.getMove().getX()][m.getMove().getY()].addPiece(Utils.NOIR);
+                Piece removed = table[move.getPiece().getX()][move.getPiece().getY()].removeTop();
+                table[move.getMove().getX()][move.getMove().getY()].addPiece(removed.getColor());
+                res = new Response(0, move.getPiece().getX(), move.getPiece().getY(), move.getMove().getX(),
+                        move.getMove().getY());
             }
-            res = new Response(0, m.getPiece().getX(), m.getPiece().getY(), m.getMove().getX(), m.getMove().getY());
         }
         return res;
     }
@@ -74,5 +74,14 @@ public class Game {
             p.add(new Piece(color));
 
         return p;
+    }
+
+    private Square[][] initialiseTable() {
+        Square[][] temp = new Square[Utils.N_ROWS][Utils.N_COLS];
+        for (int i = 0; i < Utils.N_ROWS; i++)
+            for (int j = 0; j < Utils.N_COLS; j++)
+                temp[i][j] = new Square();
+
+        return temp;
     }
 }

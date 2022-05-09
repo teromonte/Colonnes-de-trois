@@ -1,6 +1,6 @@
 #include "../headers/functionsClient.h"
 
-int handleParticipationAck(TPartieRep participationRes)
+int handleParticipationAck(struct TPartieRep participationRes)
 {
   int playerColor;
   switch (participationRes.err)
@@ -25,7 +25,7 @@ int handleParticipationAck(TPartieRep participationRes)
   return playerColor;
 }
 
-bool handleOwnPlayValidation(TCoupRep playRes)
+bool handleOwnPlayValidation(struct TCoupRep playRes)
 {
   bool matchIsOn = true;
   switch (playRes.err)
@@ -80,7 +80,7 @@ bool handleOwnPlayValidation(TCoupRep playRes)
   return matchIsOn;
 }
 
-bool handleOponentPlayValidation(TCoupRep playRes)
+bool handleOponentPlayValidation(struct TCoupRep playRes)
 {
   bool matchIsOn = true;
   switch (playRes.err)
@@ -135,59 +135,17 @@ bool handleOponentPlayValidation(TCoupRep playRes)
   return matchIsOn;
 }
 
-int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, TCoupReq *playReq)
-{
-  playReq->typeCoup = javaAPIRes->typeMove;
-  playReq->coul = playerColor; // color
-  playReq->idRequest = COUP;
-  switch (playReq->typeCoup)
-  {
-  case POS_PION:
-    playReq->action.posPion = javaAPIRes->placeMove;
-    printf("(Client) Player %d sent new play of type POS_PION, in  C: %d; L: %d\n",
-           playerColor, playReq->action.posPion.lg, playReq->action.posPion.col);
-    break;
-  case DEPL_PION:
-    playReq->action.deplPion = javaAPIRes->displaceMove;
-    printf("(Client) Player %d sent new play of type DEPL_PION, C: %d; L: %d => C: %d; L: %d\n",
-           playerColor, playReq->action.deplPion.caseDep.lg, playReq->action.deplPion.caseDep.col,
-           playReq->action.deplPion.caseArr.lg, playReq->action.deplPion.caseArr.col);
-    break;
-  case PASSE:
-    printf("(Client) Player %d sent new play of type DEPL_PION\n", playerColor);
-    break;
-  }
-
-  return 1;
-}
-
-bool makeMove(int playerColor, int sockAI, int sockC)
-{
-  // Request play to Server IA and send to Server C
-  struct ResponseAI javaAPIRes1;
-  requestAI(playerColor, sockAI, &javaAPIRes1);
-  TCoupReq playReq1;
-  buildPlayRequest(playerColor, &javaAPIRes1, &playReq1);
-  send(sockC, &playReq1, sizeof(TCoupReq), 0);
-
-  // Receive & Treat OwnPlayValidation
-  TCoupRep playRes1;
-  recv(sockC, &playRes1, sizeof(TCoupRep), 0);
-
-  return handleOwnPlayValidation(playRes1);
-}
-
 int doHandshake(int sockC, char chaine[])
 {
   ///////// ASK FOR PARTICIPATION //////////
-  TPartieReq participationReq;
+  struct TPartieReq participationReq;
   strcpy(participationReq.nomJoueur, chaine);
   participationReq.idRequest = PARTIE;
-  send(sockC, &participationReq, sizeof(TPartieReq), 0);
+  send(sockC, &participationReq, sizeof(struct TPartieReq), 0);
   printf("(Client) Participation request sent in name of %s!\n", participationReq.nomJoueur);
 
   ///////// RECIEIVE PARTICIPATION ACK //////////
-  TPartieRep participationRes;
-  recv(sockC, &participationRes, sizeof(TPartieRep), 0);
+  struct TPartieRep participationRes;
+  recv(sockC, &participationRes, sizeof(struct TPartieRep), 0);
   return handleParticipationAck(participationRes);
 }

@@ -6,14 +6,16 @@
 #ifndef RESPONSEAI_H
 #define RESPONSEAI_H
 
+#define SET 2
+
 /*
  * Structure responseAPI
  */
 struct ResponseAI
 {
-  TCoup typeMove;
-  TCase placeMove;
-  TDeplPion displaceMove;
+  enum TCoup typeMove;
+  struct TCase placeMove;
+  struct TDeplPion displaceMove;
 };
 
 #endif

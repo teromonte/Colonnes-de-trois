@@ -14,7 +14,7 @@ public class Square {
     }
 
     public int getSize() {
-        return pieces.size();
+        return size;
     }
 
     public void addPiece(int color) {
@@ -23,9 +23,7 @@ public class Square {
                 pieces.add(new Piece(color));
                 size++;
             } else {
-                for (Piece piece : pieces) {
-                    piece.swichState();
-                }
+                getTop().lock();
                 pieces.add(new Piece(color));
                 size++;
             }
@@ -33,14 +31,25 @@ public class Square {
     }
 
     public Piece removeTop() {
-        size--;
-        if (size > 0) {
-            // unlock others
+        if (size == 0) {
+            return null;
+        } else if (size == 1) {
+            size--;
+            return pieces.remove(size - 1);
+        } else {
+            size--;
+            Piece p = pieces.remove(size - 1);
+            getTop().unlock();
+            return p;
         }
-        return pieces.remove(pieces.size() - 1);
+
     }
 
     public Piece getTop() {
-        return pieces.get(pieces.size() - 1);
+        if (size > 0) {
+            return pieces.get(size - 1);
+        } else {
+            return null;
+        }
     }
 }

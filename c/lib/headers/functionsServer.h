@@ -11,9 +11,10 @@
 
 #define MAX_CLIENT 2
 
-// buildPlayResponse
-bool buildPlayResponse(bool verif, int turn, TCoupRep *playRep);
+// validate And Build Play Response
+bool validateAndBuildPlayResponse(bool verif, int turn, struct TCoupRep *playRep);
 
+// Do Handshake
 int doHandshake(int sockTrans[]);
 
 #endif

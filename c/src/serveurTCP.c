@@ -60,19 +60,19 @@ int main(int argc, char **argv)
     while (nPlays0 < 2000 && nPlays1 < 2000 && matchRunning)
     {
       // receive coup
-      TCoupReq playReq;
+      struct TCoupReq playReq;
       printf("(serveur) Receiving the play request from player %d\n", turn);
-      recv(sockTrans[turn], &playReq, sizeof(TCoupReq), 0);
+      recv(sockTrans[turn], &playReq, sizeof(struct TCoupReq), 0);
 
       // validate coup
-      TCoupRep playRep;
+      struct TCoupRep playRep;
       verif = validationCoup(turn + 1, playReq, &playRep.propCoup);
-      matchRunning = buildPlayResponse(verif, turn, &playRep);
+      matchRunning = validateAndBuildPlayResponse(verif, turn, &playRep);
 
       // send ack to players
-      printf("(serveur) Sending play acknolegment to both players!\n");
+      printf("(serveur) Sending play validation to both players!\n");
       for (int i = 0; i < 2; i++)
-        send(sockTrans[i], &playRep, sizeof(TCoupRep), 0);
+        send(sockTrans[i], &playRep, sizeof(struct TCoupRep), 0);
 
       // change turns and increment play
       if (matchRunning)

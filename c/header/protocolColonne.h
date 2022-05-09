@@ -8,131 +8,135 @@
  * Ecrit par : VF, FB
  * Date :  07 / 03 / 22
  *
-*/
+ */
 
 #ifndef PROTOCOLCOLONNE_H
 #define PROTOCOLCOLONNE_H
+
+#include <stdio.h>
 
 /* Taille des chaines de caracteres pour les noms */
 #define TNOM 30
 #define NUM_OF_MATCHES 2
 
+
+
 /* Identificateurs des requetes */
-typedef enum
+enum TIdRequest
 {
   PARTIE,
   COUP
-} TIdRequest;
+};
 
 /* Types d'erreur */
-typedef enum
+enum TErreur
 {
   ERR_OK,     /* Validation de la requete */
   ERR_PARTIE, /* Erreur sur la demande de partie */
   ERR_COUP,   /* Erreur sur le coup joue */
   ERR_TYP     /* Erreur sur le type de requete */
-} TErreur;
+};
 
 /*
  * Structures demande de partie
  */
-typedef struct
+struct TPartieReq
 {
-  TIdRequest idRequest; /* Identificateur de la requete */
+  enum TIdRequest idRequest; /* Identificateur de la requete */
   char nomJoueur[TNOM]; /* Nom du joueur */
-} TPartieReq;
+};
 
-typedef enum
+enum TPion
 {
   BLANC = 0,
   NOIR = 1
-} TPion;
+};
 
-typedef struct
+struct TPartieRep
 {
-  TErreur err;          /* Code d'erreur */
-  TPion coul;           /* Couleur du pion */
+  enum TErreur err;          /* Code d'erreur */
+  enum TPion coul;           /* Couleur du pion */
   char nomAdvers[TNOM]; /* Nom du joueur */
-} TPartieRep;
+};
 
 /*
  * Definition d'une position de case
  */
-typedef enum
+enum TLigne
 {
   UN,
   DEUX,
   TROIS
-} TLigne;
-typedef enum
+};
+enum TCol
 {
   A,
   B,
   C
-} TCol;
+};
 
-typedef struct
+struct TCase
 {
-  TLigne lg; /* La ligne de la position d'une case */
-  TCol col;  /* La colonne de la position d'une case */
-} TCase;
+  enum TLigne lg; /* La ligne de la position d'une case */
+  enum TCol col;  /* La colonne de la position d'une case */
+};
 
 /*
  * Definition d'un deplacement de pion
  */
-typedef struct
+struct TDeplPion
 {
-  TCase caseDep; /* Position de depart du pion */
-  TCase caseArr; /* Position d'arrivee du pion */
-} TDeplPion;
+  struct TCase caseDep; /* Position de depart du pion */
+  struct TCase caseArr; /* Position d'arrivee du pion */
+};
 
 /*
  * Structures coup du joueur
  */
 
 /* Precision des types de coups */
-typedef enum
+enum TCoup
 {
   POS_PION,
   DEPL_PION,
   PASSE
-} TCoup;
+};
 
-typedef struct
+struct TCoupReq
 {
-  TIdRequest idRequest; /* Identificateur de la requete */
-  TCoup typeCoup;       /* Type du coup : positionnement ou deplacement */
-  TPion coul;           /* Couleur de pion */
+  enum TIdRequest idRequest; /* Identificateur de la requete */
+  enum TCoup typeCoup;       /* Type du coup : positionnement ou deplacement */
+  enum TPion coul;           /* Couleur de pion */
   union
   {
-    TCase posPion;      /* Positionnement de pion */
-    TDeplPion deplPion; /* Deplacement de pion */
+    struct TCase posPion;      /* Positionnement de pion */
+    struct TDeplPion deplPion; /* Deplacement de pion */
   } action;
-} TCoupReq;
+};
 
 /* Validite du coup */
-typedef enum
+enum TValCoup
 {
   VALID,   // cont gagne
   TIMEOUT, // nulle
   TRICHE   // perdu
-} TValCoup;
+};
 
 /* Propriete des coups */
-typedef enum
+enum TPropCoup
 {
   CONT,
   GAGNE,
   NULLE,
   PERDU
-} TPropCoup;
+};
 
 /* Reponse a un coup */
-typedef struct
+struct TCoupRep
 {
-  TErreur err;        /* Code d'erreur */
-  TValCoup validCoup; /* Validite du coup */
-  TPropCoup propCoup; /* Propriete du coup */
-} TCoupRep;
+  enum TErreur err;        /* Code d'erreur */
+  enum TValCoup validCoup; /* Validite du coup */
+  enum TPropCoup propCoup; /* Propriete du coup */
+};
 
 #endif
