@@ -25,6 +25,22 @@ int requestAI(enum TPion color, int sockAI, struct ResponseAI *res)
   return err;
 }
 
+void handleOponentPlayInformation(enum TPion color, int sockAI, struct TCoupReq playReq)
+{
+  int moveType = playReq.typeCoup;
+  int depCol = playReq.action.deplPion.caseDep.col;
+  int depLg = playReq.action.deplPion.caseDep.lg;
+  int arrCol = playReq.action.posPion.col;
+  int arrLg = playReq.action.posPion.lg;
+
+  send(sockAI, &color, sizeof(int), 0);
+  send(sockAI, &moveType, sizeof(int), 0);
+  send(sockAI, &depCol, sizeof(int), 0);
+  send(sockAI, &depLg, sizeof(int), 0);
+  send(sockAI, &arrCol, sizeof(int), 0);
+  send(sockAI, &arrLg, sizeof(int), 0);
+}
+
 int setNextStateAI(int sockAI)
 {
   int err;

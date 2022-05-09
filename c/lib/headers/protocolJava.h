@@ -22,4 +22,7 @@ int buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCou
 // make move
 bool makeMove(int playerColor, int sockAI, int sockC, struct TCoupRep *playRes1);
 
+// send info coup advers
+void handleOponentPlayInformation(enum TPion color, int sockAI, struct TCoupReq playReq);
+
 #endif

@@ -62,13 +62,14 @@ int main(int argc, char **argv)
     while (matchIsOn)
     {
       // Receive & Treat Oponent Play Validation
-      struct TCoupRep playRes1;
-      struct TCoupRep playRes2;
+      struct TCoupRep playRes;
+      recv(sockC, &playRes, sizeof(struct TCoupRep), 0);
+      matchIsOn = handleOponentPlayValidation(playRes);
 
-      recv(sockC, &playRes1, sizeof(struct TCoupRep), 0);
-      matchIsOn = handleOponentPlayValidation(playRes1);
-
-      recv(sockC, &playRes2, sizeof(struct TCoupRep), 0);
+      // Receive & Treat Oponent Play information
+      struct TCoupReq playReq;
+      recv(sockC, &playReq, sizeof(struct TCoupReq), 0);
+      handleOponentPlayInformation(playerColor , sockAI,  playReq);
 
       // Make new play
       if (matchIsOn)
@@ -77,7 +78,6 @@ int main(int argc, char **argv)
         makeMove(playerColor, sockAI, sockC, &playRes2);
         matchIsOn = handleOwnPlayValidation(playRes2);
       }
-      
     }
 
     // Prepare for next match

@@ -18,4 +18,14 @@ struct ResponseAI
   struct TDeplPion displaceMove;
 };
 
+/*
+ * Structure responseAPI
+ */
+struct SendOpenentPlay
+{
+  enum TCoup typeMove;
+  struct TCase placeMove;
+  struct TDeplPion displaceMove;
+};
+
 #endif
