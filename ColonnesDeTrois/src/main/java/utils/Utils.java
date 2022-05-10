@@ -20,7 +20,7 @@ public class Utils {
 
     public static boolean checkIfNeighbor(Pair p1, Pair p2) {
 
-        return Math.abs(p1.getX() - p2.getX()) < 2 && Math.abs(p1.getY() - p2.getY()) < 2;
+        return Math.abs(p1.getX() - p2.getX()) + Math.abs(p1.getY() - p2.getY()) == 1;
     }
 
     public static int countPieces(Square[][] table) {

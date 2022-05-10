@@ -55,13 +55,13 @@ void handleOponentPlayInformation(enum TPion color, int sockAI, struct TCoupReq 
     switch (playReq.typeCoup)
     {
     case POS_PION:
-      printf("(Client) Opponent play sent to AI! POS_PION - C: %d; L:%d\n",
-             playReq.action.posPion.lg, playReq.action.posPion.col);
+      printf("(Client) Opponent play sent to AI! POS_PION Case (%d,%d).\n",
+             playReq.action.posPion.col, playReq.action.posPion.lg);
       break;
     case DEPL_PION:
-      printf("(Client) Opponent play sent to AI! DEPL_PION - C: %d; L: %d => C: %d; L: %d\n",
-             playReq.action.deplPion.caseDep.lg, playReq.action.deplPion.caseDep.col,
-             playReq.action.deplPion.caseArr.lg, playReq.action.deplPion.caseArr.col);
+      printf("(Client) Opponent play sent to AI! DEPL_PION Case (%d,%d) -> Case (%d,%d).\n",
+             playReq.action.deplPion.caseDep.col, playReq.action.deplPion.caseDep.lg,
+             playReq.action.deplPion.caseArr.col, playReq.action.deplPion.caseArr.lg);
       break;
     case PASSE:
       printf("(Client) Opponent play sent to AI! PASSE!\n");
@@ -103,14 +103,14 @@ void buildPlayRequest(int playerColor, struct ResponseAI *javaAPIRes, struct TCo
   {
   case POS_PION:
     playReq->action.posPion = javaAPIRes->placeMove;
-    printf("(Client) Player %d sent new play of type POS_PION - C: %d; L: %d\n",
-           playerColor, playReq->action.posPion.lg, playReq->action.posPion.col);
+    printf("(Client) Opponent play sent to AI! POS_PION Case (%d,%d).\n",
+           playReq->action.posPion.col, playReq->action.posPion.lg);
     break;
   case DEPL_PION:
     playReq->action.deplPion = javaAPIRes->displaceMove;
-    printf("(Client) Player %d sent new play of type DEPL_PION - C: %d; L: %d => C: %d; L: %d\n",
-           playerColor, playReq->action.deplPion.caseDep.lg, playReq->action.deplPion.caseDep.col,
-           playReq->action.deplPion.caseArr.lg, playReq->action.deplPion.caseArr.col);
+    printf("(Client) Opponent play sent to AI! DEPL_PION Case (%d,%d) -> Case (%d,%d).\n",
+           playReq->action.deplPion.caseDep.col, playReq->action.deplPion.caseDep.lg,
+           playReq->action.deplPion.caseArr.col, playReq->action.deplPion.caseArr.lg);
     break;
   case PASSE:
     printf("(Client) Player %d sent new play of type PASSE!\n", playerColor);
