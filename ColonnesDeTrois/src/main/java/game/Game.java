@@ -31,42 +31,6 @@ public class Game {
         matchRound++;
     }
 
-    public void saveOpponentMove(Response res) {
-        switch (res.moveType) {
-            case Utils.PLACE:
-                if (matchRound == Utils.FIRST_MATCH) {
-                    if (color == Utils.BLANC) {
-                        noir.remove(noir.size() - 1);
-                        table[res.depCol][res.depLg].addPiece(Utils.NOIR);
-                    } else {
-                        blanc.remove(blanc.size() - 1);
-                        table[res.depCol][res.depLg].addPiece(Utils.BLANC);
-                    }
-
-                } else {
-                    if (color == Utils.BLANC) {
-                        blanc.remove(blanc.size() - 1);
-                        table[res.depCol][res.depLg].addPiece(Utils.BLANC);
-                    } else {
-                        noir.remove(noir.size() - 1);
-                        table[res.depCol][res.depLg].addPiece(Utils.NOIR);
-                    }
-                }
-                break;
-            case Utils.MOVE:
-                Piece removed = table[res.depCol][res.depLg].removeTop();
-                table[res.arrCol][res.arrLg].addPiece(removed.getColor());
-                System.out
-                        .println("(javaAPI) Removed piece color: " + removed.getColor() + ". Case (" + res.depCol + ","
-                                + res.depLg + ") -> Case (" + res.arrCol
-                                + "," + res.arrLg + ").");
-                break;
-            case Utils.PASSE:
-                break;
-        }
-
-    }
-
     public Response getNextMove() {
         Algo alg = new Algo(color, matchRound, table);
 
@@ -111,6 +75,42 @@ public class Game {
                 }
                 return new Response(Utils.PLACE, pair.getX(), pair.getY());
             }
+        }
+
+    }
+
+    public void saveOpponentMove(Response res) {
+        switch (res.moveType) {
+            case Utils.PLACE:
+                if (matchRound == Utils.FIRST_MATCH) {
+                    if (color == Utils.BLANC) {
+                        noir.remove(noir.size() - 1);
+                        table[res.depCol][res.depLg].addPiece(Utils.NOIR);
+                    } else {
+                        blanc.remove(blanc.size() - 1);
+                        table[res.depCol][res.depLg].addPiece(Utils.BLANC);
+                    }
+
+                } else {
+                    if (color == Utils.BLANC) {
+                        blanc.remove(blanc.size() - 1);
+                        table[res.depCol][res.depLg].addPiece(Utils.BLANC);
+                    } else {
+                        noir.remove(noir.size() - 1);
+                        table[res.depCol][res.depLg].addPiece(Utils.NOIR);
+                    }
+                }
+                break;
+            case Utils.MOVE:
+                Piece removed = table[res.depCol][res.depLg].removeTop();
+                table[res.arrCol][res.arrLg].addPiece(removed.getColor());
+                System.out
+                        .println("(javaAPI) Removed piece color: " + removed.getColor() + ". Case (" + res.depCol + ","
+                                + res.depLg + ") -> Case (" + res.arrCol
+                                + "," + res.arrLg + ").");
+                break;
+            case Utils.PASSE:
+                break;
         }
 
     }
