@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May  9 14:35:06 2022
+# Make data base, printed on Tue May 10 16:23:16 2022
 
 # Variables
 
@@ -103,7 +103,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GOLANG_EXECUTABLE = go
 # environment
-SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/2903,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/2903
+SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/2604,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/2604
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -137,7 +137,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 63532
+GIO_LAUNCHED_DESKTOP_FILE_PID = 31833
 # automatic
 %F = $(notdir $%)
 # environment
@@ -159,7 +159,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 3059
+SSH_AGENT_PID = 2759
 # environment
 PKG_CONFIG_PATH = /home/thiago/.opam/default/lib/pkgconfig:/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig/
 # environment
@@ -225,7 +225,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/95
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-3402cb89-22f7-41c1-8133-6ba349e3f876.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-0d9d1b04-1570-48d7-a659-6fbd416603f3.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -280,11 +280,11 @@ HOMEBREW_PREFIX = /home/linuxbrew/.linuxbrew
 +D = $(patsubst %/,%,$(dir $+))
 # environment
 RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
+ 
 # environment
 GDK_BACKEND = x11
 # environment
 LC_PAPER = pt_PT.UTF-8
- 
 # environment
 CINNAMON_VERSION = 5.0.7
 # environment
@@ -336,7 +336,7 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 63578
+VSCODE_PID = 31884
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
@@ -348,7 +348,7 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 66306, inode 1850581): 10 files, no impossibilities.
+# . (device 66307, inode 1850581): 10 files, no impossibilities.
 
 # 10 files, no impossibilities in 1 directories.
 
@@ -531,6 +531,6 @@ serveurTCP: c/src/serveurTCP.c fonctionsTCP
 # strcache performance: lookups = 54 / hit rate = 40%
 # hash-table stats:
 # Load=32/8192=0%, Rehash=0, Collisions=2/54=4%
-# Finished Make data base on Mon May  9 14:35:06 2022
+# Finished Make data base on Tue May 10 16:23:16 2022
 
  

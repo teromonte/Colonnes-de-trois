@@ -1,10 +1,11 @@
+#include "../../header/protocolColonne.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdbool.h>
 #include <string.h>
-#include "../../header/protocolColonne.h"
 
 #ifndef FUNCTIONSCLIENT_H
 #define FUNCTIONSCLIENT_H

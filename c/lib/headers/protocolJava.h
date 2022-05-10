@@ -1,10 +1,11 @@
+#include "../../header/protocolColonne.h"
+
 #include <stdio.h>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include "../../header/protocolColonne.h"
 
 #ifndef PROTOCOLJAVA_H
 #define PROTOCOLJAVA_H
