@@ -34,11 +34,12 @@ public class Square {
         if (size == 0) {
             return null;
         } else if (size == 1) {
-            size--;
-            return pieces.remove(size - 1);
-        } else {
-            size--;
             Piece p = pieces.remove(size - 1);
+            size--;
+            return p;
+        } else {
+            Piece p = pieces.remove(size - 1);
+            size--;
             getTop().unlock();
             return p;
         }

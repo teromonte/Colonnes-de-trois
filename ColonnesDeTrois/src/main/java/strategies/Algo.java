@@ -22,17 +22,12 @@ public class Algo {
 
     public Pair getBestPlace() {
         List<Pair> p = getValidSquaresToGo();
-
         return p.remove(p.size() - 1);
     }
 
     public Move getBestDisplace() {
         List<Move> m = getDisplaceMovements();
-        if (m.isEmpty()) {
-            System.out.println("(javaAPI) No more displace movements found!"); // TODO- remove after algorithm
-            return null;
-        } else
-            return m.remove(m.size() - 1);
+        return m.remove(m.size() - 1);
     }
 
     private List<Move> getDisplaceMovements() {
@@ -43,8 +38,6 @@ public class Algo {
         for (Pair p1 : myPiecesTop)
             for (Pair p2 : placesToGo)
                 if (Utils.checkIfNeighbor(p1, p2)) { // check ig paire is naigboor with the other
-                    System.out.println("DEPL_PION Case (" + p1.getX() + "," + p1.getY() + ") -> Case (" + p2.getX()
-                            + "," + p2.getY() + ").");
                     res.add(new Move(p1, p2));
                 }
         return res;
@@ -57,7 +50,6 @@ public class Algo {
             for (int j = 0; j < Utils.N_ROWS; j++)
                 if (table[i][j].getSize() < Utils.MAX_PILE_SIZE) {
                     Pair p = new Pair(i, j);
-                    System.out.println("POS_PION Case (" + p.getX() + "," + p.getY() + ").");
                     res.add(p);
                 }
 
@@ -70,19 +62,30 @@ public class Algo {
         for (int i = 0; i < Utils.N_COLS; i++)
             for (int j = 0; j < Utils.N_ROWS; j++) {
                 if (table[i][j].getTop() != null) {
-                    Piece top = new Piece(table[i][j].getTop().getColor());
-                    if (matchRound == Utils.FIRST_MATCH) {
-                        if (top.getColor() == color) {
-                            Pair p = new Pair(i, j);
-                            System.out.println("MOVABLE: Case (" + p.getX() + "," + p.getY() + ").");
-                            tmp.add(p);
+                    int topColor = table[i][j].getTop().getColor();
+                    if (topColor == Utils.BLANC) {
+                        if (matchRound == Utils.FIRST_MATCH) {
+                            if (color == Utils.BLANC) {
+                                Pair p = new Pair(i, j);
+                                tmp.add(p);
+                            }
+                        } else {
+                            if (color == Utils.NOIR) {
+                                Pair p = new Pair(i, j);
+                                tmp.add(p);
+                            }
                         }
-
                     } else {
-                        if (top.getColor() != color) {
-                            Pair p = new Pair(i, j);
-                            System.out.println("MOVABLE: Case (" + p.getX() + "," + p.getY() + ").");
-                            tmp.add(p);
+                        if (matchRound == Utils.FIRST_MATCH) {
+                            if (color == Utils.NOIR) {
+                                Pair p = new Pair(i, j);
+                                tmp.add(p);
+                            }
+                        } else {
+                            if (color == Utils.BLANC) {
+                                Pair p = new Pair(i, j);
+                                tmp.add(p);
+                            }
                         }
                     }
                 }

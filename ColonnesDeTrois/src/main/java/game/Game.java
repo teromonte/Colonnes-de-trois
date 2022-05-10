@@ -14,9 +14,6 @@ public class Game {
     private List<Piece> blanc;
     private List<Piece> noir;
     private int matchRound; // maybe we use that to know who starts the game
-    private int lin = 0;
-    private int col = 0;
-    private int counter = 0;
     private int color;
 
     public Game(int color) {
@@ -38,16 +35,31 @@ public class Game {
         switch (res.moveType) {
             case Utils.PLACE:
                 if (matchRound == Utils.FIRST_MATCH) {
-                    noir.remove(noir.size() - 1);
-                    table[res.depCol][res.depLg].addPiece(Utils.NOIR);
+                    if (color == Utils.BLANC) {
+                        noir.remove(noir.size() - 1);
+                        table[res.depCol][res.depLg].addPiece(Utils.NOIR);
+                    } else {
+                        blanc.remove(blanc.size() - 1);
+                        table[res.depCol][res.depLg].addPiece(Utils.BLANC);
+                    }
+
                 } else {
-                    blanc.remove(blanc.size() - 1);
-                    table[res.depCol][res.depLg].addPiece(Utils.BLANC);
+                    if (color == Utils.BLANC) {
+                        blanc.remove(blanc.size() - 1);
+                        table[res.depCol][res.depLg].addPiece(Utils.BLANC);
+                    } else {
+                        noir.remove(noir.size() - 1);
+                        table[res.depCol][res.depLg].addPiece(Utils.NOIR);
+                    }
                 }
                 break;
             case Utils.MOVE:
                 Piece removed = table[res.depCol][res.depLg].removeTop();
                 table[res.arrCol][res.arrLg].addPiece(removed.getColor());
+                System.out
+                        .println("(javaAPI) Removed piece color: " + removed.getColor() + ". Case (" + res.depCol + ","
+                                + res.depLg + ") -> Case (" + res.arrCol
+                                + "," + res.arrLg + ").");
                 break;
             case Utils.PASSE:
                 break;
@@ -79,11 +91,23 @@ public class Game {
             } else {
                 // move type = place
                 if (matchRound == Utils.FIRST_MATCH) {
-                    blanc.remove(blanc.size() - 1);
-                    table[pair.getX()][pair.getY()].addPiece(Utils.BLANC);
+                    if (color == Utils.BLANC) {
+                        blanc.remove(blanc.size() - 1);
+                        table[pair.getX()][pair.getY()].addPiece(Utils.BLANC);
+                    } else {
+                        noir.remove(noir.size() - 1);
+                        table[pair.getX()][pair.getY()].addPiece(Utils.NOIR);
+                    }
+
                 } else {
-                    noir.remove(noir.size() - 1);
-                    table[pair.getX()][pair.getY()].addPiece(Utils.NOIR);
+                    if (color == Utils.BLANC) {
+                        noir.remove(noir.size() - 1);
+                        table[pair.getX()][pair.getY()].addPiece(Utils.NOIR);
+
+                    } else {
+                        blanc.remove(blanc.size() - 1);
+                        table[pair.getX()][pair.getY()].addPiece(Utils.BLANC);
+                    }
                 }
                 return new Response(Utils.PLACE, pair.getX(), pair.getY());
             }

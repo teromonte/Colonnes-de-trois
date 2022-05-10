@@ -32,10 +32,10 @@ int sendOpponentMoveToAI(enum TPion color, int sockAI, struct TCoupReq playReq)
 {
   int err;
   int moveType = playReq.typeCoup;
-  int depCol = playReq.action.deplPion.caseDep.col;
-  int depLg = playReq.action.deplPion.caseDep.lg;
-  int arrCol = playReq.action.posPion.col;
-  int arrLg = playReq.action.posPion.lg;
+  int depCol = playReq.action.posPion.col;
+  int depLg = playReq.action.posPion.lg;
+  int arrCol = playReq.action.deplPion.caseArr.col;
+  int arrLg = playReq.action.deplPion.caseArr.lg;
 
   err = send(sockAI, &color, sizeof(int), 0);
   err = send(sockAI, &moveType, sizeof(int), 0);
