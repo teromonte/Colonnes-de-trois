@@ -3,7 +3,6 @@ package strategies;
 import java.util.ArrayList;
 import java.util.List;
 
-import game.Piece;
 import game.Square;
 import utils.Move;
 import utils.Pair;

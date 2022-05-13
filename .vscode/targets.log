@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue May 10 16:23:16 2022
+# Make data base, printed on Fri May 13 11:56:58 2022
 
 # Variables
 
@@ -47,13 +47,13 @@ CURDIR := /home/thiago/Desktop/Tournoi/Colonnes-de-trois
 # makefile
 SHELL = /bin/sh
 # environment
-SNAP_DATA = /var/snap/code/95
+SNAP_DATA = /var/snap/code/96
 # environment
 GDM_LANG = en_US
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-_ = /snap/code/95/usr/share/code/code
+_ = /snap/code/96/usr/share/code/code
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-cinnamon:/etc/xdg
 # environment
@@ -93,7 +93,7 @@ VSCODE_CWD = /home/thiago
 # environment
 XDG_SESSION_PATH = /org/freedesktop/DisplayManager/Session0
 # environment
-GSETTINGS_SCHEMA_DIR = /snap/code/95/usr/share/glib-2.0/schemas
+GSETTINGS_SCHEMA_DIR = /snap/code/96/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -103,17 +103,17 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GOLANG_EXECUTABLE = go
 # environment
-SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/2604,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/2604
+SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/2660,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/2660
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/thiago/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-SNAP = /snap/code/95
+SNAP = /snap/code/96
 # environment
 THREE_SCALE_USER_TOKEN = 207c527cfc2a6b8dcf4fa43ad7a976da
 # environment
-SNAP_VERSION = 57fd6d01
+SNAP_VERSION = da15b6fd
 # environment
 CONDA_PREFIX = /home/thiago/anaconda3
 # environment
@@ -123,7 +123,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-GDK_PIXBUF_MODULEDIR = /snap/code/95/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+GDK_PIXBUF_MODULEDIR = /snap/code/96/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -137,7 +137,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 31833
+GIO_LAUNCHED_DESKTOP_FILE_PID = 15576
 # automatic
 %F = $(notdir $%)
 # environment
@@ -159,7 +159,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 2759
+SSH_AGENT_PID = 2827
 # environment
 PKG_CONFIG_PATH = /home/thiago/.opam/default/lib/pkgconfig:/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig/
 # environment
@@ -177,7 +177,7 @@ HOMEBREW_CELLAR = /home/linuxbrew/.linuxbrew/Cellar
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /home/thiago/.config/Code/CachedData/57fd6d0195bb9b9d1b49f6da5db789060795de47
+VSCODE_CODE_CACHE_PATH = /home/thiago/.config/Code/CachedData/da15b6fd3ef856477bf6f4fb29ba1b7af717770d
 # environment
 LOGNAME = thiago
 # environment
@@ -221,17 +221,17 @@ MAKECMDGOALS := all
 # environment
 QT_IM_MODULE = ibus
 # environment
-SNAP_USER_DATA = /home/thiago/snap/code/95
+SNAP_USER_DATA = /home/thiago/snap/code/96
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-0d9d1b04-1570-48d7-a659-6fbd416603f3.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-7840f4ca-39e4-43f2-9fb6-5dda91fc3e2c.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
 USER = thiago
 # environment
-SNAP_REVISION = 95
+SNAP_REVISION = 96
 # environment
 CAML_LD_LIBRARY_PATH = /home/thiago/.opam/default/lib/stublibs:/usr/local/lib/ocaml/4.08.1/stublibs:/usr/lib/ocaml/stublibs
 # environment
@@ -261,7 +261,7 @@ LANGUAGE = en_US
 # environment
 XDG_SEAT_PATH = /org/freedesktop/DisplayManager/Seat0
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-ba0de0d3-1.67.0-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-ba0de0d3-1.67.1-main.sock
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # makefile
@@ -280,7 +280,6 @@ HOMEBREW_PREFIX = /home/linuxbrew/.linuxbrew
 +D = $(patsubst %/,%,$(dir $+))
 # environment
 RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
- 
 # environment
 GDK_BACKEND = x11
 # environment
@@ -292,6 +291,7 @@ LC_IDENTIFICATION = pt_PT.UTF-8
 # environment
 HOMEBREW_REPOSITORY = /home/linuxbrew/.linuxbrew/Homebrew
 # environment
+ 
 QT_ACCESSIBILITY = 1
 # environment
 DEFAULTS_PATH = /usr/share/gconf/cinnamon.default.path
@@ -336,7 +336,7 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 31884
+VSCODE_PID = 15622
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
@@ -348,7 +348,7 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 66307, inode 1850581): 10 files, no impossibilities.
+# . (device 66306, inode 1850581): 10 files, no impossibilities.
 
 # 10 files, no impossibilities in 1 directories.
 
@@ -531,6 +531,6 @@ serveurTCP: c/src/serveurTCP.c fonctionsTCP
 # strcache performance: lookups = 54 / hit rate = 40%
 # hash-table stats:
 # Load=32/8192=0%, Rehash=0, Collisions=2/54=4%
-# Finished Make data base on Tue May 10 16:23:16 2022
+# Finished Make data base on Fri May 13 11:56:58 2022
 
  

@@ -33,7 +33,6 @@ public class Game {
 
     public Response getNextMove() {
         Algo alg = new Algo(color, matchRound, table);
-
         if (blanc.isEmpty() && noir.isEmpty()) {
             Move move = alg.getBestDisplace();
             if (move == null) {
@@ -104,10 +103,6 @@ public class Game {
             case Utils.MOVE:
                 Piece removed = table[res.depCol][res.depLg].removeTop();
                 table[res.arrCol][res.arrLg].addPiece(removed.getColor());
-                System.out
-                        .println("(javaAPI) Removed piece color: " + removed.getColor() + ". Case (" + res.depCol + ","
-                                + res.depLg + ") -> Case (" + res.arrCol
-                                + "," + res.arrLg + ").");
                 break;
             case Utils.PASSE:
                 break;
