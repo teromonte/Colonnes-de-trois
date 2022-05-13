@@ -24,13 +24,6 @@ public class Game {
         this.matchRound = 0;
     }
 
-    public void reset() {
-        this.table = initialiseTable();
-        this.blanc = initialiseArray(Utils.BLANC);
-        this.noir = initialiseArray(Utils.NOIR);
-        matchRound++;
-    }
-
     public Response getNextMove() {
         Algo alg = new Algo(color, matchRound, table);
         if (blanc.isEmpty() && noir.isEmpty()) {
@@ -108,6 +101,13 @@ public class Game {
                 break;
         }
 
+    }
+
+    public void reset() {
+        this.table = initialiseTable();
+        this.blanc = initialiseArray(Utils.BLANC);
+        this.noir = initialiseArray(Utils.NOIR);
+        matchRound++;
     }
 
     private List<Piece> initialiseArray(int color) {

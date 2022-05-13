@@ -29,6 +29,7 @@ public class Algo {
         return m.remove(m.size() - 1);
     }
 
+    // get all displace movements
     private List<Move> getDisplaceMovements() {
         List<Move> res = new ArrayList<>();
         List<Pair> placesToGo = getValidSquaresToGo();// all the places i can go
@@ -42,6 +43,7 @@ public class Algo {
         return res;
     }
 
+    // get all valid squares to go
     private List<Pair> getValidSquaresToGo() {
         List<Pair> res = new ArrayList<>();// initialise a list
         // return every square in the table that has < 3 pieces
