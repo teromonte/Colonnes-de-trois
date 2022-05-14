@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat May 14 10:35:48 2022
+# Make data base, printed on Sat May 14 23:37:41 2022
 
 # Variables
 
@@ -97,7 +97,7 @@ GSETTINGS_SCHEMA_DIR = /snap/code/96/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/thiago/.opam/default/bin:/usr/local/texlive/2022/bin/x86_64-linux:/opt/frama-c-22/4.08.1_fc22/bin:/home/thiago/anaconda3/bin:/home/thiago/anaconda3/condabin:/home/thiago/.opam/default/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+PATH = /home/thiago/.opam/default/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
@@ -137,7 +137,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 23037
+GIO_LAUNCHED_DESKTOP_FILE_PID = 452335
 # automatic
 %F = $(notdir $%)
 # environment
@@ -161,13 +161,13 @@ XDG_SEAT = seat0
 # environment
 SSH_AGENT_PID = 2994
 # environment
-PKG_CONFIG_PATH = /home/thiago/.opam/default/lib/pkgconfig:/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig/
+PKG_CONFIG_PATH = /home/thiago/.opam/default/lib/pkgconfig:
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = X-Cinnamon
 # environment
 GTK_MODULES = gail:atk-bridge
 # environment
-MANPATH = /home/linuxbrew/.linuxbrew/share/man::/home/thiago/.opam/default/man:/home/thiago/.opam/default/man
+MANPATH = /home/linuxbrew/.linuxbrew/share/man::/home/thiago/.opam/default/man
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
@@ -225,7 +225,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/96
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-857f9fc3-8538-40c3-aed4-7a8a45453729.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-0c0b9fb8-644a-4bc5-9669-fc3af13f70d3.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -277,7 +277,6 @@ HOMEBREW_SHELLENV_PREFIX = /home/linuxbrew/.linuxbrew
 # environment
 HOMEBREW_PREFIX = /home/linuxbrew/.linuxbrew
 # automatic
- 
 +D = $(patsubst %/,%,$(dir $+))
 # environment
 RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
@@ -286,10 +285,13 @@ GDK_BACKEND = x11
 # environment
 LC_PAPER = pt_PT.UTF-8
 # environment
+NO_AT_BRIDGE = 1
+# environment
 CINNAMON_VERSION = 5.0.7
 # environment
 LC_IDENTIFICATION = pt_PT.UTF-8
 # environment
+ 
 HOMEBREW_REPOSITORY = /home/linuxbrew/.linuxbrew/Homebrew
 # environment
 QT_ACCESSIBILITY = 1
@@ -340,7 +342,7 @@ VSCODE_PID = 23091
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
-# Load=164/1024=16%, Rehash=0, Collisions=25/193=13%
+# Load=165/1024=16%, Rehash=0, Collisions=25/194=13%
 
 # Pattern-specific Variable Values
 
@@ -531,6 +533,6 @@ serveurTCP: c/src/serveurTCP.c fonctionsTCP
 # strcache performance: lookups = 55 / hit rate = 40%
 # hash-table stats:
 # Load=33/8192=0%, Rehash=0, Collisions=2/55=4%
-# Finished Make data base on Sat May 14 10:35:48 2022
+# Finished Make data base on Sat May 14 23:37:41 2022
 
  

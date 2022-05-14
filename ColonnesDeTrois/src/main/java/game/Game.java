@@ -1,12 +1,13 @@
 package game;
 
-import com.google.gson.Gson;
 import entities.Response;
 import strategies.Algo;
 import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.Gson;
 
 public class Game {
     private Square[][] table;
