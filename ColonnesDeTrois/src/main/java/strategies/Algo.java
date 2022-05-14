@@ -1,13 +1,13 @@
 package strategies;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import game.GameMove;
 import game.Piece;
 import game.Square;
 import utils.Pair;
 import utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Algo {
     private Square[][] table;
@@ -92,7 +92,7 @@ public class Algo {
     }
 
     private void undoMove(GameMove move) {
-        if (move.getArr() != null) {
+        if (move.getArr().getX() == -1) {
             table[move.getDep().getX()][move.getDep().getY()].removeTop();
         } else {
             Piece removed = table[move.getArr().getX()][move.getArr().getY()].removeTop();
@@ -118,8 +118,7 @@ public class Algo {
     private Pair hasWon() {
         for (int i = 0; i < Utils.N_ROWS; i++)
             for (int j = 0; j < Utils.N_COLS; j++) {
-                if (table[i][j].hasPileOfSameColor())
-                    return new Pair(i, j);
+                if (table[i][j].hasPileOfSameColor()) return new Pair(i, j);
 
             }
         return null;
@@ -133,6 +132,7 @@ public class Algo {
             return getDisplaceMovements();
         }
     }
+
 
     // get all displace movements
     private List<GameMove> getDisplaceMovements() {
@@ -166,37 +166,14 @@ public class Algo {
     private List<Pair> getMovablePieces() {
         List<Pair> tmp = new ArrayList<>();
         for (int i = 0; i < Utils.N_COLS; i++)
-            for (int j = 0; j < Utils.N_ROWS; j++) {
+            for (int j = 0; j < Utils.N_ROWS; j++)
                 if (table[i][j].getTop() != null) {
                     int topColor = table[i][j].getTop().getColor();
-                    if (topColor == Utils.BLANC) {
-                        if (matchRound == Utils.FIRST_MATCH) {
-                            if (color == Utils.BLANC) {
-                                Pair p = new Pair(i, j);
-                                tmp.add(p);
-                            }
-                        } else {
-                            if (color == Utils.NOIR) {
-                                Pair p = new Pair(i, j);
-                                tmp.add(p);
-                            }
-                        }
-                    } else {
-                        if (matchRound == Utils.FIRST_MATCH) {
-                            if (color == Utils.NOIR) {
-                                Pair p = new Pair(i, j);
-                                tmp.add(p);
-                            }
-                        } else {
-                            if (color == Utils.BLANC) {
-                                Pair p = new Pair(i, j);
-                                tmp.add(p);
-                            }
-                        }
+                    if (topColor == color) {
+                        Pair p = new Pair(i, j);
+                        tmp.add(p);
                     }
                 }
-
-            }
         return tmp;
     }
 }
