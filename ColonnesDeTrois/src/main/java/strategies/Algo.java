@@ -6,7 +6,6 @@ import java.util.List;
 import game.GameMove;
 import game.Piece;
 import game.Square;
-import utils.Move;
 import utils.Pair;
 import utils.Utils;
 

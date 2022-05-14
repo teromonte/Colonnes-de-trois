@@ -17,6 +17,8 @@ public class Square {
         return size;
     }
 
+    public List<Piece> getPieces() {return pieces;}
+
     public void addPiece(int color) {
         if (size < 3) {
             if (size == 0) {

@@ -1,11 +1,12 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gson.Gson;
 import entities.Response;
 import strategies.Algo;
 import utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     private Square[][] table;
@@ -24,11 +25,15 @@ public class Game {
 
     public Response getNextMove() {
         Algo alg;
+        Gson g = new Gson();
         if (blanc.isEmpty() && noir.isEmpty()) {
-            if (matchRound == Utils.FIRST_MATCH)
-                alg = new Algo(color, matchRound, table, false);
-            else
-                alg = new Algo(1 - color, matchRound, table, false);
+            if (matchRound == Utils.FIRST_MATCH) {
+                Square[][] temp = g.fromJson(g.toJson(table), Square[][].class);
+                alg = new Algo(color, matchRound, temp, false);
+            } else {
+                Square[][] temp = g.fromJson(g.toJson(table), Square[][].class);
+                alg = new Algo(1 - color, matchRound, temp, false);
+            }
 
             GameMove move = alg.decideMove(); //
             if (move == null) {
@@ -43,10 +48,15 @@ public class Game {
                         move.getArr().getY());
             }
         } else {
-            if (matchRound == Utils.FIRST_MATCH)
-                alg = new Algo(color, matchRound, table, true);
-            else
-                alg = new Algo(1 - color, matchRound, table, true);
+            if (matchRound == Utils.FIRST_MATCH) {
+                Square[][] temp = g.fromJson(g.toJson(table), Square[][].class);
+
+                alg = new Algo(color, matchRound, temp, true);
+            } else {
+                Square[][] temp = g.fromJson(g.toJson(table), Square[][].class);
+
+                alg = new Algo(1 - color, matchRound, temp, true);
+            }
 
             GameMove pair = alg.decideMove(); //
             if (pair == null) {

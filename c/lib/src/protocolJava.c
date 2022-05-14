@@ -9,6 +9,10 @@ int requestAI(enum TPion color, int sockAI, struct ResponseAI *res)
   int moveType;
   int depCol, depLg, arrCol, arrLg;
 
+  //int test;
+  //test = 0;
+  //err = send(sockAI, &test, sizeof(int), 0);
+
   err = send(sockAI, &color, sizeof(int), 0);
 
   err = recv(sockAI, &moveType, sizeof(int), 0);
