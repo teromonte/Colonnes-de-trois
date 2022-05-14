@@ -5,8 +5,6 @@ import java.util.List;
 
 import entities.Response;
 import strategies.Algo;
-import utils.Move;
-import utils.Pair;
 import utils.Utils;
 
 public class Game {
@@ -26,7 +24,6 @@ public class Game {
 
     public Response getNextMove() {
         Algo alg;
-
         if (blanc.isEmpty() && noir.isEmpty()) {
             if (matchRound == Utils.FIRST_MATCH)
                 alg = new Algo(color, matchRound, table, false);
@@ -34,7 +31,7 @@ public class Game {
                 alg = new Algo(1 - color, matchRound, table, false);
 
             GameMove move = alg.decideMove(); //
-            if (move.getArr() == null) {
+            if (move == null) {
                 // move type = passe
                 return new Response(Utils.PASSE);
             } else {
@@ -52,7 +49,7 @@ public class Game {
                 alg = new Algo(1 - color, matchRound, table, true);
 
             GameMove pair = alg.decideMove(); //
-            if (pair.getDep() == null) {
+            if (pair == null) {
                 // move type = passe
                 return new Response(Utils.PASSE);
             } else {
@@ -76,7 +73,6 @@ public class Game {
                         table[pair.getDep().getX()][pair.getDep().getY()].addPiece(Utils.BLANC);
                     }
                 }
-
                 return new Response(Utils.PLACE, pair.getDep().getX(), pair.getDep().getY());
             }
         }
@@ -94,7 +90,6 @@ public class Game {
                         blanc.remove(blanc.size() - 1);
                         table[res.depCol][res.depLg].addPiece(Utils.BLANC);
                     }
-
                 } else {
                     if (color == Utils.BLANC) {
                         blanc.remove(blanc.size() - 1);

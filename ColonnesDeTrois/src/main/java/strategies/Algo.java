@@ -84,7 +84,7 @@ public class Algo {
 
     private void makeMove(GameMove move, int currColor) {
         // this is a place move
-        if (move.getArr() != null) {
+        if (move.getArr().getX() == -1) {
             table[move.getDep().getX()][move.getDep().getY()].addPiece(currColor);
         } else {
             Piece removed = table[move.getDep().getX()][move.getDep().getY()].removeTop();
@@ -157,7 +157,7 @@ public class Algo {
             for (int j = 0; j < Utils.N_ROWS; j++)
                 if (table[i][j].getSize() < Utils.MAX_PILE_SIZE) {
                     Pair p = new Pair(i, j);
-                    res.add(new GameMove(p, null));
+                    res.add(new GameMove(p));
                 }
 
         return res;

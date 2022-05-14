@@ -11,6 +11,11 @@ public class GameMove {
         this.arr = arr;
     }
 
+    public GameMove(Pair dep) {
+        this.dep = dep;
+        this.arr = new Pair(-1, -1);
+    }
+
     public Pair getDep() {
         return dep;
     }
