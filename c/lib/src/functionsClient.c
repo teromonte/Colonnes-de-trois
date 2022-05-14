@@ -54,11 +54,11 @@ bool handleOwnPlayValidation(struct TCoupRep playRes)
       }
       break;
     case TIMEOUT:
-      printf("(Client) My play is no VALID and resulted in TIMEOUT!\n");
+      printf("(Client) My play is NOT VALID and resulted in TIMEOUT!\n");
       matchIsOn = false;
       break;
     case TRICHE:
-      printf("(Client) My play is no VALID and resulted in TRICHE!\n");
+      printf("(Client) My play is NOT VALID and resulted in TRICHE!\n");
       matchIsOn = false;
       break;
     }
