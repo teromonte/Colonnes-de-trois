@@ -26,27 +26,33 @@ public class Game {
 
     public Response getNextMove() {
         Algo alg;
-        if (matchRound == Utils.FIRST_MATCH)
-            alg = new Algo(color, matchRound, table);
-        else
-            alg = new Algo(1 - color, matchRound, table);
 
         if (blanc.isEmpty() && noir.isEmpty()) {
-            Move move = alg.getBestDisplace();
-            if (move == null) {
+            if (matchRound == Utils.FIRST_MATCH)
+                alg = new Algo(color, matchRound, table, false);
+            else
+                alg = new Algo(1 - color, matchRound, table, false);
+
+            GameMove move = alg.decideMove(); //
+            if (move.getArr() == null) {
                 // move type = passe
                 return new Response(Utils.PASSE);
             } else {
                 // move type = move
-                Piece removed = table[move.getPiece().getX()][move.getPiece().getY()].removeTop();
-                table[move.getMove().getX()][move.getMove().getY()].addPiece(removed.getColor());
+                Piece removed = table[move.getDep().getX()][move.getDep().getY()].removeTop();
+                table[move.getArr().getX()][move.getArr().getY()].addPiece(removed.getColor());
 
-                return new Response(Utils.MOVE, move.getPiece().getX(), move.getPiece().getY(), move.getMove().getX(),
-                        move.getMove().getY());
+                return new Response(Utils.MOVE, move.getDep().getX(), move.getDep().getY(), move.getArr().getX(),
+                        move.getArr().getY());
             }
         } else {
-            Pair pair = alg.getBestPlace();
-            if (pair == null) {
+            if (matchRound == Utils.FIRST_MATCH)
+                alg = new Algo(color, matchRound, table, true);
+            else
+                alg = new Algo(1 - color, matchRound, table, true);
+
+            GameMove pair = alg.decideMove(); //
+            if (pair.getDep() == null) {
                 // move type = passe
                 return new Response(Utils.PASSE);
             } else {
@@ -54,24 +60,24 @@ public class Game {
                 if (matchRound == Utils.FIRST_MATCH) {
                     if (color == Utils.BLANC) {
                         blanc.remove(blanc.size() - 1);
-                        table[pair.getX()][pair.getY()].addPiece(Utils.BLANC);
+                        table[pair.getDep().getX()][pair.getDep().getY()].addPiece(Utils.BLANC);
                     } else {
                         noir.remove(noir.size() - 1);
-                        table[pair.getX()][pair.getY()].addPiece(Utils.NOIR);
+                        table[pair.getDep().getX()][pair.getDep().getY()].addPiece(Utils.NOIR);
                     }
 
                 } else {
                     if (color == Utils.BLANC) {
                         noir.remove(noir.size() - 1);
-                        table[pair.getX()][pair.getY()].addPiece(Utils.NOIR);
+                        table[pair.getDep().getX()][pair.getDep().getY()].addPiece(Utils.NOIR);
 
                     } else {
                         blanc.remove(blanc.size() - 1);
-                        table[pair.getX()][pair.getY()].addPiece(Utils.BLANC);
+                        table[pair.getDep().getX()][pair.getDep().getY()].addPiece(Utils.BLANC);
                     }
                 }
-                
-                return new Response(Utils.PLACE, pair.getX(), pair.getY());
+
+                return new Response(Utils.PLACE, pair.getDep().getX(), pair.getDep().getY());
             }
         }
 

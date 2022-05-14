@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import game.GameMove;
+import game.Piece;
 import game.Square;
 import utils.Move;
 import utils.Pair;
@@ -14,39 +15,34 @@ public class Algo {
     private int color;
     private int matchRound;
     private GameMove bestMove;
+    private boolean isPart1;
 
-    public Algo(int color, int matchRound, Square[][] table) {
+    public Algo(int color, int matchRound, Square[][] table, boolean isPart1) {
         this.color = color;
         this.table = table;
         this.matchRound = matchRound;
-    }
-
-    public Pair getBestPlace() {
-        List<Pair> p = getValidSquaresToGo();
-        return p.remove(p.size() - 1);
-    }
-
-    public Move getBestDisplace() {
-        List<Move> m = getDisplaceMovements();
-        return m.remove(m.size() - 1);
+        this.isPart1 = isPart1;
+        this.bestMove = null;
     }
 
     // Alpha-Beta
     public GameMove decideMove() {
-        maximizer(Integer.MIN_VALUE, Integer.MAX_VALUE);
+        maximizer(Utils.DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
         return bestMove;
     }
 
-    private int maximizer(int alpha, int beta) {
-        
-        List<GameMove> legalMoves = getDisplaceMovements();
-        legalMoves.addAll(getValidSquaresToGo());
+    private int maximizer(int depth, int alpha, int beta) {
+        if (depth == 0) {
+            return computeRating(color);
+        }
+
+        List<GameMove> legalMoves = getValidMoves(isPart1);
 
         for (GameMove move : legalMoves) {
-            makeMove(move);
-            side = side.opposite();
-            int rating = minimizer(alpha, beta);
-            side = side.opposite();
+            makeMove(move, color);
+            color = 1 - color;
+            int rating = minimizer(depth - 1, alpha, beta);
+            color = 1 - color;
             undoMove(move);
 
             if (rating > alpha) {
@@ -61,16 +57,18 @@ public class Algo {
         return alpha;
     }
 
-    private int minimizer(int alpha, int beta) {
+    private int minimizer(int depth, int alpha, int beta) {
+        if (depth == 0) {
+            return computeRating(color);
+        }
 
-        List<GameMove> legalMoves = getDisplaceMovements();
-        legalMoves.addAll(getValidSquaresToGo());
+        List<GameMove> legalMoves = getValidMoves(isPart1);
 
         for (GameMove move : legalMoves) {
-            makeMove(move);
-            side = side.opposite();
-            int rating = maximizer(alpha, beta);
-            side = side.opposite();
+            makeMove(move, color);
+            color = 1 - color;
+            int rating = maximizer(depth - 1, alpha, beta);
+            color = 1 - color;
             undoMove(move);
 
             if (rating <= beta) {
@@ -84,25 +82,57 @@ public class Algo {
         return beta;
     }
 
-    // Return 0 if player white won, 1 if player black won, 2 if nobody won
-    // -1 if nobody won and there is no possible moves anymore
-    private int GetGameState() {
-        boolean hasOwn = false;
-        int colorOfWhoWon = -1;
+    private void makeMove(GameMove move, int currColor) {
+        // this is a place move
+        if (move.getArr() != null) {
+            table[move.getDep().getX()][move.getDep().getY()].addPiece(currColor);
+        } else {
+            Piece removed = table[move.getDep().getX()][move.getDep().getY()].removeTop();
+            table[move.getArr().getX()][move.getArr().getY()].addPiece(removed.getColor());
+        }
+    }
 
+    private void undoMove(GameMove move) {
+        if (move.getArr() != null) {
+            table[move.getDep().getX()][move.getDep().getY()].removeTop();
+        } else {
+            Piece removed = table[move.getArr().getX()][move.getArr().getY()].removeTop();
+            table[move.getDep().getX()][move.getDep().getY()].addPiece(removed.getColor());
+        }
+    }
+
+    // Return 0 if someboody won 1 if nobody won
+    // 2 if nobody won and there is no possible moves anymore
+    private int computeRating(int color) {
+        Pair p = hasWon();
+        if (p != null) {
+            if (table[p.getX()][p.getY()].getTop().getColor() == color) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
+        return 0;
+    }
+
+    // check if somebody wons
+    private Pair hasWon() {
         for (int i = 0; i < Utils.N_ROWS; i++)
             for (int j = 0; j < Utils.N_COLS; j++) {
-                hasOwn = table[i][j].hasPileOfSameColor();
-                colorOfWhoWon = table[i][j].getTop().getColor();
+                if (table[i][j].hasPileOfSameColor())
+                    return new Pair(i, j);
+
             }
+        return null;
+    }
 
-        if (hasOwn)
-            return colorOfWhoWon;
-        else if (getDisplaceMovements().isEmpty() && getValidSquaresToGo().isEmpty())
-            return -1;
-
-        return 2;
-
+    // get moves depending on the game part
+    private List<GameMove> getValidMoves(boolean isPart1) {
+        if (isPart1) {
+            return getValidSquaresToGo();
+        } else {
+            return getDisplaceMovements();
+        }
     }
 
     // get all displace movements

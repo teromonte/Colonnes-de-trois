@@ -1,5 +1,6 @@
 package utils;
 
+import game.GameMove;
 import game.Square;
 
 public class Utils {
@@ -18,6 +19,14 @@ public class Utils {
     public static final int FIRST_MATCH = 0;
     public static final int SECOND_MATCH = 1;
     public static final int DEPTH = 2;
+    public static final int WON = 0;
+    public static final int CONT = 1;
+    public static final int NULLE = 2;
+
+    //This could sabe code
+    public Square[][] applyMoveToTable (Square[][] table, GameMove m) {
+        return null;
+    }
 
     public static boolean checkIfNeighbor(Pair p1, Pair p2) {
 
