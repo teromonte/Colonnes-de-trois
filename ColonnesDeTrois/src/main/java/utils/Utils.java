@@ -17,6 +17,7 @@ public class Utils {
     public static final int N_GAMES = 2;
     public static final int FIRST_MATCH = 0;
     public static final int SECOND_MATCH = 1;
+    public static final int DEPTH = 2;
 
     public static boolean checkIfNeighbor(Pair p1, Pair p2) {
 

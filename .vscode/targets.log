@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 13 11:56:58 2022
+# Make data base, printed on Sat May 14 10:35:48 2022
 
 # Variables
 
@@ -103,7 +103,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GOLANG_EXECUTABLE = go
 # environment
-SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/2660,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/2660
+SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/2838,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/2838
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -137,7 +137,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 15576
+GIO_LAUNCHED_DESKTOP_FILE_PID = 23037
 # automatic
 %F = $(notdir $%)
 # environment
@@ -159,7 +159,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 2827
+SSH_AGENT_PID = 2994
 # environment
 PKG_CONFIG_PATH = /home/thiago/.opam/default/lib/pkgconfig:/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig/
 # environment
@@ -225,7 +225,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/96
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-7840f4ca-39e4-43f2-9fb6-5dda91fc3e2c.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-857f9fc3-8538-40c3-aed4-7a8a45453729.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -277,6 +277,7 @@ HOMEBREW_SHELLENV_PREFIX = /home/linuxbrew/.linuxbrew
 # environment
 HOMEBREW_PREFIX = /home/linuxbrew/.linuxbrew
 # automatic
+ 
 +D = $(patsubst %/,%,$(dir $+))
 # environment
 RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
@@ -291,7 +292,6 @@ LC_IDENTIFICATION = pt_PT.UTF-8
 # environment
 HOMEBREW_REPOSITORY = /home/linuxbrew/.linuxbrew/Homebrew
 # environment
- 
 QT_ACCESSIBILITY = 1
 # environment
 DEFAULTS_PATH = /usr/share/gconf/cinnamon.default.path
@@ -336,7 +336,7 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 15622
+VSCODE_PID = 23091
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
@@ -348,9 +348,9 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 66306, inode 1850581): 10 files, no impossibilities.
+# . (device 66307, inode 1850581): 11 files, no impossibilities.
 
-# 10 files, no impossibilities in 1 directories.
+# 11 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -525,12 +525,12 @@ serveurTCP: c/src/serveurTCP.c fonctionsTCP
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 32 / storage = 477 B / avg = 14 B
-# current buf: size = 8162 B / used = 477 B / count = 32 / avg = 14 B
+# strcache buffers: 1 (0) / strings = 33 / storage = 481 B / avg = 14 B
+# current buf: size = 8162 B / used = 481 B / count = 33 / avg = 14 B
 
-# strcache performance: lookups = 54 / hit rate = 40%
+# strcache performance: lookups = 55 / hit rate = 40%
 # hash-table stats:
-# Load=32/8192=0%, Rehash=0, Collisions=2/54=4%
-# Finished Make data base on Fri May 13 11:56:58 2022
+# Load=33/8192=0%, Rehash=0, Collisions=2/55=4%
+# Finished Make data base on Sat May 14 10:35:48 2022
 
  

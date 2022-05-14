@@ -53,4 +53,20 @@ public class Square {
             return null;
         }
     }
+
+    public boolean hasPileOfSameColor() {
+        boolean isSameColor = false;
+        if (isFull()) {
+            if (pieces.get(0).getColor() == pieces.get(1).getColor()
+                    && pieces.get(1).getColor() == pieces.get(2).getColor()) {
+                isSameColor = true;
+            }
+        }
+
+        return isSameColor;
+    }
+
+    private boolean isFull() {
+        return pieces.size() == 3;
+    }
 }

@@ -25,7 +25,12 @@ public class Game {
     }
 
     public Response getNextMove() {
-        Algo alg = new Algo(color, matchRound, table);
+        Algo alg;
+        if (matchRound == Utils.FIRST_MATCH)
+            alg = new Algo(color, matchRound, table);
+        else
+            alg = new Algo(1 - color, matchRound, table);
+
         if (blanc.isEmpty() && noir.isEmpty()) {
             Move move = alg.getBestDisplace();
             if (move == null) {
@@ -65,6 +70,7 @@ public class Game {
                         table[pair.getX()][pair.getY()].addPiece(Utils.BLANC);
                     }
                 }
+                
                 return new Response(Utils.PLACE, pair.getX(), pair.getY());
             }
         }
