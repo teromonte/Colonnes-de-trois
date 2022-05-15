@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun May 15 20:13:18 2022
+# Make data base, printed on Sun May 15 21:26:15 2022
 
 # Variables
 
@@ -137,7 +137,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 18475
+GIO_LAUNCHED_DESKTOP_FILE_PID = 54087
 # automatic
 %F = $(notdir $%)
 # environment
@@ -225,7 +225,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/96
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-07d886cf-d1d0-4137-a963-d464541dbf24.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-f084573c-9cfd-40b2-a36b-cfe3e6a7a141.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -277,8 +277,8 @@ HOMEBREW_SHELLENV_PREFIX = /home/linuxbrew/.linuxbrew
 # environment
 HOMEBREW_PREFIX = /home/linuxbrew/.linuxbrew
 # automatic
- 
 +D = $(patsubst %/,%,$(dir $+))
+ 
 # environment
 RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
 # environment
@@ -336,7 +336,7 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 18525
+VSCODE_PID = 54137
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
@@ -531,6 +531,6 @@ serveurTCP: c/src/serveurTCP.c fonctionsTCP
 # strcache performance: lookups = 57 / hit rate = 38%
 # hash-table stats:
 # Load=35/8192=0%, Rehash=0, Collisions=2/57=4%
-# Finished Make data base on Sun May 15 20:13:18 2022
+# Finished Make data base on Sun May 15 21:26:15 2022
 
  

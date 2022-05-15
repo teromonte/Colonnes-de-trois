@@ -12,12 +12,11 @@ make
 # Compile and run java Server
 
 #cd ColonnesDeTrois
-#mvn clean
-#mvn install
+#mvn package
 #
-#gnome-terminal -- mvn exec:java -Dexec.mainClass=server.IAServer -Dexec.args="$6"
+#gnome-terminal -- java -jar target/ColonnesDeTrois-1.0-SNAPSHOT.jar $6
 #
-#gnome-terminal -- mvn exec:java -Dexec.mainClass=server.IAServer -Dexec.args="$7"
+#gnome-terminal -- java -jar target/ColonnesDeTrois-1.0-SNAPSHOT.jar $7
 #
 ## run C Server
 #

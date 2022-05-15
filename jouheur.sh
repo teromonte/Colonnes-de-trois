@@ -21,5 +21,3 @@ gnome-terminal -- mvn exec:java -Dexec.mainClass=server.IAServer -Dexec.args="$4
 cd ../c/bin
 
 gnome-terminal -- ./clientTCP $1 $2 $4 $3
-
-
