@@ -29,10 +29,10 @@ public class Game {
         Gson g = new Gson();
         if (blanc.isEmpty() && noir.isEmpty()) {
             if (matchRound == Utils.FIRST_MATCH) {
-                Square[][] temp = g.fromJson(g.toJson(table), Square[][].class);
+                Square[][] temp = g.fromJson(g.toJson(table), table.getClass());
                 alg = new Algo(color, matchRound, temp, false);
             } else {
-                Square[][] temp = g.fromJson(g.toJson(table), Square[][].class);
+                Square[][] temp = g.fromJson(g.toJson(table), table.getClass());
                 alg = new Algo(1 - color, matchRound, temp, false);
             }
 
@@ -50,12 +50,10 @@ public class Game {
             }
         } else {
             if (matchRound == Utils.FIRST_MATCH) {
-                Square[][] temp = g.fromJson(g.toJson(table), Square[][].class);
-
+                Square[][] temp = g.fromJson(g.toJson(table), table.getClass());
                 alg = new Algo(color, matchRound, temp, true);
             } else {
-                Square[][] temp = g.fromJson(g.toJson(table), Square[][].class);
-
+                Square[][] temp = g.fromJson(g.toJson(table), table.getClass());
                 alg = new Algo(1 - color, matchRound, temp, true);
             }
 

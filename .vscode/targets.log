@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun May 15 02:26:15 2022
+# Make data base, printed on Sun May 15 20:13:18 2022
 
 # Variables
 
@@ -103,7 +103,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GOLANG_EXECUTABLE = go
 # environment
-SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/3041,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/3041
+SESSION_MANAGER = local/thiago-ThinkPad-P53:@/tmp/.ICE-unix/2658,unix/thiago-ThinkPad-P53:/tmp/.ICE-unix/2658
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -137,7 +137,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5330
+GIO_LAUNCHED_DESKTOP_FILE_PID = 18475
 # automatic
 %F = $(notdir $%)
 # environment
@@ -159,7 +159,7 @@ QT_QPA_PLATFORMTHEME = qt5ct
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 3191
+SSH_AGENT_PID = 2816
 # environment
 PKG_CONFIG_PATH = /home/thiago/.opam/default/lib/pkgconfig:/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig/
 # environment
@@ -225,7 +225,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/96
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-cd3b46b8-e3f6-47ef-894f-f13664c41ae9.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-07d886cf-d1d0-4137-a963-d464541dbf24.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -277,13 +277,13 @@ HOMEBREW_SHELLENV_PREFIX = /home/linuxbrew/.linuxbrew
 # environment
 HOMEBREW_PREFIX = /home/linuxbrew/.linuxbrew
 # automatic
+ 
 +D = $(patsubst %/,%,$(dir $+))
 # environment
 RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
 # environment
 GDK_BACKEND = x11
 # environment
- 
 LC_PAPER = pt_PT.UTF-8
 # environment
 CINNAMON_VERSION = 5.0.7
@@ -336,7 +336,7 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 5375
+VSCODE_PID = 18525
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
@@ -348,9 +348,9 @@ _CE_CONDA =
 
 # Directories
 
-# . (device 66311, inode 1850581): 11 files, no impossibilities.
+# . (device 66306, inode 1850581): 13 files, no impossibilities.
 
-# 11 files, no impossibilities in 1 directories.
+# 13 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -400,14 +400,14 @@ all: fonctionsTCP protocolJava functionsClient functionsServer clientTCP serveur
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-15 01:54:30.551040796
+#  Last modified 2022-05-15 19:13:05.734502103
 #  File has been updated.
 #  Successfully updated.
 
 # Not a target:
 c/lib/src/fonctionsTCP.c:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-07 00:51:26.298063143
+#  Last modified 2022-05-15 19:13:05.734502103
 #  File has been updated.
 #  Successfully updated.
 
@@ -479,7 +479,7 @@ clean:
 # Not a target:
 c/lib/headers/fonctionsTCP.h:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-08 22:08:12.936939082
+#  Last modified 2022-05-15 19:13:05.734502103
 #  File has been updated.
 #  Successfully updated.
 
@@ -525,12 +525,12 @@ serveurTCP: c/src/serveurTCP.c fonctionsTCP
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 33 / storage = 481 B / avg = 14 B
-# current buf: size = 8162 B / used = 481 B / count = 33 / avg = 14 B
+# strcache buffers: 1 (0) / strings = 35 / storage = 500 B / avg = 14 B
+# current buf: size = 8162 B / used = 500 B / count = 35 / avg = 14 B
 
-# strcache performance: lookups = 55 / hit rate = 40%
+# strcache performance: lookups = 57 / hit rate = 38%
 # hash-table stats:
-# Load=33/8192=0%, Rehash=0, Collisions=2/55=4%
-# Finished Make data base on Sun May 15 02:26:15 2022
+# Load=35/8192=0%, Rehash=0, Collisions=2/57=4%
+# Finished Make data base on Sun May 15 20:13:18 2022
 
  

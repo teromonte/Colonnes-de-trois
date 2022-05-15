@@ -13,29 +13,25 @@ int main(int argc, char **argv)
       portAI,
       playerColor;
 
-  char *nomMachServ;
+  char *nomMachServ, *playerName;
 
   ////////////// VERIFY INPUT ////////////
-  if (argc != 4)
+  if (argc != 5)
   {
-    printf("usage : %s nom/IPServ portC portAI.\n", argv[0]);
+    printf("usage : %s nom/IPServ portC portAI playerName.\n", argv[0]);
     return -1;
   }
   nomMachServ = argv[1];
   portC = atoi(argv[2]);
   portAI = atoi(argv[3]);
+  playerName = argv[4];
 
   ////////////// CONNECT TO C SERVER ////////////
   sockC = socketClient(nomMachServ, portC);
   printf("(Client) Connected to C Server!\n");
 
-  /////////////// GET NAME ///////////
-  char chaine[TNOM];
-  printf("(Client) To play, type the player name!\n");
-  scanf("%s", chaine);
-
   ////////////// DO HANDSHAKE ////////////
-  playerColor = doHandshake(sockC, chaine);
+  playerColor = doHandshake(sockC, playerName);
 
   ////////////// CONNECT TO JAVA SERVER AND START IT ////////////
   sockAI = socketClient(nomMachServ, portAI);
