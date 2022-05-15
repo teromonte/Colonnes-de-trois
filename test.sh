@@ -1,7 +1,5 @@
 #!/bin/bash
 
-clear
-
 #echo "Host 1: $1; Host 2: $2; Port: $3; Player 1: $4; Player 2: $5; IaPort 1: $6; IaPort 2: $7."
 
 # make c code
@@ -9,16 +7,12 @@ clear
 make clean
 make
 
-clear
-
 # Compile and run java Server
 
 cd ColonnesDeTrois
 
 mvn compile
 mvn clean install
-
-clear
 
 gnome-terminal -- mvn exec:java -Dexec.mainClass=server.IAServer -Dexec.args="$6"
 gnome-terminal -- mvn exec:java -Dexec.mainClass=server.IAServer -Dexec.args="$7"
