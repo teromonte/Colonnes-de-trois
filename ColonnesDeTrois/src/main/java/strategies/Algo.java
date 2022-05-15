@@ -15,7 +15,6 @@ public class Algo {
     private int matchRound;
     private GameMove bestMove;
     private boolean isPart1;
-
     public Algo(int color, int matchRound, Square[][] table, boolean isPart1) {
         this.color = color;
         this.table = table;
@@ -40,7 +39,9 @@ public class Algo {
         for (GameMove move : legalMoves) {
             makeMove(move, color);
             color = 1 - color;
+            var temp = bestMove;
             int rating = minimizer(depth - 1, alpha, beta);
+            bestMove = temp;
             color = 1 - color;
             undoMove(move);
 
