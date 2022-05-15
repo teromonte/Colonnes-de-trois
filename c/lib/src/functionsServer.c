@@ -45,31 +45,43 @@ bool validateAndBuildPlayResponse(bool verif, int turn, struct TCoupRep *playRep
 
 int doHandshake(int sockTrans[])
 {
+
   ////////////// RECEIVE PLAYERS REQUEST /////
   char nom1[TNOM], nom2[TNOM];
 
+  struct TPartieReq matchReq;
+
+  fd_set readSet;
+  FD_ZERO(&readSet);
+  FD_SET(sockTrans[0], &readSet);
+  FD_SET(sockTrans[1], &readSet);
+
+  select(FD_SETSIZE, &readSet, NULL, NULL, NULL);
+
   for (int i = 0; i < MAX_CLIENT; i++)
   {
-    struct TPartieReq matchReq;
-    recv(sockTrans[i], &matchReq, sizeof(struct TPartieReq), 0);
-    switch (matchReq.idRequest)
+    if (FD_ISSET(sockTrans[i], &readSet))
     {
-    case PARTIE:
-      if (i == 0)
+      recv(sockTrans[i], &matchReq, sizeof(struct TPartieReq), 0);
+      switch (matchReq.idRequest)
       {
-        strcpy(nom1, matchReq.nomJoueur);
-        printf("(serveurTCP) Name received from player %d: %s.\n", i, nom1);
+      case PARTIE:
+        if (i == 0)
+        {
+          strcpy(nom1, matchReq.nomJoueur);
+          printf("(serveurTCP) Name received from player %d: %s.\n", i, nom1);
+        }
+        else
+        {
+          strcpy(nom2, matchReq.nomJoueur);
+          printf("(serveurTCP) Name received from player %d: %s.\n", i, nom2);
+        }
+        break;
+      case COUP:
+        printf("(serveurTCP) Received COUP request instead of PARTIE, going down!\n");
+        exit(0);
+        break;
       }
-      else
-      {
-        strcpy(nom2, matchReq.nomJoueur);
-        printf("(serveurTCP) Name received from player %d: %s.\n", i, nom2);
-      }
-      break;
-    case COUP:
-      printf("(serveurTCP) Received COUP request instead of PARTIE, going down!\n");
-      exit(0);
-      break;
     }
   }
 

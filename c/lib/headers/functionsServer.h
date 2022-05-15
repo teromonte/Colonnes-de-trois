@@ -1,4 +1,5 @@
 #include "../../header/protocolColonne.h"
+#include "fonctionsTCP.h"
 
 #include <stdio.h>
 #include <stdlib.h>
