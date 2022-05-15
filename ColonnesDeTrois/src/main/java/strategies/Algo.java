@@ -151,7 +151,7 @@ public class Algo {
 
     // get all valid squares to go
     private List<GameMove> getValidSquaresToGo() {
-        List<GameMove> res = new ArrayList<>();// initialise a list
+        List<GameMove> res = new ArrayList<>(); // initialise a list
         // return every square in the table that has < 3 pieces
         for (int i = 0; i < Utils.N_COLS; i++)
             for (int j = 0; j < Utils.N_ROWS; j++)
@@ -163,7 +163,7 @@ public class Algo {
         return res;
     }
 
-    // get all pieces fron the top of the piles from my color
+    // get all pieces from the top of the piles from my color
     private List<Pair> getMovablePieces() {
         List<Pair> tmp = new ArrayList<>();
         for (int i = 0; i < Utils.N_COLS; i++)
