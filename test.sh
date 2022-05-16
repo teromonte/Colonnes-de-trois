@@ -11,22 +11,22 @@ make
 
 # Compile and run java Server
 
-#cd ColonnesDeTrois
-#mvn clean install
-#cd target
-#
-#gnome-terminal -- java -jar ColonnesDeTrois-0.1.0-SNAPSHOT-jar-with-dependencies.jar $6
-#
-#sleep 2
-#
-#gnome-terminal -- java -jar ColonnesDeTrois-0.1.0-SNAPSHOT-jar-with-dependencies.jar $7
-#
-#sleep 2
-#
-#
-## run C Server
-#
-#cd ../../
+cd ColonnesDeTrois
+mvn clean install
+cd target
+
+gnome-terminal -- java -jar ColonnesDeTrois-0.1.0-SNAPSHOT-jar-with-dependencies.jar $6
+
+sleep 2
+
+gnome-terminal -- java -jar ColonnesDeTrois-0.1.0-SNAPSHOT-jar-with-dependencies.jar $7
+
+sleep 2
+
+
+# run C Server
+
+cd ../../
 
 cd c/bin
 gnome-terminal -- ./serveurTCP $3
