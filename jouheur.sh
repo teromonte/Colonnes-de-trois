@@ -10,14 +10,14 @@ make
 # Compile and run java Server
 
 cd ColonnesDeTrois
-
-mvn compile
 mvn clean install
 
-gnome-terminal -- mvn exec:java -Dexec.mainClass=server.IAServer -Dexec.args="$4"
+cd target
+gnome-terminal -- java -jar ColonnesDeTrois-0.1.0-SNAPSHOT-jar-with-dependencies.jar $4
 
 # run client
 
-cd ../c/bin
+cd ../../
+cd c/bin
 
 gnome-terminal -- ./clientTCP $1 $2 $4 $3

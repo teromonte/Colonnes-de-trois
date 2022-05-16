@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May 16 02:12:29 2022
+# Make data base, printed on Mon May 16 02:18:55 2022
 
 # Variables
 
@@ -137,7 +137,7 @@ XDG_SESSION_DESKTOP = cinnamon
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 66365
+GIO_LAUNCHED_DESKTOP_FILE_PID = 71061
 # automatic
 %F = $(notdir $%)
 # environment
@@ -225,7 +225,7 @@ SNAP_USER_DATA = /home/thiago/snap/code/96
 # environment
 SHLVL = 0
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-68bb8fff-4b04-49df-97ca-ff08736a145e.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b2edfb89-5708-4d76-8de3-d6c4e16bcabc.sock
 # environment
 XDG_SESSION_ID = c2
 # environment
@@ -283,11 +283,11 @@ RECOMMENDER_API_URL = https://gw.api.openshift.io//api/v2
 # environment
 GDK_BACKEND = x11
 # environment
- 
 LC_PAPER = pt_PT.UTF-8
 # environment
 CINNAMON_VERSION = 5.0.7
 # environment
+ 
 LC_IDENTIFICATION = pt_PT.UTF-8
 # environment
 HOMEBREW_REPOSITORY = /home/linuxbrew/.linuxbrew/Homebrew
@@ -336,7 +336,7 @@ LC_ADDRESS = pt_PT.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 66417
+VSCODE_PID = 71107
 # environment
 _CE_CONDA = 
 # variable set hash-table stats:
@@ -489,7 +489,6 @@ fonctionsTCP: c/lib/src/fonctionsTCP.c c/lib/headers/fonctionsTCP.h
 #  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
- 
 # automatic
 # @ := fonctionsTCP
 # automatic
@@ -532,6 +531,6 @@ serveurTCP: c/src/serveurTCP.c fonctionsTCP
 # strcache performance: lookups = 58 / hit rate = 37%
 # hash-table stats:
 # Load=36/8192=0%, Rehash=0, Collisions=2/58=3%
-# Finished Make data base on Mon May 16 02:12:29 2022
+# Finished Make data base on Mon May 16 02:18:55 2022
 
  
