@@ -24,16 +24,17 @@ public class Game {
     }
 
     public Response getNextMove() {
+        int piecesOnBoard = 16 - (blanc.size() + noir.size());
         Algo alg;
         Gson g = new Gson();
         Square[][] temp = null;
         if (blanc.isEmpty() && noir.isEmpty()) {
             if (matchRound == Utils.FIRST_MATCH) {
                 temp = g.fromJson(g.toJson(table), table.getClass());
-                alg = new Algo(color, matchRound, temp, false);
+                alg = new Algo(color, matchRound, temp, piecesOnBoard);
             } else {
                 temp = g.fromJson(g.toJson(table), table.getClass());
-                alg = new Algo(1 - color, matchRound, temp, false);
+                alg = new Algo(1 - color, matchRound, temp, piecesOnBoard);
             }
 
             GameMove move = alg.decideMove(); //
@@ -51,10 +52,10 @@ public class Game {
         } else {
             if (matchRound == Utils.FIRST_MATCH) {
                 temp = g.fromJson(g.toJson(table), table.getClass());
-                alg = new Algo(color, matchRound, temp, true);
+                alg = new Algo(color, matchRound, temp, piecesOnBoard);
             } else {
                 temp = g.fromJson(g.toJson(table), table.getClass());
-                alg = new Algo(1 - color, matchRound, temp, true);
+                alg = new Algo(1 - color, matchRound, temp, piecesOnBoard);
             }
 
             GameMove pair = alg.decideMove(); //

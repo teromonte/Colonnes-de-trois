@@ -13,19 +13,23 @@ public class Algo {
     private Square[][] table;
     private int color;
     private int matchRound;
+    private int piecesOnBoard;
     private GameMove bestMove;
-    private boolean isPart1;
-    public Algo(int color, int matchRound, Square[][] table, boolean isPart1) {
+    private int tryCounter;
+    public Algo(int color, int matchRound, Square[][] table, int piecesOnBoard) {
         this.color = color;
         this.table = table;
         this.matchRound = matchRound;
-        this.isPart1 = isPart1;
+        this.piecesOnBoard = piecesOnBoard;
         this.bestMove = null;
+        tryCounter = 0;
     }
 
     // Alpha-Beta
     public GameMove decideMove() {
+        System.out.println("(javaAPI) Starting Alpha-Beta Algorithm!");
         maximizer(Utils.DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        System.out.println("(javaAPI) Algorithm finished, we've tried " + tryCounter + " different moves!");
         return bestMove;
     }
 
@@ -34,7 +38,13 @@ public class Algo {
             return computeRating(color);
         }
 
-        List<GameMove> legalMoves = getValidMoves(isPart1);
+        List<GameMove> legalMoves;
+
+        if(piecesOnBoard == 16) {
+            legalMoves = getValidMoves(false);
+        }else {
+            legalMoves = getValidMoves(true);
+        }
 
         for (GameMove move : legalMoves) {
             makeMove(move, color);
@@ -62,7 +72,13 @@ public class Algo {
             return computeRating(color);
         }
 
-        List<GameMove> legalMoves = getValidMoves(isPart1);
+        List<GameMove> legalMoves;
+
+        if(piecesOnBoard == 16) {
+             legalMoves = getValidMoves(false);
+        }else {
+            legalMoves = getValidMoves(true);
+        }
 
         for (GameMove move : legalMoves) {
             makeMove(move, color);
@@ -83,8 +99,10 @@ public class Algo {
     }
 
     private void makeMove(GameMove move, int currColor) {
+        tryCounter++;
         // this is a place move
         if (move.getArr().getX() == -1) {
+            piecesOnBoard++;
             table[move.getDep().getX()][move.getDep().getY()].addPiece(currColor);
         } else {
             Piece removed = table[move.getDep().getX()][move.getDep().getY()].removeTop();
@@ -94,6 +112,7 @@ public class Algo {
 
     private void undoMove(GameMove move) {
         if (move.getArr().getX() == -1) {
+            piecesOnBoard--;
             table[move.getDep().getX()][move.getDep().getY()].removeTop();
         } else {
             Piece removed = table[move.getArr().getX()][move.getArr().getY()].removeTop();
