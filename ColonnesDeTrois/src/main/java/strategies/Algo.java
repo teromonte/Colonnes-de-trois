@@ -39,7 +39,7 @@ public class Algo {
         for (GameMove move : legalMoves) {
             makeMove(move, color);
             color = 1 - color;
-            var temp = bestMove;
+            GameMove temp = bestMove;
             int rating = minimizer(depth - 1, alpha, beta);
             bestMove = temp;
             color = 1 - color;

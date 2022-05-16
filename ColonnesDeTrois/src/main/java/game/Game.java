@@ -1,13 +1,12 @@
 package game;
 
+import com.google.gson.Gson;
 import entities.Response;
 import strategies.Algo;
 import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.Gson;
 
 public class Game {
     private Square[][] table;
@@ -27,12 +26,13 @@ public class Game {
     public Response getNextMove() {
         Algo alg;
         Gson g = new Gson();
+        Square[][] temp = null;
         if (blanc.isEmpty() && noir.isEmpty()) {
             if (matchRound == Utils.FIRST_MATCH) {
-                Square[][] temp = g.fromJson(g.toJson(table), table.getClass());
+                temp = g.fromJson(g.toJson(table), table.getClass());
                 alg = new Algo(color, matchRound, temp, false);
             } else {
-                Square[][] temp = g.fromJson(g.toJson(table), table.getClass());
+                temp = g.fromJson(g.toJson(table), table.getClass());
                 alg = new Algo(1 - color, matchRound, temp, false);
             }
 
@@ -50,10 +50,10 @@ public class Game {
             }
         } else {
             if (matchRound == Utils.FIRST_MATCH) {
-                Square[][] temp = g.fromJson(g.toJson(table), table.getClass());
+                temp = g.fromJson(g.toJson(table), table.getClass());
                 alg = new Algo(color, matchRound, temp, true);
             } else {
-                Square[][] temp = g.fromJson(g.toJson(table), table.getClass());
+                temp = g.fromJson(g.toJson(table), table.getClass());
                 alg = new Algo(1 - color, matchRound, temp, true);
             }
 

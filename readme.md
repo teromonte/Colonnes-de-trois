@@ -1,5 +1,7 @@
 How to run the program:
 
+java -jar target/ColonnesDeTrois-1.0-SNAPSHOT-jar-with-dependencies.jar 6666
+
 sh test.sh 127.0.0.1 127.0.0.2 55555 thiago farah 6666 6667
 
 Colonnes-de-trois/c : make clean

@@ -11,16 +11,18 @@ make
 
 # Compile and run java Server
 
-#cd ColonnesDeTrois
-#mvn package
-#
-#gnome-terminal -- java -jar target/ColonnesDeTrois-1.0-SNAPSHOT.jar $6
-#
-#gnome-terminal -- java -jar target/ColonnesDeTrois-1.0-SNAPSHOT.jar $7
-#
-## run C Server
-#
-#cd ../
+cd ColonnesDeTrois
+mvn clean
+mvn compile
+mvn install
+
+gnome-terminal -- java -jar target/ColonnesDeTrois-0.1.0-SNAPSHOT-jar-with-dependencies.jar $6
+
+gnome-terminal -- java -jar target/ColonnesDeTrois-0.1.0-SNAPSHOT-jar-with-dependencies.jar $7
+
+# run C Server
+
+cd ../
 
 cd c/bin
 gnome-terminal -- ./serveurTCP $3
@@ -30,3 +32,25 @@ gnome-terminal -- ./serveurTCP $3
 gnome-terminal -- ./clientTCP $1 $3 $6 $4
 
 gnome-terminal -- ./clientTCP $2 $3 $7 $5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
